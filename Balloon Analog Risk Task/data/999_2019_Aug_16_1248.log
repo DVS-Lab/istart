@@ -1,0 +1,4 @@
+2.1749 	ERROR 	avbin.dll failed to load. Try importing psychopy.visual
+  as the first library (before anything that uses scipy)
+  and make sure that avbin is installed.
+17.4417 	WARNING 	psychopy.sound.backend_pyo.init could not find microphone hardware; recording not available
