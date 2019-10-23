@@ -64,7 +64,7 @@ expdir = os.getcwd()
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'practice_blocks', f'sub-{subj_id}', f'sub-{subj_id}_run-01_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'practice_blocks', f'sub-{subj_id}', 'sub-999_run-01_design.csv'))
     face_folder = os.path.join(imagepath, 'practice_images') 
 
 
