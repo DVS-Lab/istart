@@ -1,0 +1,9 @@
+Trial,ISI,ITI,winlose,face_image_L,face_image_R
+1,2,5.3,win,obj (1).bmp,obj (5).bmp
+2,2,1.1,loss,obj (2).bmp,obj (6).bmp
+3,4,1.1,win,obj (3).bmp,obj (7).bmp
+4,4,3.2,win,obj (4).bmp,obj (8).bmp
+5,2,5.3,loss,obj (9).bmp,obj (13).bmp
+6,2,3.2,loss,obj (10).bmp,obj (14).bmp
+7,6,3.2,win,obj (11).bmp,obj (15).bmp
+8,2,1.1,loss,obj (12).bmp,obj (16).bmp
