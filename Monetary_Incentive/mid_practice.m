@@ -44,7 +44,8 @@ fix_isi = run.isi2(1:20)/2;
 fix_iti = run.isi1(1:20)/2;
 trial_cond = run.cond(1:20);
 
-backtick = '=';
+backtick = '2';
+trigger_start = '=';
 mkdir(fullfile(thePath.data,num2str(subnum)));
 
 RTs  =[];
@@ -190,9 +191,9 @@ Screen('Flip', Window);
 % record run start time (post disdaqs) CHECK ON WHEN IT SENDS TRIGGER
 
 if IsOSX
-    getKey(backtick, k);                             % wait for backtick before continuing
+    getKey(trigger_start, k);                             % wait for backtick before continuing
 else
-    getKey(backtick);
+    getKey(trigger_start);
 end
 
 runST = GetSecs;
