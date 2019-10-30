@@ -22,12 +22,8 @@ clc
 
 % Make 200 trials.
 
-trials= 48; % number of conditions
+trials= 72; % number of conditions
 subjects = 200; % number of total possible subjects
-
-%% ACTION ITEMS!!!!
-
-% CHECK THE DISTRIBUTION FOR THE TIMES!
 
 %% Endowment Distribution
 
@@ -77,6 +73,32 @@ Block_Matrix= [];
 for ii = 1:subjects
     participant_block = blocks(randperm(length(blocks))); % Shuffle the blocks. 
     Block_Matrix = [Block_Matrix, participant_block];
+end
+
+% Each column is a participant
+
+%% Partner Matrix: 
+
+% Randomly select a number between 1 and 2 without replacement
+
+% Make a vector with the number of trials.
+
+num_partners = trials/2;
+
+% 1 will define UG_Proposer, 2 defines DG_Proposer, 3 defines UG_Recipient
+
+a(1:num_partners, 1) = 1;
+b(1:num_partners, 1) = 2;
+
+% Make a Partner_Matrix for all 200 participants
+
+partners = [a;b];
+
+Partner_Matrix= [];
+
+for ii = 1:subjects
+    partner_block = partners(randperm(length(partners))); % Shuffle the blocks. 
+    Partner_Matrix = [Partner_Matrix, partner_block];
 end
 
 % Each column is a participant
@@ -151,37 +173,51 @@ ISI_Matrix = ISI_Matrix';
 
 %% Proposer Matrix for DG and UG
 
-% We are hard coding, assuming 32 trials. 
+% We are hard coding, assuming 48 trials. 
 
 Proposer_Options = [.35 .45;.25 .45;.25 .35;.15 .45; .15 .35; .15 .25;.05 .45;.05 .35;.05 .25;.05 .15];
-Proposer_Options = [Proposer_Options;Proposer_Options;Proposer_Options];
+Proposer_Options = [Proposer_Options;Proposer_Options;Proposer_Options;Proposer_Options;Proposer_Options];
 
-% Now we randomly select 2 rows.
+% We now have a pool of 50 combinations to choose from.
 
-rows =[1:30];
-shuffled_rows = rows(randperm(length(rows)));
-shuffled_rows = shuffled_rows(1:2)'; % We need two items
+% We need to randomly select 48 of these rows. 
+
+rows =[1:(trials*(2/3))]; % Number of desired rows
+shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through 48.
+%shuffled_rows = shuffled_rows(1:2)'; % We need two items
 
 % Take those elements from Proposer_Options and add in six randomly chosen
 % combinations.
 
-for ii = 1:length(shuffled_rows)
+Proposer_Pool = [];
+
+for ii = 1:length(rows) 
     % Index from shuffled_row
-    Take = Proposer_Options(shuffled_rows(ii),:);
-    Proposer_Options = [Proposer_Options; Take];
+    Take = Proposer_Options(shuffled_rows(ii),:); % Take a random number from 1 through 48 and use that as the row
+    Proposer_Pool = [Proposer_Pool; Take];
 end    
 
-Proposer_Pool = [Proposer_Options];
 
 %% Recipient Matrix for UG
 
 Recipient_Options = [0.05 0.15 0.25 0.35 0.45]; % Pool of options
-Recipient_Options = [Recipient_Options,Recipient_Options,Recipient_Options]; % Repeated three times.
+Recipient_Options = [Recipient_Options,Recipient_Options,Recipient_Options,Recipient_Options,Recipient_Options]; % Repeated five times.
 
-% Pick a random number between 1 and 15. Index that number from
+% Shuffle the recipient options
+
+rows =[1:(trials*(1/3))]; % Number of desired rows
+shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through rows
+
+% Pick a random number between 1 and 24. Index that number from
 % Recipient_Options. Add it in to that vector.
 
-Recipient_Pool = [Recipient_Options,Recipient_Options(randperm(15,1))]';
+Recipient_Pool = []; 
+for ii = 1:length(rows) 
+    % Index from shuffled_row
+    Take = Recipient_Options(shuffled_rows(ii)); % Take a random number from 1 through 24 and use that as the row
+    Recipient_Pool = [Recipient_Pool; Take];
+end  
+
 
 %% Combine all information for each Subject and save it as a CSV file.
 
@@ -202,7 +238,7 @@ for jj=1:subjects
     
     % Pick a participant
     
-        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix(:,jj), Partner_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
     
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
@@ -217,7 +253,7 @@ for jj=1:subjects
              shuffled = randperm(length(Proposer_Pool));
    
              for ii = 1:length(shuffled)
-                 Proportions = Proposer_Pool(shuffled(ii),:); % Take a shuffled number to index from proposer_pool
+                 Proportions = Proposer_Pool(shuffled(ii),:); % Take a shuffled number to index from the proposer_pool
                  shuffled_proposer = [shuffled_proposer; Proportions];
              end
              
@@ -234,7 +270,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_proposer(ii,:);
+                 options = row(4) * shuffled_proposer(ii,:);
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate 
             end
@@ -257,7 +293,7 @@ for jj=1:subjects
     
     % Convery the file into an array. Put a header for each column.
     
-    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
+    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Partner', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
     name = "Subject_" + jj + '.csv';
     
     % Save array as a CSV file
