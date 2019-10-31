@@ -23,8 +23,9 @@ clc
 % Make 200 trials.
 
 trials= 48; % number of conditions
-subjects = 200; % number of total possible subjects
+%subjects = 200; % number of total possible subjects
 
+subjects = 2;
 %% ACTION ITEMS!!!!
 
 % CHECK THE DISTRIBUTION FOR THE TIMES!
