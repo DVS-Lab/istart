@@ -241,6 +241,7 @@ def do_run(run, trials):
                 core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
 
+
         trials.addData('resp', resp_val)
         trials.addData('rt',rt)
         trials.addData('resp_onset',resp_onset)
