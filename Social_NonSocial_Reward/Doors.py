@@ -67,10 +67,10 @@ imagepath = os.path.join(expdir)
 
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'doors_blocks', 'sub-999_run-01_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-01_design.csv'))
     door_folder = os.path.join(imagepath, 'images', 'VersionA') 
 elif subj_run == '2':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'doors_blocks', 'sub-999_run-02_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-02_design.csv'))
     door_folder = os.path.join(imagepath, 'images', 'VersionB')
 
 #image to list
@@ -236,7 +236,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait((decision_dur - rt)+.5)
+                core.wait((decision_dur - rt)-.5)
                 decision_offset = globalClock.getTime()
                 break
             else:
@@ -244,6 +244,7 @@ def do_run(run, trials):
                 rt = 999
                 resp_onset = 999
                 outcome_txt = outcome_map[resp_val]
+                core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
 
         trials.addData('resp', resp_val)
