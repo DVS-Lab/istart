@@ -230,7 +230,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait((decision_dur - rt)-.5)
+                core.wait(decision_dur - rt)
                 decision_offset = globalClock.getTime()
                 break
             else:
