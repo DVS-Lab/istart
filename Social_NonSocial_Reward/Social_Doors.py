@@ -268,7 +268,8 @@ def do_run(run, trials):
 
 
         trial_offset = globalClock.getTime()
-        trials.addData('trialDuration', decision_dur)
+        duration = trial_offset - decision_onset
+        trials.addData('trialDuration', duration)
         event.clearEvents()
         print("got to check 3")
         
@@ -356,6 +357,7 @@ def do_run(run, trials):
     else:
         endTime = buffer_dur
     core.wait(endTime)
+    print(globalClock.getTime())
 
 
 for run, trials in enumerate([trials_run1]):
