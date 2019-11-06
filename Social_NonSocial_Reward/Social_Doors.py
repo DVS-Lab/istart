@@ -64,10 +64,10 @@ expdir = os.getcwd()
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', f'sub-{subj_id}', f'sub-{subj_id}_run-01_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-01_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionA') 
 elif subj_run == '2':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', f'sub-{subj_id}', f'sub-{subj_id}_run-02_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-02_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionB') 
 
 
@@ -144,14 +144,14 @@ timer = core.Clock()
 #trial handler
 
 if subj_run == '1':
-    trial_data_1_filename = 'params/social_blocks/sub-' + subj_id + f'/sub-{subj_id}' + '_run-01_design.csv'
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
     trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
     trial_data_1_df = pd.read_csv(trial_data_1_filename)
     trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
     trial_win_lose = trial_data_1[:]
     trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
 elif subj_run == '2':
-    trial_data_1_filename = 'params/social_blocks/sub-' + subj_id + f'/sub-{subj_id}' + '_run-02_design.csv'
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-02_design.csv'
     trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
     trial_data_1_df = pd.read_csv(trial_data_1_filename)
     trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
