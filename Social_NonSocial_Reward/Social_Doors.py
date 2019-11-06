@@ -233,7 +233,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait((decision_dur - rt)+.5)
+                core.wait((decision_dur - rt)+.0)
                 decision_offset = globalClock.getTime()
                 break
             else:
@@ -329,11 +329,15 @@ def do_run(run, trials):
         date = datetime.datetime.now()
         trials.addData('Date_Time', date)
         
+        home_dir = os.getcwd()
         bids_tsv= pd.DataFrame(
             {'onset':bids_onset, 
             'duration':bids_duration, 
-            'condition':bids_condition})
+            'condition':bids_condition,
+            'resp':resp_val})
+        os.chdir('../bids')
         bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
+        os.shdir(home)
         
         #bids_tsv= pd.DataFrame(
         #    {'onset':bids_onset, 
