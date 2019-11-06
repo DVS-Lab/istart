@@ -221,7 +221,8 @@ for t = 1:length(trial_cond)
         output.trial_starts(t) = stimST-runST;
         output.target_starts(t) = targetST-runST;
         output.RT(t) = RT(1);
-        output.thresh(t) = RT_thresh(trial_cond(t));  
+        output.thresh(t) = RT_thresh(trial_cond(t)); 
+        output.trial_cond(t) = trial_cond(t);
         
         Screen('DrawTexture', Window, fix1);
         Screen('Flip', Window);
@@ -233,5 +234,6 @@ if isscan == 0
 elseif isscan == 1
   save([thePath.data '/' num2str(subnum) '/output_' num2str(now) '.mat'], 'output')
 end
+
 
 sca;
