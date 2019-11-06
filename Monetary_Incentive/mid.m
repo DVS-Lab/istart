@@ -237,3 +237,14 @@ end
 
 
 sca;
+
+output_matrix = cell2mat(struct2cell(output))
+output_matrix = output_matrix.'
+ouput_matrix = array2table(output_matrix, 'VariableNames',{'outcome','trial_starts','target_starts','RT','thresh'})
+
+mkdir(fullfile(thePath.data(1:end-23),'bids',strcat('sub-',num2str(subnum)), 'func'))
+
+writematrix(output_matrix, fullfile(thePath.data(1:end-23),'bids',strcat('sub-',num2str(subnum)), 'func', strcat('sub-',num2str(subnum),'_task-MID_run-1_events.txt')),'Delimiter','tab')
+
+
+
