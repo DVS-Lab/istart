@@ -64,30 +64,16 @@ expdir = os.getcwd()
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-01_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-01_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionA') 
 elif subj_run == '2':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-02_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-02_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionB') 
 
-if subj_run == '1':
-    trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
-elif subj_run == '2':
-    trial_data_1_filename = 'params/social_blocks/sub-999_run-02_design.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
- 
 
-face_R = trial_data_1_df['face_image_R'].tolist()
-face_L = trial_data_1_df['face_image_L'].tolist()
+
+face_R = workbook['face_image_R'].tolist()
+face_L = workbook['face_image_L'].tolist()
 
 face_L_sorted = []
 face_R_sorted = []
@@ -156,6 +142,23 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
+
+if subj_run == '1':
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
+    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
+    trial_data_1_df = pd.read_csv(trial_data_1_filename)
+    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
+    trial_win_lose = trial_data_1[:]
+    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
+elif subj_run == '2':
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-02_design.csv'
+    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
+    trial_data_1_df = pd.read_csv(trial_data_1_filename)
+    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
+    trial_win_lose = trial_data_1[:]
+    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
+ 
+
 
 #checkpoint
 print("got to check 2")
@@ -230,7 +233,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait(decision_dur - rt)
+                core.wait((decision_dur - rt)+.0)
                 decision_offset = globalClock.getTime()
                 break
             else:
@@ -238,9 +241,7 @@ def do_run(run, trials):
                 rt = 999
                 resp_onset = 999
                 outcome_txt = outcome_map[resp_val]
-                core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
-
 
         trials.addData('resp', resp_val)
         trials.addData('rt',rt)
@@ -268,7 +269,8 @@ def do_run(run, trials):
 
 
         trial_offset = globalClock.getTime()
-        trials.addData('trialDuration', decision_dur)
+        duration = trial_offset - decision_onset
+        trials.addData('trialDuration', duration)
         event.clearEvents()
         print("got to check 3")
         
@@ -331,7 +333,8 @@ def do_run(run, trials):
             {'onset':bids_onset, 
             'duration':bids_duration, 
             'condition':bids_condition})
-        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
+        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Doors_Run-{subj_run}.tsv', sep='\t', index = False)
+
         
         #bids_tsv= pd.DataFrame(
         #    {'onset':bids_onset, 
@@ -356,6 +359,7 @@ def do_run(run, trials):
     else:
         endTime = buffer_dur
     core.wait(endTime)
+    print(globalClock.getTime())
 
 
 for run, trials in enumerate([trials_run1]):
