@@ -1,5 +1,5 @@
-###SRNDNA
-###shared reward, block design
+###i/start
+###UGDG
 
 from psychopy import visual, core, event, gui, data, sound, logging
 import csv
@@ -18,7 +18,7 @@ initial_fixation_dur = 4
 #final_fixation_dur = 2
 decision_dur=3
 #outcome_dur=0.25
-fileSuffix = 'UG'
+fileSuffix = 'UGDG'
 
 responseKeys=('2','3','z')
 
@@ -52,7 +52,7 @@ run_data = {
 win = visual.Window([800,600], monitor="testMonitor", units="deg", fullscr=useFullScreen, allowGUI=False, screen=useDualScreen)
 
 #checkpoint
-print "got to check 1"
+print("got to check 1")
 
 #define fixation
 fixation = visual.TextStim(win, text="+", height=2)
@@ -65,25 +65,19 @@ ready_screen = visual.TextStim(win, text="Please wait for Lets Make a Deal to be
 pictureStim =  visual.ImageStim(win, pos=(0,3.5),size=(6.65,6.65))
 resp_text_reject = visual.TextStim(win,text="Reject Offer", pos =(-7,-4.8), height=1, alignHoriz="center")
 resp_text_accept = visual.TextStim(win,text="Accept Offer", pos =(7,-4.8), height=1, alignHoriz="center")
-offer_text = visual.TextStim(win,pos = (0,-1.5),alignHoriz="center", text='')
-
-proposal_text_UG1 = visual.TextStim(win,text = "Offer",pos =(-7,-4.8), height=1, alignHoriz="center")
-proposal_text_UG2 = visual.TextStim(win,text = "Offer",pos =(7,-4.8), height=1, alignHoriz="center")
-
-split_text_DG1 = visual.TextStim(win,text = "Give",pos =(-7,-4.8), height=1, alignHoriz="center")
-split_text_DG2 = visual.TextStim(win,text = "Give",pos =(-7,-4.8), height=1, alignHoriz="center")
+offer_text = visual.TextStim(win,pos = (0,-1.5), height=1,alignHoriz="center", text='')
+resp_text_left = visual.TextStim(win, pos =(-7,-4.8), height=1, alignHoriz="center")
+resp_text_right = visual.TextStim(win, pos =(7,-4.8), height=1, alignHoriz="center")
+endowment_text = visual.TextStim(win, pos =(0,-1.5), height=1, alignHoriz="center")
 
 
 #outcome screen
 outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
 
 #instructions
-instruct_screen = visual.TextStim(win, text='Welcome to Lets Make a Deal!\n\nIn this task you will interacting with different anonymous partners who have participated in these studies in the past.\n\nYou will be interacting with them in a few different ways.\n\n
-                On most trials, you will be in the role of proposer.  You will be given a sum of money (range: $15-25) which you can propose to divide in any way between the two of you.',  pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen2 = visual.TextStim(win, text = 'Sometimes, your partner would be able to decide to accept your offer as is or reject it so you both would receive $0.\n\n
-                Other times, whatever split you propose would stand as is; your partner would not have the chance to accept or reject.', pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text='On some trials, you will be in the role of the responder.\n\nOn these trials, you will be presented with an offer from one of your anonymous partners.\n\n
-                You will have the opportunity to either accept or reject that offer.', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen = visual.TextStim(win, text='Welcome to Lets Make a Deal!\n\nIn this task you will interacting with different anonymous partners who have participated in these studies in the past.\n\nYou will be interacting with them in a few different ways.\n\nOn most trials, you will be in the role of proposer.  You will be given a sum of money (range: $15-25) which you can propose to divide in any way between the two of you.',  pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text = 'Sometimes, your partner would be able to decide to accept your offer as is or reject it so you both would receive $0.\n\nOther times, whatever split you propose would stand as is; your partner would not have the chance to accept or reject.', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text='On some trials, you will be in the role of the responder.\n\nOn these trials, you will be presented with an offer from one of your anonymous partners.\n\nYou will have the opportunity to either accept or reject that offer.', pos = (0,1), wrapWidth=20, height = 1.2)
 
 #exit
 exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,1), wrapWidth=20, height = 1.2)
@@ -102,8 +96,8 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-trial_data_1 = [r for r in csv.DictReader(open('params/UG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
-trial_data_2  = [r for r in csv.DictReader(open('params/UG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
+trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
+trial_data_2  = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
 
 trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
 trials_run2 = data.TrialHandler(trial_data_2[:], 1, method="sequential") #change to [] for full run
@@ -114,8 +108,8 @@ subj_eth = int(subj_eth)
 subj_age = int(subj_age)
 
 stim_map = {
-    '2' = 'human'
-    '1' = 'computer'
+    '2': 'human',
+    '1': 'computer'
     }
 
 outcome_map = {
@@ -125,7 +119,7 @@ outcome_map = {
   }
 
 #checkpoint
-print "got to check 2"
+print("got to check 2")
 
 # main task loop
 # Instructions
@@ -168,15 +162,17 @@ def do_run(run, trials):
         trials.addData('decision_onset', decision_onset)
 
         # 1 = UG Proposer, 2 = DG Proposer, 3 = UG responder
-        if trial['Block'] == 3:
+        if trial['Block'] == 3:         #UG Responder
             while timer.getTime() < 1:
-                partner_offer = trial['Offer']
-                partnerOffer = 'Proposal: $%s.00 out of $20.00' % partner_offer
+                partner_offer = trial['L_Option']
+                endowment = trial['Endowment']
+                partnerOffer = 'Proposal: $%s out of $%s' % (partner_offer, endowment)
+                print('partnerOffer')
                 offer_text.setText(partnerOffer)
-                offer_text.draw()
                 offer_text.draw()
                 pictureStim.draw()
                 win.flip()
+                print(offer_text)
 
             resp_val=None
             resp_onset=None
@@ -189,51 +185,55 @@ def do_run(run, trials):
                 offer_text.draw()
                 win.flip()
 
-            resp = event.getKeys(keyList = responseKeys)
+                resp = event.getKeys(keyList = responseKeys)
 
-            if len(resp)>0:
-                if resp[0] == 'z':
-                    #trials.saveAsText(fileName=log_file.format(subj_id),delim=',',dataOut='all_raw')
-                    os.chdir(subjdir)
-                    trials.saveAsWideText(fileName)
-                    os.chdir(expdir)
-                    win.close()
-                    core.quit()
-                resp_val = int(resp[0])
-                resp_onset = globalClock.getTime()
-                rt = resp_onset - decision_onset
-                if resp_val == 2:
-                    resp_text_reject.setColor('darkorange')
-                if resp_val == 3:
-                    resp_text_accept.setColor('darkorange')
-                resp_text_accept.draw()
-                resp_text_reject.draw()
-                pictureStim.draw()
-                offer_text.setText(partnerOffer)
-                offer_text.draw()
-                win.flip()
-                core.wait((decision_dur - rt)+.5)
-                decision_offset = globalClock.getTime()
-                break
-            else:
-                resp_val = 999
-                rt = 999
-                resp_onset = 999
-                outcome_txt = outcome_map[resp_val]
-                decision_offset = globalClock.getTime()
+                if len(resp)>0:
+                    if resp[0] == 'z':
+                        #trials.saveAsText(fileName=log_file.format(subj_id),delim=',',dataOut='all_raw')
+                        os.chdir(subjdir)
+                        trials.saveAsWideText(fileName)
+                        os.chdir(expdir)
+                        win.close()
+                        core.quit()
+                    resp_val = int(resp[0])
+                    resp_onset = globalClock.getTime()
+                    rt = resp_onset - decision_onset
+                    if resp_val == 2:
+                        resp_text_reject.setColor('darkorange')
+                    if resp_val == 3:
+                        resp_text_accept.setColor('darkorange')
+                    resp_text_accept.draw()
+                    resp_text_reject.draw()
+                    pictureStim.draw()
+                    offer_text.setText(partnerOffer)
+                    offer_text.draw()
+                    win.flip()
+                    core.wait((decision_dur - rt)+.5)
+                    decision_offset = globalClock.getTime()
+                    break
+                else:
+                    resp_val = 999
+                    rt = 999
+                    resp_onset = 999
+                    outcome_txt = outcome_map[resp_val]
+                    decision_offset = globalClock.getTime()
 
-        if trial['Block'] == 2 or 3:     #DG Proposer
+        if trial['Block'] == 1 or 2:     #UG/DG Proposer
+        #else:
             while timer.getTime() < 1:
                 endowment = trial['Endowment']
+                endowmentOffer = 'You have $%s' % endowment
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
-                respcLeft = 'Give $%s.00' % resp_left
+                respcLeft = 'Give $%s' % resp_left
                 resp_text_left.setText(respcLeft)
-                respcRight = 'Give $%s.00' % resp_right
+                respcRight = 'Give $%s' % resp_right
                 resp_text_right.setText(respcRight)
 
-                endowment_text.setText(endowment)
+                endowment_text.setText(endowmentOffer)
                 endowment_text.draw()
+                resp_text_left.draw()
+                resp_text_right.draw()
                 pictureStim.draw()
                 win.flip()
 
@@ -244,42 +244,42 @@ def do_run(run, trials):
                 resp_text_left.draw()
                 resp_text_right.draw()
                 pictureStim.draw()
-                endowment_text.setText(endowment)
+                endowment_text.setText(endowmentOffer)
                 endowment_text.draw()
                 win.flip()
 
-            resp = event.getKeys(keyList = responseKeys)
+                resp = event.getKeys(keyList = responseKeys)
 
-            if len(resp)>0:
-                if resp[0] == 'z':
-                    #trials.saveAsText(fileName=log_file.format(subj_id),delim=',',dataOut='all_raw')
-                    os.chdir(subjdir)
-                    trials.saveAsWideText(fileName)
-                    os.chdir(expdir)
-                    win.close()
-                    core.quit()
-                resp_val = int(resp[0])
-                resp_onset = globalClock.getTime()
-                rt = resp_onset - decision_onset
-                if resp_val == 2:
-                    resp_text_right.setColor('darkorange')
-                if resp_val == 3:
-                    resp_text_left.setColor('darkorange')
-                resp_text_left.draw()
-                resp_text_right.draw()
-                pictureStim.draw()
-                endowment_text.setText(partnerOffer)
-                endowment_text.draw()
-                win.flip()
-                core.wait((decision_dur - rt)+.5)
-                decision_offset = globalClock.getTime()
-                break
-            else:
-                resp_val = 999
-                rt = 999
-                resp_onset = 999
-                outcome_txt = outcome_map[resp_val]
-                decision_offset = globalClock.getTime()
+                if len(resp)>0:
+                    if resp[0] == 'z':
+                        #trials.saveAsText(fileName=log_file.format(subj_id),delim=',',dataOut='all_raw')
+                        os.chdir(subjdir)
+                        trials.saveAsWideText(fileName)
+                        os.chdir(expdir)
+                        win.close()
+                        core.quit()
+                    resp_val = int(resp[0])
+                    resp_onset = globalClock.getTime()
+                    rt = resp_onset - decision_onset
+                    if resp_val == 2:
+                        resp_text_left.setColor('darkorange')
+                    if resp_val == 3:
+                        resp_text_right.setColor('darkorange')
+                    resp_text_left.draw()
+                    resp_text_right.draw()
+                    pictureStim.draw()
+                    endowment_text.setText(endowmentOffer)
+                    endowment_text.draw()
+                    win.flip()
+                    core.wait((decision_dur - rt)+.5)
+                    decision_offset = globalClock.getTime()
+                    break
+                else:
+                    resp_val = 999
+                    rt = 999
+                    resp_onset = 999
+                    outcome_txt = outcome_map[resp_val]
+                    decision_offset = globalClock.getTime()
 
 
         trials.addData('resp', resp_val)
@@ -310,7 +310,7 @@ def do_run(run, trials):
         duration = trial_offset - decision_onset
         trials.addData('trialDuration', duration)
         event.clearEvents()
-        print "got to check 3"
+        print("got to check 3")
 
         #ITI
         logging.log(level=logging.DATA, msg='ITI') #send fixation log event
@@ -342,7 +342,7 @@ def do_run(run, trials):
     else:
         endTime = buffer_dur
     core.wait(endTime)
-    print globalClock.getTime()
+    print("globalClock.getTime()")
 
 for run, trials in enumerate([trials_run1, trials_run2]):
     do_run(run, trials)
