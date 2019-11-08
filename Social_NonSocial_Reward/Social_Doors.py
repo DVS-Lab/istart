@@ -329,15 +329,12 @@ def do_run(run, trials):
         date = datetime.datetime.now()
         trials.addData('Date_Time', date)
         
-        home_dir = os.getcwd()
         bids_tsv= pd.DataFrame(
             {'onset':bids_onset, 
             'duration':bids_duration, 
-            'condition':bids_condition,
-            'resp':resp_val})
-        os.chdir('../bids')
-        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
-        os.shdir(home)
+            'condition':bids_condition})
+        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Doors_Run-{subj_run}.tsv', sep='\t', index = False)
+
         
         #bids_tsv= pd.DataFrame(
         #    {'onset':bids_onset, 
