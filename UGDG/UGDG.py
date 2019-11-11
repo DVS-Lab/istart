@@ -83,7 +83,7 @@ instruct_screen3 = visual.TextStim(win, text = 'If your partner will be able to 
 instruct_screen4 = visual.TextStim(win, text = 'If your partner will not be able to respond to the split of money you propose to give, you will see the image below for half a second before the trial begins.',pos = (0,1), wrapWidth=20, height = 1.2)
 instruct_screen5 = visual.TextStim(win, text = 'On some trials, you will be in the role of the responder.\n\nOn these trials, you will be presented with an offer from one of your partners.\n\nYou will have the opportunity to either accept or reject that offer.', pos = (0,1), wrapWidth=20, height = 1.2)
 instruct_screen6 = visual.TextStim(win, text = 'If you have the opportunity to accept or reject an offer from your partner, you will see the image below, again for half a second before the trial begins.',pos = (0,1),wrapWidth=20,height=1.2)
-instruct_Screen7 = visual.TextStim(win, text = 'On all trials, if you would like to select the option on the left side of the screen, press Button 2, and if you would like to select the option on the right side of the screen, press Button 3.')
+instruct_screen7 = visual.TextStim(win, text = 'On all trials, if you would like to select the option on the left side of the screen, press Button 2, and if you would like to select the option on the right side of the screen, press Button 3.')
 instruct_screen8 = visual.TextStim(win, text = 'Do you have any questions?',pos = (0,1),wrapWidth=20,height=1.2)
 
 
