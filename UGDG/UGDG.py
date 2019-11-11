@@ -168,7 +168,7 @@ instruct_screen7.draw()
 win.flip()
 event.waitKeys(keyList=('space'))
 
-instruct_Screen8.draw()
+instruct_screen8.draw()
 win.flip()
 event.waitKeys(keyList=('space'))
 
