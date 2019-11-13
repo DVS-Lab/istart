@@ -116,7 +116,7 @@ end
 
 % Dave's Code:
 
-ITI_list = [repmat(2,1,round(trials*(18/36))) repmat(4,1,round(trials*(10/36))) repmat(6,1,round(trials*(5/36))) repmat(8,1,round(trials*(3/36)))];
+ITI_list = [repmat(2,1,round(trials*(18/36)) repmat(4,1,round(trials*(19/36)) repmat(6,1,round(trials*(5/36)) repmat(8,1,round(trials*(3/36)))];
 ITI_list = ITI_list(randperm(length(ITI_list)))';
 
 % Participant
