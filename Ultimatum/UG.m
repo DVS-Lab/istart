@@ -260,7 +260,7 @@ for jj=1:subjects
 
     % Pick a participant
 
-        participant = [trial_vec, Block_Matrix(:,jj), Partner_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
 
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
@@ -313,10 +313,11 @@ for jj=1:subjects
     participant = [proposer; recipient]; % Concatenated
     participant = sortrows(participant); % Sorted along trials.
 
-    % Convery the file into an array. Put a header for each column.
+    % Convert the file into an array. Put a header for each column.
 
-    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Partner', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = 'Subject_jj.csv';
+    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
+    %name = 'Subject_jj.csv';
+    name = "Subject_" + jj + '.csv';
 
     % Save array as a CSV file
 
