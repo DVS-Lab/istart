@@ -311,8 +311,6 @@ def do_run(run, trials):
             print('somethings wrong')
             
         arrow_offset = globalClock.getTime()
-        
-        
         trials.addData("arrow_onset", arrow_onset)
         trials.addData("arrow_offset", arrow_offset)
         #ITI
