@@ -292,7 +292,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(4) * shuffled_proposer(ii,:);
+                 options = row(3) * shuffled_proposer(ii,:);
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate
             end
