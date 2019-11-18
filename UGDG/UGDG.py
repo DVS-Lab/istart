@@ -1,4 +1,4 @@
-###i/start
+3###i/start
 ###UGDG
 
 from psychopy import visual, core, event, gui, data, sound, logging
@@ -49,7 +49,7 @@ run_data = {
     }
 
 #window setup
-win = visual.Window([800,600], monitor="testMonitor", units="deg", fullscr=useFullScreen, allowGUI=False, screen=useDualScreen)
+win = visual.Window([1920, 1200], monitor="testMonitor", units="deg", fullscr=useFullScreen, allowGUI=False, screen=useDualScreen)
 
 #checkpoint
 print("got to check 1")
