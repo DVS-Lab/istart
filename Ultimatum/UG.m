@@ -105,71 +105,93 @@ end
 
 %% ITI Waiting Matrix
 
-% Make a vector that is .75 for seven trials. Then put in a number that is
-% between 8 and 12, even. Repeat this sequence so that there are 48 trials.
+% % Make a vector that is .75 for seven trials. Then put in a number that is
+% % between 8 and 12, even. Repeat this sequence so that there are 48 trials.
+%         
+% 
+% start = repelem(.75, 7);
+% even_vecs = [8,10,12];
+% 
+% repeat_loop = trials/(length(start)+1); % Repeat loop for selected number of trials.
 
-start = repelem(.75, 7);
-even_vecs = [8,10,12];
+% Dave's Code:
 
-repeat_loop = trials/(length(start)+1); % Repeat loop for selected number of trials.
+ITI_list = [repmat(2,1,round(trials*(18/36))) repmat(4,1,round(trials*(10/36))) repmat(6,1,round(trials*(5/36))) repmat(8,1,round(trials*(3/36)))];
+ITI_list = ITI_list(randperm(length(ITI_list)))';
 
 % Participant
 
-Participant_ITI = [];
-
-for ii = 1: repeat_loop
-    short_vec = even_vecs(randperm(length(even_vecs))); % Randomly pic an even number
-    short_vec = short_vec(1,1); % Take the first element
-    short_vec = [start,short_vec]; % Concatenate them together.
-    Participant_ITI = [Participant_ITI, short_vec];
-end
-
-% Now let's make a matrix for all participants
+% Participant_ITI = [];
+% 
+% for ii = 1: repeat_loop
+%     short_vec = even_vecs(randperm(length(even_vecs))); % Randomly pic an even number
+%     short_vec = short_vec(1,1); % Take the first element
+%     short_vec = [start,short_vec]; % Concatenate them together.
+%     Participant_ITI = [Participant_ITI, short_vec];
+% end
+% 
+% % Now let's make a matrix size(for all participants
 
 ITI_Matrix = [];
 
-for ii = 1:subjects
+ for ii = 1:subjects
+     Temp_ITI = ITI_list(randperm(length(ITI_list))); % take the ITI_list and shuffle
+     ITI_Matrix = [ITI_Matrix, Temp_ITI]; % Add it in
+ end
 
-Shuffled_ITI = Participant_ITI(randperm(length(Participant_ITI))); % Shuffle the time
-ITI_Matrix = [ITI_Matrix; Shuffled_ITI];
-
-end
-
-ITI_Matrix = ITI_Matrix';
+% for ii = 1:subjects
+% 
+% Shuffled_ITI = Participant_ITI(randperm(length(Participant_ITI))); % Shuffle the time
+% ITI_Matrix = [ITI_Matrix; Shuffled_ITI];
+% 
+% end
 
 %% ISI Waiting Matrix
 
-% Make a vector that is .75 for seven trials. Then put in a number that is
-% between 8 and 12, even. Repeat this sequence so that there are 48 trials.
+% % Make a vector that is .75 for seven trials. Then put in a number that is
+% % between 8 and 12, even. Repeat this sequence so that there are 48 trials.
+% 
+% start = repelem(.75, 7);
+% even_vecs = [8,10,12];
+% 
+% repeat_loop = trials/(length(start)+1); % Repeat loop for selected number of trials.
+% 
+% % Participant
+% 
+% Participant_ISI = [];
+% 
+% for ii = 1: repeat_loop
+%     short_vec = even_vecs(randperm(length(even_vecs))); % Randomly pic an even number
+%     short_vec = short_vec(1,1); % Take the first element
+%     short_vec = [start,short_vec]; % Concatenate them together.
+%     Participant_ISI = [Participant_ISI, short_vec];
+% end
 
-start = repelem(.75, 7);
-even_vecs = [8,10,12];
+% Dave's code:
 
-repeat_loop = trials/(length(start)+1); % Repeat loop for selected number of trials.
-
-% Participant
-
-Participant_ISI = [];
-
-for ii = 1: repeat_loop
-    short_vec = even_vecs(randperm(length(even_vecs))); % Randomly pic an even number
-    short_vec = short_vec(1,1); % Take the first element
-    short_vec = [start,short_vec]; % Concatenate them together.
-    Participant_ISI = [Participant_ISI, short_vec];
-end
-
-% Now let's make a matrix for all participants
+ISI_list = [repmat(2,1,round(20/36*trials)) repmat(3.5,1,round(10/36*trials)) repmat(5,1,round(6/36*trials))];
+ISI_list = ISI_list(randperm(length(ISI_list)));
+ISI_list = (ISI_list - 1.5)'; %shaving 1.5 seconds to account for "WAITING" screen
 
 ISI_Matrix = [];
 
-for ii = 1:subjects
+ for ii = 1:subjects
+     Temp_ISI = ISI_list(randperm(length(ISI_list))); % take the ISI_list and shuffle
+     ISI_Matrix = [ISI_Matrix, Temp_ISI]; % Add it in
+ end
 
-Shuffled_ISI = Participant_ISI(randperm(length(Participant_ISI))); % Shuffle the times
-ISI_Matrix = [ISI_Matrix; Shuffled_ISI];
+% Now let's make a matrix for all participants
 
-end
+% ISI_Matrix = [];
 
-ISI_Matrix = ISI_Matrix';
+% for ii = 1:subjects
+% 
+% Shuffled_ISI = Participant_ISI(randperm(length(Participant_ISI))); % Shuffle the times
+% ISI_Matrix = [ISI_Matrix; Shuffled_ISI];
+% 
+% end
+% 
+% ISI_Matrix = ISI_Matrix';
 
 %% Proposer Matrix for DG and UG
 
@@ -238,7 +260,7 @@ for jj=1:subjects
 
     % Pick a participant
 
-        participant = [trial_vec, Block_Matrix(:,jj), Partner_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
 
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
@@ -291,10 +313,11 @@ for jj=1:subjects
     participant = [proposer; recipient]; % Concatenated
     participant = sortrows(participant); % Sorted along trials.
 
-    % Convery the file into an array. Put a header for each column.
+    % Convert the file into an array. Put a header for each column.
 
-    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Partner', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = 'Subject_jj.csv';
+    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
+    %name = 'Subject_jj.csv';
+    name = "Subject_" + jj + '.csv';
 
     % Save array as a CSV file
 

@@ -64,16 +64,30 @@ expdir = os.getcwd()
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-01_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-01_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionA') 
 elif subj_run == '2':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-02_design.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-02_design.csv'))
     face_folder = os.path.join(imagepath, 'social_images', 'VersionB') 
 
+if subj_run == '1':
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
+    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
+    trial_data_1_df = pd.read_csv(trial_data_1_filename)
+    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
+    trial_win_lose = trial_data_1[:]
+    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
+elif subj_run == '2':
+    trial_data_1_filename = 'params/social_blocks/sub-999_run-02_design.csv'
+    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
+    trial_data_1_df = pd.read_csv(trial_data_1_filename)
+    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
+    trial_win_lose = trial_data_1[:]
+    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
+ 
 
-
-face_R = workbook['face_image_R'].tolist()
-face_L = workbook['face_image_L'].tolist()
+face_R = trial_data_1_df['face_image_R'].tolist()
+face_L = trial_data_1_df['face_image_L'].tolist()
 
 face_L_sorted = []
 face_R_sorted = []
@@ -108,7 +122,7 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \n We want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n One photo liked you and the other disliked you. \n We want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \n Press Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you won 50 cents.\n \n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \n If you are not fast enough, the comupter will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
@@ -127,6 +141,8 @@ log_file = os.path.join(subjdir, f'sub-{subj_id}_task-social_door_run-{subj_run}
 bids_onset = []
 bids_duration = []
 bids_condition = []
+bids_resp = [] 
+bids_RT = [] 
 
 arrowVert = [(0.05,.2),(-0.05,0.2),(-0.05,0), (-0.1, 0),(0,-.2), (0.1,0),(0.05,0)]
 down_arrow = ShapeStim(win, vertices=arrowVert, fillColor='darkred', size= 10, lineColor='darkred')
@@ -142,23 +158,6 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-
-if subj_run == '1':
-    trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
-elif subj_run == '2':
-    trial_data_1_filename = 'params/social_blocks/sub-999_run-02_design.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
- 
-
 
 #checkpoint
 print("got to check 2")
@@ -233,7 +232,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait((decision_dur - rt)+.0)
+                core.wait(decision_dur - rt)
                 decision_offset = globalClock.getTime()
                 break
             else:
@@ -241,7 +240,9 @@ def do_run(run, trials):
                 rt = 999
                 resp_onset = 999
                 outcome_txt = outcome_map[resp_val]
+                core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
+
 
         trials.addData('resp', resp_val)
         trials.addData('rt',rt)
@@ -250,7 +251,8 @@ def do_run(run, trials):
         arrow_onset = globalClock.getTime()
         bids_duration.append(decision_dur)
         bids_condition.append('face')
-        
+        bids_resp.append(resp_val)
+        bids_resp.append(rt)
         timer.reset()
         
         #if resp_val == 999:
@@ -309,8 +311,6 @@ def do_run(run, trials):
             print('somethings wrong')
             
         arrow_offset = globalClock.getTime()
-        
-        
         trials.addData("arrow_onset", arrow_onset)
         trials.addData("arrow_offset", arrow_offset)
         #ITI
@@ -332,10 +332,13 @@ def do_run(run, trials):
         bids_tsv= pd.DataFrame(
             {'onset':bids_onset, 
             'duration':bids_duration, 
-            'condition':bids_condition})
-        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Doors_Run-{subj_run}.tsv', sep='\t', index = False)
+            'condition':bids_condition,
+            'resp':resp_val,
+            'rt':rt})
+        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
 
-        
+
+
         #bids_tsv= pd.DataFrame(
         #    {'onset':bids_onset, 
         #    'duration':bids_duration, 
