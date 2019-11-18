@@ -122,7 +122,7 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \n We want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n One photo liked you and the other disliked you. \n We want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \n Press Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you won 50 cents.\n \n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \n If you are not fast enough, the comupter will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
@@ -141,6 +141,8 @@ log_file = os.path.join(subjdir, f'sub-{subj_id}_task-social_door_run-{subj_run}
 bids_onset = []
 bids_duration = []
 bids_condition = []
+bids_resp = [] 
+bids_RT = [] 
 
 arrowVert = [(0.05,.2),(-0.05,0.2),(-0.05,0), (-0.1, 0),(0,-.2), (0.1,0),(0.05,0)]
 down_arrow = ShapeStim(win, vertices=arrowVert, fillColor='darkred', size= 10, lineColor='darkred')
@@ -249,7 +251,8 @@ def do_run(run, trials):
         arrow_onset = globalClock.getTime()
         bids_duration.append(decision_dur)
         bids_condition.append('face')
-        
+        bids_resp.append(resp_val)
+        bids_resp.append(rt)
         timer.reset()
         
         #if resp_val == 999:
@@ -308,8 +311,6 @@ def do_run(run, trials):
             print('somethings wrong')
             
         arrow_offset = globalClock.getTime()
-        
-        
         trials.addData("arrow_onset", arrow_onset)
         trials.addData("arrow_offset", arrow_offset)
         #ITI
@@ -331,9 +332,13 @@ def do_run(run, trials):
         bids_tsv= pd.DataFrame(
             {'onset':bids_onset, 
             'duration':bids_duration, 
-            'condition':bids_condition})
+            'condition':bids_condition,
+            'resp':resp_val,
+            'rt':rt})
         bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
-        
+
+
+
         #bids_tsv= pd.DataFrame(
         #    {'onset':bids_onset, 
         #    'duration':bids_duration, 
