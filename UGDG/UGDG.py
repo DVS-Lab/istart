@@ -498,7 +498,7 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 398
+    expected_dur = 396
     buffer_dur = 10
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
