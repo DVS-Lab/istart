@@ -1,4 +1,4 @@
-3###i/start
+###i/start
 ###UGDG
 
 from psychopy import visual, core, event, gui, data, sound, logging
@@ -64,7 +64,12 @@ ready_screen = visual.TextStim(win, text="Please wait for Lets Make a Deal to be
 #decision screen
 pictureStim =  visual.ImageStim(win, pos=(0,3.5),size=(6.65,6.65))
 cueStim = visual.ImageStim(win,pos=(0,3.5),size = (6.65,6.65))
-sampleStim = visual.ImageStim(win,pos=(0,-6),size = (6.65,6.65))
+sampleStim1 = visual.ImageStim(win,pos=(-12,-2),size = (6.65,6.65))
+sampleStim2 = visual.ImageStim(win,pos=(0,-2),size = (6.65,6.65))
+sampleStim3 = visual.ImageStim(win,pos=(12,-2),size = (6.65,6.65))
+sampleStimText1 = visual.TextStim(win,text = "Accept/reject a proposal\nfrom your partner",pos=(-12,-8), wrapWidth=20, height = 0.8)
+sampleStimText2 = visual.TextStim(win,text = "You propose a split of money.\nYour partner can accept/reject",pos = (0,-8),wrapWidth = 20, height = 0.8)
+sampleStimText3 = visual.TextStim(win,text = "You propose a split of money.\nYour partner cannot respond.",pos = (12,-8),wrapWidth = 20, height = 0.8)
 resp_text_reject = visual.TextStim(win,text="Reject Offer", pos =(-7,-4.8), height=1, alignHoriz="center")
 resp_text_accept = visual.TextStim(win,text="Accept Offer", pos =(7,-4.8), height=1, alignHoriz="center")
 offer_text = visual.TextStim(win,pos = (0,-1.5), height=1,alignHoriz="center", text='')
@@ -77,13 +82,13 @@ endowment_text = visual.TextStim(win, pos =(0,-1.5), height=1, alignHoriz="cente
 outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
 
 #instructions
-instruct_screen = visual.TextStim(win, text='Welcome to Lets Make a Deal!\n\nIn this task you will interacting with different anonymous human partners who have participated in these studies in the past.\n\nYou will sometimes also be interacting with the computer. You will be interacting with them in a few different ways.\n\nOn most trials, you will be in the role of proposer.  You will be given a sum of money (range: $15-25) which you can propose to divide in any way between the two of you.',  pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen2 = visual.TextStim(win, text = 'Sometimes, your partner would be able to decide to accept your offer as is or reject it so you both would receive $0.\n\nOther times, whatever split you propose would stand as is; your partner would not have the chance to accept or reject.\n\nThese different trial types will be designated by different cues preceding the trial.', pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text = 'If your partner will be able to respond to the split of money you propose to give, you will see the image below for half a second before the trial begins.',pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen4 = visual.TextStim(win, text = 'If your partner will not be able to respond to the split of money you propose to give, you will see the image below for half a second before the trial begins.',pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen5 = visual.TextStim(win, text = 'On some trials, you will be in the role of the responder.\n\nOn these trials, you will be presented with an offer from one of your partners.\n\nYou will have the opportunity to either accept or reject that offer.', pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen6 = visual.TextStim(win, text = 'If you have the opportunity to accept or reject an offer from your partner, you will see the image below, again for half a second before the trial begins.',pos = (0,1),wrapWidth=20,height=1.2)
-instruct_screen7 = visual.TextStim(win, text = 'On all trials, if you would like to select the option on the left side of the screen, press Button 2, and if you would like to select the option on the right side of the screen, press Button 3.')
+instruct_screen = visual.TextStim(win, text='Welcome to Lets Make a Deal!\n\nIn this task you will be making decisions involving sending money to another person.\n', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text = 'On most trials, you will be given between $15-25.\n\nOn some trials, you will decide how much to share with your partner. You will keep the remainder.', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text = 'On other trials, your partner will have the opportunity to reject your offer. If your partner rejects your offer, you will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen4 = visual.TextStim(win, text = 'Sometimes you will receive offers from another person, which you can either accept or reject.\n\nIf you reject the offer, both you and your partner will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen5 = visual.TextStim(win, text = 'On all trials, if you would like to select the option on the left side of the screen, press Button 2.\n\nIf you would like to select the option on the right side of the screen, press Button 3.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen6 = visual.TextStim(win, text = "You will know which type of trial it will be by the presentation of a unique cue designating your role and your partner's role.", pos = (0,5), wrapWidth=20, height = 1.2)
+instruct_screen7 = visual.TextStim(win, text = 'The choices you will see are from people who have participated in past studies. Your choices will be used in future studies with real people.\n\nOne trial will be randomly selected at the end of the study and you will be paid based on its result.',pos = (0,1),wrapWidth=20,height=1.2)
 instruct_screen8 = visual.TextStim(win, text = 'Do you have any questions?',pos = (0,1),wrapWidth=20,height=1.2)
 
 
@@ -140,16 +145,10 @@ win.flip()
 event.waitKeys(keyList=('space'))
 
 instruct_screen3.draw()
-sampleImage1 = os.path.join(expdir,'Images','UGProposer.png')
-sampleStim.setImage(sampleImage1)
-sampleStim.draw()
 win.flip()
 event.waitKeys(keyList=('space'))
 
 instruct_screen4.draw()
-sampleImage1 = os.path.join(expdir,'Images','DGProposer.png')
-sampleStim.setImage(sampleImage1)
-sampleStim.draw()
 win.flip()
 event.waitKeys(keyList=('space'))
 
@@ -158,9 +157,21 @@ win.flip()
 event.waitKeys(keyList=('space'))
 
 instruct_screen6.draw()
-sampleImage1 = os.path.join(expdir,'Images','UGResponder.png')
-sampleStim.setImage(sampleImage1)
-sampleStim.draw()
+sampleImage1 = os.path.join(expdir,'Images','UGResponder_circle.png')
+sampleImage2 = os.path.join(expdir,'Images','UGProposer_sq.png')
+sampleImage3 = os.path.join(expdir,'Images','DGProposer_triangle.png')
+sampleStim1.setImage(sampleImage1)
+sampleStim2.setImage(sampleImage2)
+sampleStim3.setImage(sampleImage3)
+sampleStim1.draw()
+sampleStim2.draw()
+sampleStim3.draw()
+#sampleStimText1.setText(sampleStimText1)
+#sampleStimText2.setText(sampleStimText2)
+#sampleStimText3.setText(sampleStimText3)
+sampleStimText1.draw()
+sampleStimText2.draw()
+sampleStimText3.draw()
 win.flip()
 event.waitKeys(keyList=('space'))
 
@@ -189,39 +200,53 @@ def do_run(run, trials):
     core.wait(initial_fixation_dur)
 
     for trial in trials:
-        condition_label = stim_map[trial['Partner']]
+        #condition_label = stim_map[trial['Partner']]
         imagepath = os.path.join(expdir,'Images')
-        image = os.path.join(imagepath, "%s.png") % condition_label
+        image = os.path.join(imagepath, "human.png") # % condition_label
         pictureStim.setImage(image)
 
         #decision phase
         timer.reset()
         event.clearEvents()
 
-        decision_onset = globalClock.getTime()
-        trials.addData('decision_onset', decision_onset)
 
         # 1 = UG Proposer, 2 = DG Proposer, 3 = UG responder
         if trial['Block'] == '3':         #UG Responder
-            while timer.getTime() < 0.5:
-                cue = os.path.join(imagepath,"UGResponder.png")
+            while timer.getTime() < 1:
+                cue = os.path.join(imagepath,"UGResponder_circle.png")
                 cueStim.setImage(cue)
                 cueStim.draw()
                 win.flip()
 
-            while timer.getTime() > 0.5 and timer.getTime() < 1:
+            while timer.getTime() > 1 and timer.getTime() < 2:
                 partner_offer = trial['L_Option']
                 endowment = trial['Endowment']
                 partnerOffer = 'Proposal: $%s out of $%s' % (partner_offer, endowment)
-                print('partnerOffer')
                 offer_text.setText(partnerOffer)
                 offer_text.draw()
                 pictureStim.draw()
                 win.flip()
-                print('offer_text')
 
             resp_val=None
             resp_onset=None
+
+            timer.reset()
+
+            #ISI
+            ISI_onset = globalClock.getTime()
+            trials.addData('ISI_onset', ISI_onset)
+            isi_for_trial = float(trial['ISI'])
+            fixation.draw()
+            win.flip()
+            core.wait((isi_for_trial))
+            ISI_offset = globalClock.getTime()
+            trials.addData('ISI_offset', ISI_offset)
+
+            timer.reset()
+
+            #Decision
+            decision_onset = globalClock.getTime()
+            trials.addData('decision_onset', decision_onset)
 
             while timer.getTime() < (decision_dur):
                 resp_text_accept.draw()
@@ -254,7 +279,7 @@ def do_run(run, trials):
                     offer_text.setText(partnerOffer)
                     offer_text.draw()
                     win.flip()
-                    core.wait((decision_dur - rt)+.5)
+                    core.wait(.5)
                     decision_offset = globalClock.getTime()
                     break
                 else:
@@ -264,14 +289,16 @@ def do_run(run, trials):
                     outcome_txt = outcome_map[resp_val]
                     decision_offset = globalClock.getTime()
 
+
+
         elif trial['Block'] == '1': #UGProposer
-            while timer.getTime() < 0.5:
-                cue = os.path.join(imagepath,"UGProposer.png")
+            while timer.getTime() < 1:
+                cue = os.path.join(imagepath,"UGProposer_sq.png")
                 cueStim.setImage(cue)
                 cueStim.draw()
                 win.flip()
 
-            while timer.getTime() > 0.5 and timer.getTime() < 1:
+            while timer.getTime() > 1 and timer.getTime() < 2:
                 endowment = trial['Endowment']
                 endowmentOffer = 'You have $%s' % endowment
                 endowment_text.setText(endowmentOffer)
@@ -281,6 +308,20 @@ def do_run(run, trials):
 
             resp_val=None
             resp_onset=None
+
+            timer.reset()
+
+            #ISI
+            ISI_onset = globalClock.getTime()
+            trials.addData('ISI_onset', ISI_onset)
+            isi_for_trial = float(trial['ISI'])
+            fixation.draw()
+            win.flip()
+            core.wait((isi_for_trial))
+            ISI_offset = globalClock.getTime()
+            trials.addData('ISI_offset', ISI_offset)
+
+            timer.reset()
 
             while timer.getTime() < (decision_dur):
                 resp_left = trial['L_Option']
@@ -318,7 +359,7 @@ def do_run(run, trials):
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
-                    core.wait((decision_dur - rt)+.5)
+                    core.wait(.5)
                     decision_offset = globalClock.getTime()
                     break
                 else:
@@ -330,13 +371,13 @@ def do_run(run, trials):
 
         else:
             trial['Block'] == '2'
-            while timer.getTime() < 0.5:
-                cue = os.path.join(imagepath,"DGProposer.png")
+            while timer.getTime() < 1:
+                cue = os.path.join(imagepath,"DGProposer_triangle.png")
                 cueStim.setImage(cue)
                 cueStim.draw()
                 win.flip()
 
-            while timer.getTime() > 0.5 and timer.getTime() < 1:
+            while timer.getTime() > 1 and timer.getTime() < 2:
                 endowment = trial['Endowment']
                 endowmentOffer = 'You have $%s' % endowment
                 endowment_text.setText(endowmentOffer)
@@ -346,6 +387,20 @@ def do_run(run, trials):
 
             resp_val=None
             resp_onset=None
+
+            timer.reset()
+
+            #ISI
+            ISI_onset = globalClock.getTime()
+            trials.addData('ISI_onset', ISI_onset)
+            isi_for_trial = float(trial['ISI'])
+            fixation.draw()
+            win.flip()
+            core.wait((isi_for_trial))
+            ISI_offset = globalClock.getTime()
+            trials.addData('ISI_offset', ISI_offset)
+
+            timer.reset()
 
             while timer.getTime() < (decision_dur):
                 resp_left = trial['L_Option']
@@ -383,7 +438,7 @@ def do_run(run, trials):
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
-                    core.wait((decision_dur - rt)+.5)
+                    core.wait(.5)
                     decision_offset = globalClock.getTime()
                     break
                 else:
@@ -443,7 +498,7 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 398
+    expected_dur = 396
     buffer_dur = 10
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
