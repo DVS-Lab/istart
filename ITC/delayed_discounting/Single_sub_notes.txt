@@ -1,0 +1,111 @@
+
+Directions for Delayed Discount extraction from E-Prime Files
+To Run setup_discanalysis_singlesub.m
+	open .m file 
+	in command window: type setupdiscanalysis_singlesub('.txt')
+	where '.txt' is e-prime output 
+
+
+Copy output into 5 column Excel File 
+[sub-no	|||discount rate k ||| % of choices for delayed reward ||| noise param	||| log likihood of model fit]
+
+----------------------------------------------------------------------------------------------------------------
+
+Detailed Description of setupdiscanalysis_singlesub process with Karolina Lempert's Notes (3.5.18)
+
+Overall - takes as input the name of an edat text file, with the raw data from a participant (this text file is output along with the edat datafile), and 
+returns hyperbolic discount rate parameters for one subject.
+
+Step 1 -eprimetxt2vars---------------------------------------------------------------
+runs a function  called "eprimetxt2vars" to convert the raw data file into a Matlab table
+takes two arguments (ifile,xlsxFile) with xlsx being optional (in our case we only need the first)
+ifile is output txt file from E-Prime
+
+creates table with T=[]; extracts header variables from .txt. 
+allocates variable names to matlab table
+
+
+
+Step 2- Reformatting------------------------------------------------------------------
+converts table to cell array 
+sets amount of choices - 51 
+
+makes a new matrix with the following columns
+creating a matrix "subject", first column is the subject number
+fourth column is the amount of the immediate reward
+fifth column is the amount of the delayed reward
+seventh column is the LeftRight variable, indicating whether Amount14 or Amount6 was seen on that trial.
+--If LeftRight == 0, then Amount14 was shown
+
+converts all 'f' into 1 and 'j' into 0. changes day amounts into numeric and puts in column 6. 
+
+Step 3 Defines Delayed Choice-----------------------------------------------------------
+
+First part is column 7 == 1 and column 3 ==1, so if If LeftRight == 1, then Amount6 was shown, (i,3) which 
+side they chose, assigns a 1 or 0 for delayed or not. 
+
+%
+for i = 1:length(subject)
+   if subject(i,7) == 1 && subject(i,3) == 1
+       subject(i,8) = 0;
+   elseif subject(i,7) == 1 && subject(i,3) == 0
+       subject(i,8) = 1;
+   end
+
+   if subject(i,7) == 0 && subject(i,2) == 1
+       subject(i,8) = 1;
+   elseif subject(i,7) == 0 && subject(i,2) == 0
+       subject(i,8) = 0;
+   end
+end
+%
+
+
+
+Step 4-----------------------------------------------------------------------------------
+
+names the following variables for the ITCHyperbolic script
+
+choseDelayed = subject(1:end,8);
+ImmedAmt = subject(1:end,4);
+DelAmt = subject(1:end,5);
+Delay = subject(1:end,6);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
