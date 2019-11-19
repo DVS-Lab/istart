@@ -197,9 +197,9 @@ ISI_Matrix = [];
 
 % We are hard coding, assuming 48 trials.
 
-A = combnk(0.06:0.13:0.48,2); % Combinations we will use for proposers
-B = fliplr(A); % To counterbalance.
-Proposer_Options = [A; B;A;B;A;B;A;B;A;B;A;B;]; % Now the options are counterbalanced 
+A = combnk(0.06:0.13:0.48,2);
+B = flip(Proposer_Options, 1);
+Proposer_Options = [A; B,A; B,A; B,A; B,A; B,A; B,A; B,A; B,A; B,A; B,A; B,A; B,]
 
 % We now have a pool of 50 combinations to choose from.
 
