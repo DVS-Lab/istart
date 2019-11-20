@@ -65,8 +65,8 @@ expdir = os.getcwd()
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'practice_blocks', 'sub-999_run-01_design_social.csv'))
-    face_folder = os.path.join(imagepath, 'practice_images_social') 
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'practice_blocks', 'sub-999_run-01_design_door.csv'))
+    face_folder = os.path.join(imagepath, 'practice_images_door') 
 
 
 face_R = workbook['face_image_R'].tolist()
@@ -103,9 +103,9 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which picture you think has a reward. \n \nPress the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \nPress Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you won 50 cents.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \nIf you are not fast enough, the comupter will make a decision for you at random, so make sure you are responding quickly. \n \nOnce you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
 #exit
 exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,0), wrapWidth=30, height = 1.2)
@@ -136,7 +136,7 @@ timer = core.Clock()
 #trial handler
 
 if subj_run == '1':
-    trial_data_1_filename = 'params/practice_blocks/sub-999_run-01_design_social.csv'
+    trial_data_1_filename = 'params/practice_blocks/sub-999_run-01_design_door.csv'
     trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
     trial_data_1_df = pd.read_csv(trial_data_1_filename)
     trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
