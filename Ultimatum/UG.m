@@ -317,7 +317,7 @@ for jj=1:subjects
     % Convert the file into an array. Put a header for each column.
 
     participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = 'Subject_' + jj + '.csv';
+    name = ['Subject_' num2str(jj) '.csv'];
 
     % Save array as a CSV file
 
