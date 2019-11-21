@@ -109,11 +109,12 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
-trial_data_2  = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
+#trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
+trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_all.csv','rU'))]
+#trial_data_2  = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
 
 trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
-trials_run2 = data.TrialHandler(trial_data_2[:], 1, method="sequential") #change to [] for full run
+#trials_run2 = data.TrialHandler(trial_data_2[:], 1, method="sequential") #change to [] for full run
 
 
 subj_gen = int(subj_gen)
@@ -323,6 +324,9 @@ def do_run(run, trials):
 
             timer.reset()
 
+            decision_onset = globalClock.getTime()
+            trials.addData('decision_onset', decision_onset)
+
             while timer.getTime() < (decision_dur):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
@@ -401,6 +405,10 @@ def do_run(run, trials):
             trials.addData('ISI_offset', ISI_offset)
 
             timer.reset()
+
+            decision_onset = globalClock.getTime()
+            trials.addData('decision_onset', decision_onset)
+
 
             while timer.getTime() < (decision_dur):
                 resp_left = trial['L_Option']
@@ -498,7 +506,7 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 396
+    expected_dur = 792
     buffer_dur = 10
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
@@ -508,7 +516,8 @@ def do_run(run, trials):
     core.wait(endTime)
     print("globalClock.getTime()")
 
-for run, trials in enumerate([trials_run1, trials_run2]):
+#for run, trials in enumerate([trials_run1, trials_run2]):
+for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
 
 # Exit
