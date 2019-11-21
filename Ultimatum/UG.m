@@ -293,7 +293,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_proposer(ii,:);
+                 options = round(row(3) * shuffled_proposer(ii,:));
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate
             end
@@ -303,7 +303,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_recipient(ii,:);
+                 options = round(row(3) * shuffled_recipient(ii,:));
                  options = [row,options, 0]; % The right option will be zero. If you refuse, you get nothing.
                  recipient = [recipient; options]; % Concatenate
             end
