@@ -21,10 +21,10 @@ useDualScreen=1
 DEBUG = False
 
 frame_rate=1
-initial_fixation_dur = 4
+initial_fixation_dur = 2
 final_fixation_dur = 2
 decision_dur=3
-arrow_dur = 3
+arrow_dur = 1
 
 responseKeys=('2','3','z')
 
