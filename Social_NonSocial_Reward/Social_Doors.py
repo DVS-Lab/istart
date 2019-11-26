@@ -1,8 +1,8 @@
 #social doors task coded for Johanna Jarcho and David Smith
 
-#by Caleb Haynes 8/20/19
+#by Caleb Haynes 10/21/19
 
-#based on Dominic Fareri's 'Shared Reward' task, and Johanna Jarcho's E-Prime (2.0) version 
+#based on Dominic Fareri's 'Shared Reward' task and Johanna Jarcho's E-Prime (2.0) version 
 
 from psychopy import visual, core, event, gui, data, sound, logging
 import csv
@@ -13,6 +13,7 @@ import numpy
 import os
 import xlrd
 from psychopy.visual import ShapeStim
+
 #parameters
 
 useFullScreen = True
@@ -20,15 +21,15 @@ useDualScreen=1
 DEBUG = False
 
 frame_rate=1
-initial_fixation_dur = 2
-final_fixation_dur = 0.6
+initial_fixation_dur = 0.600
+final_fixation_dur = 0.600
 decision_dur=3
 arrow_dur = 1
-
+pre_feedback_fix_duration = 0.600
 responseKeys=('2','3','z')
 
 #get subjID
-subjDlg=gui.Dlg(title="Picture Task- People")
+subjDlg=gui.Dlg(title="Picture Task")
 subjDlg.addField('Enter Subject ID: ')
 subjDlg.addField('Run Number:', choices=['1', '2'])
 subjDlg.show()
@@ -55,20 +56,97 @@ print("got to check 1")
 
 #define fixation
 fixation = visual.TextStim(win, text="+", height=2)
-
+fixation2 = visual.TextStim(win, text="++++", height=2)
 #waiting for trigger
-ready_screen = visual.TextStim(win, text="Please wait for the game! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
+ready_screen = visual.TextStim(win, text="Please wait for the game to begin! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
 
 expdir = os.getcwd()
 #decision screen
 imagepath = os.path.join(expdir)
 
+
+
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-01_design.csv'))
-    face_folder = os.path.join(imagepath, 'social_images', 'VersionA') 
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-01_design.csv'))
+    face_folder = os.path.join(imagepath, '18+', 'VersionA') 
 elif subj_run == '2':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-02_design.csv'))
-    face_folder = os.path.join(imagepath, 'social_images', 'VersionB') 
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'social_blocks', 'sub-999_run-02_design.csv'))
+    face_folder = os.path.join(imagepath, '18+', 'VersionB')
+
+#image to list
+
+
+face_R = workbook['face_image_R'].tolist()
+face_L = workbook['face_image_L'].tolist()
+
+face_R = face_R[:60]
+face_L = face_L[:60]
+face_L_sorted = []
+face_R_sorted = []
+
+
+for face in face_L:
+    image = os.path.join(face_folder, face)
+    face_L_sorted.append(image)
+
+for face in face_R:
+    image = os.path.join(face_folder, face)
+    face_R_sorted.append(image)
+
+
+resp_image_left = visual.ImageStim(win,image= face_L_sorted[0], pos =(-7,0),size=(11.2,17.14))
+resp_image_right = visual.ImageStim(win,image= face_R_sorted[0], pos =(7,0),size=(11.2,17.14))
+
+border = visual.ShapeStim(win, vertices=resp_image_left.verticesPix, units='pix', lineColor='white')
+border2 = visual.ShapeStim(win, vertices=resp_image_right.verticesPix, units='pix', lineColor='white')
+
+#arrow screen 
+arrow_Stim =  visual.ImageStim(win, pos=(0,5),size=(20,20))
+
+
+#outcome screen (timeout)
+outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
+outcome_map = {999: 'You have 3 seconds to respond.'}
+
+
+#instructions
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \nPress the index finger (or 2 on your keyboard) button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \nPress Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
+
+#exit
+exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,0), wrapWidth=30, height = 1.2)
+
+#logging
+expdir = os.getcwd()
+subjdir = '%s/logs/%s' % (expdir, subj_id)
+if not os.path.exists(subjdir):
+    os.makedirs(subjdir)
+log_file = os.path.join(subjdir, f'sub-{subj_id}_task-social_door_run-{subj_run}.csv')
+
+#BIDS tsv logs doors , anticipations (fixation in between door and feedback), and condition type 
+bids_onset = []
+bids_duration = []
+bids_condition = []
+bids_resp = [] 
+bids_RT = [] 
+
+#arrows
+
+arrowVert = [(0.05,.2),(-0.05,0.2),(-0.05,0), (-0.1, 0),(0,-.2), (0.1,0),(0.05,0)]
+down_arrow = ShapeStim(win, vertices=arrowVert, fillColor='darkred', size= 10, lineColor='darkred')
+
+arrowVert2 = [(0.05,-.2),(-0.05,-0.2),(-0.05,0), (-0.1, 0),(0,.2), (0.1,0),(0.05,0)]
+up_arrow = ShapeStim(win, vertices=arrowVert2, fillColor='green', size= 10, lineColor='green')
+
+
+#clock
+globalClock = core.Clock()
+logging.setDefaultClock(globalClock)
+
+timer = core.Clock()
+
+#run handler
 
 if subj_run == '1':
     trial_data_1_filename = 'params/social_blocks/sub-999_run-01_design.csv'
@@ -85,79 +163,6 @@ elif subj_run == '2':
     trial_win_lose = trial_data_1[:]
     trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
  
-
-face_R = trial_data_1_df['face_image_R'].tolist()
-face_L = trial_data_1_df['face_image_L'].tolist()
-
-face_L_sorted = []
-face_R_sorted = []
-
-
-
-for face in face_L:
-    image = os.path.join(face_folder, face)
-    face_L_sorted.append(image)
-
-for face in face_R:
-    image = os.path.join(face_folder, face)
-    face_R_sorted.append(image)
-
-
-
-resp_image_left = visual.ImageStim(win,image= face_L_sorted[0], pos =(-7,0),size=(11.2,17.14))
-resp_image_right = visual.ImageStim(win,image= face_R_sorted[0], pos =(7,0),size=(11.2,17.14))
-
-border = visual.ShapeStim(win, vertices=resp_image_left.verticesPix, units='pix', lineColor='white')
-border2 = visual.ShapeStim(win, vertices=resp_image_right.verticesPix, units='pix', lineColor='white')
-
-
-
-#arrow screen 
-arrow_Stim =  visual.ImageStim(win, pos=(0,5),size=(20,20))
-
-
-#outcome screen (timeout)
-outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
-outcome_map = {999: 'You have 3 seconds to respond.'}
-
-
-#instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \nPress Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
-
-#exit
-exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,0), wrapWidth=30, height = 1.2)
-
-
-#logging
-expdir = os.getcwd()
-subjdir = '%s/logs/%s' % (expdir, subj_id)
-if not os.path.exists(subjdir):
-    os.makedirs(subjdir)
-log_file = os.path.join(subjdir, f'sub-{subj_id}_task-social_door_run-{subj_run}.csv')
-
-#BIDS tsv logs doors , anticipations (fixation in between door and feedback), and condition type 
-bids_onset = []
-bids_duration = []
-bids_condition = []
-bids_resp = [] 
-bids_RT = [] 
-
-arrowVert = [(0.05,.2),(-0.05,0.2),(-0.05,0), (-0.1, 0),(0,-.2), (0.1,0),(0.05,0)]
-down_arrow = ShapeStim(win, vertices=arrowVert, fillColor='darkred', size= 10, lineColor='darkred')
-
-arrowVert2 = [(0.05,-.2),(-0.05,-0.2),(-0.05,0), (-0.1, 0),(0,.2), (0.1,0),(0.05,0)]
-up_arrow = ShapeStim(win, vertices=arrowVert2, fillColor='green', size= 10, lineColor='green')
-
-
-
-globalClock = core.Clock()
-logging.setDefaultClock(globalClock)
-
-timer = core.Clock()
-
-#trial handler
 
 #checkpoint
 print("got to check 2")
@@ -186,27 +191,28 @@ def do_run(run, trials):
     globalClock.reset()
     studyStart = globalClock.getTime()
 
-    #Initial Fixation screen
-    fixation.draw()
-    win.flip()
-    core.wait(0.6)
-
-
     for trial in trials:
-        resp_image_left = visual.ImageStim(win, os.path.join(face_folder, trial['face_image_L']), pos =(-7,0),size=(11.2,17.14))
-        resp_image_right = visual.ImageStim(win,os.path.join(face_folder, trial['face_image_R']), pos =(7,0),size=(11.2,17.14))
-        
+      
+        timer = core.Clock()
+        timer.add(0.6)
+        while timer.getTime()<0:
+            fixation2.draw()
+            win.flip()
+
+
         #decision phase
         timer.reset()
         event.clearEvents()
-
+        
         decision_onset = globalClock.getTime()
         trials.addData('decision_onset', decision_onset)
         bids_onset.append(decision_onset)
 
         resp_val=None
         resp_onset=None
-
+        resp_image_left = visual.ImageStim(win, os.path.join(face_folder, trial['face_image_L']), pos =(-7,0),size=(11.2,17.14))
+        resp_image_right = visual.ImageStim(win,os.path.join(face_folder, trial['face_image_R']), pos =(7,0),size=(11.2,17.14))
+        
         while timer.getTime() < (decision_dur):
             resp_image_left.draw()
             resp_image_right.draw()
@@ -243,7 +249,6 @@ def do_run(run, trials):
                 core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
 
-
         trials.addData('resp', resp_val)
         trials.addData('rt',rt)
         trials.addData('resp_onset',resp_onset)
@@ -254,21 +259,17 @@ def do_run(run, trials):
         bids_resp.append(resp_val)
         bids_resp.append(rt)
         timer.reset()
-        
         #if resp_val == 999:
         #    outcome_stim.setText(outcome_txt)
-        #    missFB_onset = globalClock.getTime()
         #    outcome_stim.draw()
         #    win.flip()
         #    missFB_onset = globalClock.getTime()
         #    core.wait(3)
         #    missFB_offset = globalClock.getTime()
-        #    trials.addData("missFB_onset", missFB_onset)
-        #    trials.addData("missFB_offset", missFB_offset)
-        
+
+
         border.autoDraw=False
         border2.autoDraw=False
-
 
         trial_offset = globalClock.getTime()
         duration = trial_offset - decision_onset
@@ -279,9 +280,9 @@ def do_run(run, trials):
         pre_feedback_fix_onset = globalClock.getTime()
         fixation.draw()
         win.flip()
-        core.wait(final_fixation_dur)
+        core.wait(pre_feedback_fix_duration)
         trials.addData('pre_feedback_fix_onset', pre_feedback_fix_onset)
-        trials.addData('pre_feedback_fix_duration', final_fixation_dur)
+        trials.addData('pre_feedback_fix_duration', pre_feedback_fix_duration)
         
         #BIDS
         bids_onset.append(pre_feedback_fix_onset)
@@ -304,15 +305,17 @@ def do_run(run, trials):
             win.flip() 
             core.wait(arrow_dur)
             bids_duration.append(arrow_dur)
-            bids_condition.append('win')
             feedback_offset = globalClock.getTime()
+            feedback_offset = globalClock.getTime()
+            bids_condition.append('win')
             win.flip()
         else:
             print('somethings wrong')
-            
+        
         arrow_offset = globalClock.getTime()
         trials.addData("arrow_onset", arrow_onset)
         trials.addData("arrow_offset", arrow_offset)
+
         #ITI
         logging.log(level=logging.DATA, msg='ITI') #send fixation log event
         timer.reset()
@@ -322,10 +325,8 @@ def do_run(run, trials):
         win.flip()
         core.wait(iti_for_trial)
         ITI_offset = globalClock.getTime()
-
         trials.addData('ITIonset', ITI_onset)
         trials.addData('ITIoffset', ITI_offset)
-        
         date = datetime.datetime.now()
         trials.addData('Date_Time', date)
         
@@ -335,16 +336,9 @@ def do_run(run, trials):
             'condition':bids_condition,
             'resp':resp_val,
             'rt':rt})
-        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Run-{subj_run}.tsv', sep='\t', index = False)
+        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Door_Run-{subj_run}.tsv', sep='\t', index = False)
 
 
-
-        #bids_tsv= pd.DataFrame(
-        #    {'onset':bids_onset, 
-        #    'duration':bids_duration, 
-        #    'condition':bids_condition})
-        #print(bids_tsv)
-        #bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Doors_Run-{subj_run}.tsv', sep='\t', index = False)
 
     # Final Fixation screen after trials completed
     fixation.draw()
@@ -364,9 +358,10 @@ def do_run(run, trials):
     core.wait(endTime)
     print(globalClock.getTime())
 
-
 for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
+
+
 
 # Exit
 exit_screen.draw()
