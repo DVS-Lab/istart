@@ -1,4 +1,4 @@
-#Social Doors & Doors Practice
+#social doors practice task coded for Johanna Jarcho and David Smith
 
 #by Caleb Haynes 8/20/19
 
@@ -12,7 +12,6 @@ import pandas as pd
 import numpy
 import os
 import xlrd
-import sys
 from psychopy.visual import ShapeStim
 #parameters
 
@@ -21,22 +20,22 @@ useDualScreen=1
 DEBUG = False
 
 frame_rate=1
-initial_fixation_dur = 4
-final_fixation_dur = 2
+initial_fixation_dur = 2
+final_fixation_dur = 0.6
 decision_dur=3
-arrow_dur = 3
+arrow_dur = 1
 
 responseKeys=('2','3','z')
 
 #get subjID
-subjDlg=gui.Dlg(title="Social Doors Task")
+subjDlg=gui.Dlg(title="Picture Task- Practice")
 subjDlg.addField('Enter Subject ID: ')
-subjDlg.addField('Run Number:', choices=['1'])
 subjDlg.show()
+
+subj_run = '1'
 
 if gui.OK:
     subj_id=subjDlg.data[0]    
-    subj_run = subjDlg.data[1]
     print(subj_id, subj_run)
 
 else:
@@ -58,19 +57,30 @@ print("got to check 1")
 fixation = visual.TextStim(win, text="+", height=2)
 
 #waiting for trigger
-ready_screen = visual.TextStim(win, text="Please wait for the game to begin! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
+ready_screen = visual.TextStim(win, text="Please wait for the game! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
 
 expdir = os.getcwd()
 #decision screen
 imagepath = os.path.join(expdir)
 
 if subj_run == '1':
-    workbook = pd.read_csv(os.path.join(expdir, 'params', 'practice_blocks', 'sub-999_run-01_design_social.csv'))
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-01_design.csv'))
+    face_folder = os.path.join(imagepath, 'practice_images_social') 
+elif subj_run == '2':
+    workbook = pd.read_csv(os.path.join(expdir, 'params', 'timing', 'sub-999_run-02_design.csv'))
     face_folder = os.path.join(imagepath, 'practice_images_social') 
 
+if subj_run == '1':
+    trial_data_1_filename = 'params/practice_blocks/sub-999_run-01_design_social.csv'
+    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
+    trial_data_1_df = pd.read_csv(trial_data_1_filename)
+    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
+    trial_win_lose = trial_data_1[:]
+    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
 
-face_R = workbook['face_image_R'].tolist()
-face_L = workbook['face_image_L'].tolist()
+
+face_R = trial_data_1_df['face_image_R'].tolist()
+face_L = trial_data_1_df['face_image_L'].tolist()
 
 face_L_sorted = []
 face_R_sorted = []
@@ -86,11 +96,13 @@ for face in face_R:
     face_R_sorted.append(image)
 
 
+
 resp_image_left = visual.ImageStim(win,image= face_L_sorted[0], pos =(-7,0),size=(11.2,17.14))
 resp_image_right = visual.ImageStim(win,image= face_R_sorted[0], pos =(7,0),size=(11.2,17.14))
 
 border = visual.ShapeStim(win, vertices=resp_image_left.verticesPix, units='pix', lineColor='white')
 border2 = visual.ShapeStim(win, vertices=resp_image_right.verticesPix, units='pix', lineColor='white')
+
 
 
 #arrow screen 
@@ -103,9 +115,9 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \n *This is only a practice, so the feedback that you receive was provided for another participant. The next time you play this, you will receive feedback based on your photo.*\n \nPress the index finger (or 2 on your keyboard) button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \nPress Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
 #exit
 exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,0), wrapWidth=30, height = 1.2)
@@ -118,7 +130,12 @@ if not os.path.exists(subjdir):
     os.makedirs(subjdir)
 log_file = os.path.join(subjdir, f'sub-{subj_id}_task-social_door_run-{subj_run}.csv')
 
-
+#BIDS tsv logs doors , anticipations (fixation in between door and feedback), and condition type 
+bids_onset = []
+bids_duration = []
+bids_condition = []
+bids_resp = [] 
+bids_RT = [] 
 
 arrowVert = [(0.05,.2),(-0.05,0.2),(-0.05,0), (-0.1, 0),(0,-.2), (0.1,0),(0.05,0)]
 down_arrow = ShapeStim(win, vertices=arrowVert, fillColor='darkred', size= 10, lineColor='darkred')
@@ -134,22 +151,6 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-
-if subj_run == '1':
-    trial_data_1_filename = 'params/practice_blocks/sub-999_run-01_design_social.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
-elif subj_run == '2':
-    trial_data_1_filename = 'params/practice_blocks/sub-999_run-01_design.csv'
-    trial_data_1  = [r for r in csv.DictReader(open(trial_data_1_filename,'rU'))]
-    trial_data_1_df = pd.read_csv(trial_data_1_filename)
-    trial_data_1_win_or_lose = list(trial_data_1_df.winlose.values.tolist())
-    trial_win_lose = trial_data_1[:]
-    trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential")
- 
 
 #checkpoint
 print("got to check 2")
@@ -169,10 +170,8 @@ win.flip()
 event.waitKeys(keyList=('space','2'))
 
 def do_run(run, trials):
-
     resp=[]
-    fileName=log_file.format(subj_id,run)
-
+    fileName = log_file.format(subj_id,run)
     #wait for trigger
     ready_screen.draw()
     win.flip()
@@ -187,8 +186,8 @@ def do_run(run, trials):
 
 
     for trial in trials:
-        resp_image_left = visual.ImageStim(win,image= face_L_sorted.pop(), pos =(-7,0),size=(11.2,17.14))
-        resp_image_right = visual.ImageStim(win,image= face_R_sorted.pop(), pos =(7,0),size=(11.2,17.14))
+        resp_image_left = visual.ImageStim(win, os.path.join(face_folder, trial['face_image_L']), pos =(-7,0),size=(11.2,17.14))
+        resp_image_right = visual.ImageStim(win,os.path.join(face_folder, trial['face_image_R']), pos =(7,0),size=(11.2,17.14))
         
         #decision phase
         timer.reset()
@@ -196,7 +195,7 @@ def do_run(run, trials):
 
         decision_onset = globalClock.getTime()
         trials.addData('decision_onset', decision_onset)
-
+        bids_onset.append(decision_onset)
 
         resp_val=None
         resp_onset=None
@@ -226,7 +225,7 @@ def do_run(run, trials):
                 resp_image_left.draw()
                 resp_image_right.draw()
                 win.flip()
-                core.wait((decision_dur - rt)+.5)
+                core.wait(decision_dur - rt)
                 decision_offset = globalClock.getTime()
                 break
             else:
@@ -234,23 +233,31 @@ def do_run(run, trials):
                 rt = 999
                 resp_onset = 999
                 outcome_txt = outcome_map[resp_val]
+                core.wait((decision_dur - decision_dur)+.5)
                 decision_offset = globalClock.getTime()
+
 
         trials.addData('resp', resp_val)
         trials.addData('rt',rt)
         trials.addData('resp_onset',resp_onset)
-        trials.addData('decision_offset',decision_offset)
+        trials.addData('resp_offset',decision_offset)
         arrow_onset = globalClock.getTime()
-
+        bids_duration.append(decision_dur)
+        bids_condition.append('face')
+        bids_resp.append(resp_val)
+        bids_resp.append(rt)
         timer.reset()
-        if resp_val == 999:
-            outcome_stim.setText(outcome_txt)
-            outcome_stim.draw()
-            win.flip()
-            missFB_onset = globalClock.getTime()
-            core.wait(.5)
-            missFB_offset = globalClock.getTime()
-
+        
+        #if resp_val == 999:
+        #    outcome_stim.setText(outcome_txt)
+        #    missFB_onset = globalClock.getTime()
+        #    outcome_stim.draw()
+        #    win.flip()
+        #    missFB_onset = globalClock.getTime()
+        #    core.wait(3)
+        #    missFB_offset = globalClock.getTime()
+        #    trials.addData("missFB_onset", missFB_onset)
+        #    trials.addData("missFB_offset", missFB_offset)
         
         border.autoDraw=False
         border2.autoDraw=False
@@ -262,24 +269,40 @@ def do_run(run, trials):
         event.clearEvents()
         print("got to check 3")
         
-        if resp_val != 999:
-            try: 
-                if trial_data_1_win_or_lose.pop() == 'loss':
-                    feedback_onset = globalClock.getTime()
-                    down_arrow.draw()
-                    win.flip() 
-                    core.wait(3.0)
-                    feedback_offset = globalClock.getTime()
-                elif trial_data_1_win_or_lose.pop() == 'win':
-                    feedback_onset = globalClock.getTime()
-                    up_arrow.draw()
-                    win.flip() 
-                    core.wait(3.0)
-                    feedback_offset = globalClock.getTime()
-                win.flip()
-            except IndexError as error:
-                print('end')
-                
+        pre_feedback_fix_onset = globalClock.getTime()
+        fixation.draw()
+        win.flip()
+        core.wait(final_fixation_dur)
+        trials.addData('pre_feedback_fix_onset', pre_feedback_fix_onset)
+        trials.addData('pre_feedback_fix_duration', final_fixation_dur)
+        
+        #BIDS
+        bids_onset.append(pre_feedback_fix_onset)
+        bids_duration.append(final_fixation_dur)
+        bids_condition.append('Fixation_ant')
+        
+        if trial['winlose'] == 'loss':
+            arrow_onset = globalClock.getTime()
+            bids_onset.append(arrow_onset)
+            down_arrow.draw()
+            win.flip() 
+            core.wait(arrow_dur)
+            bids_duration.append(arrow_dur)
+            bids_condition.append('loss')
+            feedback_offset = globalClock.getTime()
+        elif trial['winlose'] == 'win':
+            arrow_onset = globalClock.getTime()
+            bids_onset.append(arrow_onset)
+            up_arrow.draw()
+            win.flip() 
+            core.wait(arrow_dur)
+            bids_duration.append(arrow_dur)
+            bids_condition.append('win')
+            feedback_offset = globalClock.getTime()
+            win.flip()
+        else:
+            print('somethings wrong')
+            
         arrow_offset = globalClock.getTime()
         trials.addData("arrow_onset", arrow_onset)
         trials.addData("arrow_offset", arrow_offset)
@@ -288,7 +311,6 @@ def do_run(run, trials):
         timer.reset()
         ITI_onset = globalClock.getTime()
         iti_for_trial = float(trial['ITI'])
-        print(iti_for_trial)
         fixation.draw()
         win.flip()
         core.wait(iti_for_trial)
@@ -296,8 +318,21 @@ def do_run(run, trials):
 
         trials.addData('ITIonset', ITI_onset)
         trials.addData('ITIoffset', ITI_offset)
+        
+        date = datetime.datetime.now()
+        trials.addData('Date_Time', date)
+        
 
-    sys.exit()
+
+
+
+        #bids_tsv= pd.DataFrame(
+        #    {'onset':bids_onset, 
+        #    'duration':bids_duration, 
+        #    'condition':bids_condition})
+        #print(bids_tsv)
+        #bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Doors_Run-{subj_run}.tsv', sep='\t', index = False)
+
     # Final Fixation screen after trials completed
     fixation.draw()
     win.flip()
@@ -306,7 +341,7 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 398
+    expected_dur = 26
     buffer_dur = 10
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
@@ -315,6 +350,7 @@ def do_run(run, trials):
         endTime = buffer_dur
     core.wait(endTime)
     print(globalClock.getTime())
+
 
 for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
