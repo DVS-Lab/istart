@@ -20,15 +20,15 @@ useDualScreen=1
 DEBUG = False
 
 frame_rate=1
-initial_fixation_dur = 4
-final_fixation_dur = 2
+initial_fixation_dur = 2
+final_fixation_dur = 0.6
 decision_dur=3
-arrow_dur = 3
+arrow_dur = 1
 
 responseKeys=('2','3','z')
 
 #get subjID
-subjDlg=gui.Dlg(title="Social Doors Task")
+subjDlg=gui.Dlg(title="Picture Task- People")
 subjDlg.addField('Enter Subject ID: ')
 subjDlg.addField('Run Number:', choices=['1', '2'])
 subjDlg.show()
@@ -57,7 +57,7 @@ print("got to check 1")
 fixation = visual.TextStim(win, text="+", height=2)
 
 #waiting for trigger
-ready_screen = visual.TextStim(win, text="Please wait for the Social Doors Game! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
+ready_screen = visual.TextStim(win, text="Please wait for the game! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
 
 expdir = os.getcwd()
 #decision screen
@@ -122,9 +122,9 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n One photo liked you and the other disliked you. \n We want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \n Press Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
-instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up meaning that you won 50 cents.\n \n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \n If you are not fast enough, the comupter will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. \n \nWe want you to tell us which person you think liked you based on your photo. \n \n Press the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \nPress Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.\n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
 #exit
 exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,0), wrapWidth=30, height = 1.2)
@@ -189,7 +189,7 @@ def do_run(run, trials):
     #Initial Fixation screen
     fixation.draw()
     win.flip()
-    core.wait(initial_fixation_dur)
+    core.wait(0.6)
 
 
     for trial in trials:
@@ -355,7 +355,7 @@ def do_run(run, trials):
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
     expected_dur = 398
-    buffer_dur = 10
+    buffer_dur = 5
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
         endTime = (total_dur - globalClock.getTime())
