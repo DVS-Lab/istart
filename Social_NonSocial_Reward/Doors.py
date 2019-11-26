@@ -21,8 +21,8 @@ useDualScreen=1
 DEBUG = False
 
 frame_rate=1
-initial_fixation_dur = 0.6
-final_fixation_dur = 0.6
+initial_fixation_dur = 0.600
+final_fixation_dur = 0.600
 decision_dur=3
 arrow_dur = 1
 
@@ -195,10 +195,7 @@ def do_run(run, trials):
         resp_image_left = visual.ImageStim(win, os.path.join(door_folder, trial['door_image_L']), pos =(-7,0),size=(11.2,17.14))
         resp_image_right = visual.ImageStim(win,os.path.join(door_folder, trial['door_image_R']), pos =(7,0),size=(11.2,17.14))
         
-        fixation2 = visual.GratingStim(win, tex=None, mask='gauss', sf=0, size=0.02,
-        name='fixation', autoLog=False)
-
-        fixation2.draw()
+        fixation.draw()
         win.flip()
         core.wait(initial_fixation_dur)
 
@@ -280,9 +277,11 @@ def do_run(run, trials):
         pre_feedback_fix_onset = globalClock.getTime()
         fixation.draw()
         win.flip()
-        core.wait(final_fixation_dur)
+        core.wait(0.6)
+        pre_feedback_fix_duration = globalClock.getTime() - 0.6
         trials.addData('pre_feedback_fix_onset', pre_feedback_fix_onset)
-        trials.addData('pre_feedback_fix_duration', final_fixation_dur)
+        trials.addData('pre_feedback_fix_duration', pre_feedback_fix_duration)
+        
         
         #BIDS
         bids_onset.append(pre_feedback_fix_onset)
