@@ -25,7 +25,7 @@ initial_fixation_dur = 0.600
 final_fixation_dur = 0.600
 decision_dur=3
 arrow_dur = 1
-pre_feedback_fix_duration = 0.600
+
 responseKeys=('2','3','z')
 
 #get subjID
@@ -56,7 +56,7 @@ print("got to check 1")
 
 #define fixation
 fixation = visual.TextStim(win, text="+", height=2)
-fixation2 = visual.TextStim(win, text="++++", height=2)
+fixation2 = visual.TextStim(win, text="+", height=2)
 #waiting for trigger
 ready_screen = visual.TextStim(win, text="Please wait for the game to begin! \n\nRemember to keep your head still!", height=1.5, wrapWidth=30)
 
@@ -280,7 +280,8 @@ def do_run(run, trials):
         pre_feedback_fix_onset = globalClock.getTime()
         fixation.draw()
         win.flip()
-        core.wait(pre_feedback_fix_duration)
+        core.wait(0.6)
+        pre_feedback_fix_duration = globalClock.getTime() - 0.6
         trials.addData('pre_feedback_fix_onset', pre_feedback_fix_onset)
         trials.addData('pre_feedback_fix_duration', pre_feedback_fix_duration)
         
