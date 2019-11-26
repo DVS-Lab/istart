@@ -197,8 +197,9 @@ ISI_Matrix = [];
 
 % We are hard coding, assuming 48 trials.
 
-Proposer_Options = [.35 .45;.25 .45;.25 .35;.15 .45; .15 .35; .15 .25;.05 .45;.05 .35;.05 .25;.05 .15];
-Proposer_Options = [Proposer_Options;Proposer_Options;Proposer_Options;Proposer_Options;Proposer_Options];
+A = combnk(0.06:0.13:0.48,2); % Combinations we will use for proposers
+B = fliplr(A); % To counterbalance.
+Proposer_Options = [A; B;A;B;A;B;A;B;A;B;A;B;]; % Now the options are counterbalanced 
 
 % We now have a pool of 50 combinations to choose from.
 
@@ -292,7 +293,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(4) * shuffled_proposer(ii,:);
+                 options = round(row(3) * shuffled_proposer(ii,:));
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate
             end
@@ -302,7 +303,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_recipient(ii,:);
+                 options = round(row(3) * shuffled_recipient(ii,:));
                  options = [row,options, 0]; % The right option will be zero. If you refuse, you get nothing.
                  recipient = [recipient; options]; % Concatenate
             end
@@ -316,7 +317,7 @@ for jj=1:subjects
     % Convert the file into an array. Put a header for each column.
 
     participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = 'Subject_' + jj + '.csv';
+    name = ['Subject_' num2str(jj) '.csv'];
 
     % Save array as a CSV file
 
