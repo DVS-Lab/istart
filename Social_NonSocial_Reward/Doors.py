@@ -110,7 +110,7 @@ outcome_map = {999: 'You have 3 seconds to respond.'}
 
 
 #instructions
-instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures on the computer screen, only one of them will have a prize behind it. \n \nWe want you to tell us which picture you think contains a prize. \n \nThis is only a practice, so the money you earn or lose right now will not affect how much money you receive today.\n \nPress the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen = visual.TextStim(win, text='In this task, you will see two pictures on the computer screen, only one of them will have a prize behind it. \n \nWe want you to tell us which picture you think contains a prize. \n \nPress the index finger button to continue.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text='Press Button 2 (index finger) for the LEFT picture. \n \n Press Button 3 (middle finger) for the RIGHT picture.', pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen3 = visual.TextStim(win, text='If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.\n \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.\n \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. \n \n Once you see the arrow, that round is over.', pos = (0,0), wrapWidth=45, height = 1.2)
 
@@ -191,16 +191,17 @@ def do_run(run, trials):
     globalClock.reset()
     studyStart = globalClock.getTime()
 
-    #Initial Fixation screen
-    fixation.draw()
-    win.flip()
-    core.wait(initial_fixation_dur)
-
-
     for trial in trials:
         resp_image_left = visual.ImageStim(win, os.path.join(door_folder, trial['door_image_L']), pos =(-7,0),size=(11.2,17.14))
         resp_image_right = visual.ImageStim(win,os.path.join(door_folder, trial['door_image_R']), pos =(7,0),size=(11.2,17.14))
         
+        fixation2 = visual.GratingStim(win, tex=None, mask='gauss', sf=0, size=0.02,
+        name='fixation', autoLog=False)
+
+        fixation2.draw()
+        win.flip()
+        core.wait(initial_fixation_dur)
+
         #decision phase
         timer.reset()
         event.clearEvents()
