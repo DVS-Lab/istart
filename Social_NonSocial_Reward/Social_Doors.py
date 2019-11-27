@@ -337,7 +337,7 @@ def do_run(run, trials):
             'condition':bids_condition,
             'resp':resp_val,
             'rt':rt})
-        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_Task-Social_Door_Run-{subj_run}.tsv', sep='\t', index = False)
+        bids_tsv.to_csv(f'logs/{subj_id}/sub-{subj_id}_task-socialDoors_run-{subj_run}_events.tsv', sep='\t', index = False)
 
 
 
