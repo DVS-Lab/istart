@@ -59,24 +59,24 @@ instruct_screen2 = visual.TextStim(win, text='''Press Button 2 (index finger) fo
 instruct_screen3_image = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
 \n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
 \n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\n Once you see the arrow, that round is over.''', pos = (0,0), wrapWidth=45, height = 1)
+\n Once you see the arrow, that round is over.''', pos = (0,0), wrapWidth=45, height = 1.2)
 
 instruct_screen3_image_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
 \n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
 \n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
 \nRemember that this is just a practice, these outcomes are based on another participant's choices and will not affect your earnings.  
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1)
+\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
 
 instruct_screen3_face = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
 \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
 \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1)
+\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
 
 instruct_screen3_face_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
 \nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
 \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
 \nRemember that this is just a practice, these outcomes are based on another participant's ratings and not those based on your photo.   
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1)
+\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
 
 ready_screen = visual.TextStim(win, text='''Please wait for the game to begin! 
 \n\nRemember to keep your head still!''', height=1.5, wrapWidth=30)
@@ -93,20 +93,13 @@ def do_run(stimset):
     win.flip()
     event.waitKeys(keyList=('space','2'))
 
-
     if stimset == 'face':
-        if version == ('A' or 'B'):
-            instruct_screen1_face.draw()
-        else:
-            instruct_screen1_practice.draw()
+        instruct_screen1_face.draw()
     else:
-        if version == ('A' or 'B'):
-            instruct_screen1_image.draw()
-        else:
-            instruct_screen1_image_practice.draw()
-        
+        instruct_screen1_image.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
+    
     instruct_screen2.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
