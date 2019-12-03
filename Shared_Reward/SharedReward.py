@@ -139,7 +139,7 @@ for run in range(1):
 # Instructions
 instruct_screen.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 #instruct_screen2.draw()
 #win.flip()
