@@ -148,6 +148,8 @@ def do_run(stimset):
         pic_R = visual.ImageStim(win,os.path.join(pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_R']), pos =(7,0),size=(11.2,17.14))
         border = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', fillColor = 'grey', lineColor = 'grey')
         border2 = visual.ShapeStim(win, vertices=pic_R.verticesPix, units='pix', fillColor = 'grey', lineColor = 'grey')
+        select_2 = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', lineColor = 'white')
+        select_3 = visual.ShapeStim(win, vertices=pic_R.verticesPix, units='pix', lineColor = 'white')
 
         trial_timer = core.CountdownTimer(5.2)   
         while trial_timer.getTime() > 0:
@@ -176,6 +178,18 @@ def do_run(stimset):
                         core.quit()
                     if selected == 2 or 3:
                         selected = int(resp[0])
+                        if selected == 2:
+                            pic_L.draw()
+                            pic_R.draw()
+                            select_2.draw()
+                            win.flip()
+                            core.wait(.5)
+                        elif selected == 3:
+                            pic_R.draw()
+                            pic_L.draw()
+                            select_3.draw()
+                            win.flip()
+                            core.wait(.5)
                         resp_onset = clock.getTime()
                         rt = resp_onset - decision_onset
                         border.autoDraw=True
@@ -183,13 +197,13 @@ def do_run(stimset):
                         pic_L.draw()
                         pic_R.draw()
                         win.flip()
-                        core.wait(decision_time - rt)
+                        core.wait(decision_time - rt - .5)
                         break
                 else:
                     selected = '999'
                     rt = '999'
                     core.wait(.25)
-            decision_dur = clock.getTime() - decision_onset
+            decision_dur = clock.getTime() - decision_onset 
             border.autoDraw=False
             border2.autoDraw=False
             
