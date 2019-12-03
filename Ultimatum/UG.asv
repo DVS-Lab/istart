@@ -264,16 +264,10 @@ for jj=1:subjects
 
     % Pick a participant
     
-    Block_Matrix_jj = Block_Matrix(:,jj);
-    Block_Matrix_jj = Block_Matrix_jj(randperm(length(Block_Matrix_jj)));
-    Endowment_Matrix_jj = Endowment_Matrix(:,jj);
-    Endowment_Matrix_jj = Endowment_Matrix_jj(randperm(length(Endowment_Matrix_jj)));
-    ITI_Matrix_jj = ITI_Matrix(:,jj);
-    ITI_Matrix_jj = ITI_Matrix_jj(randperm(length(ITI_Matrix_jj)));
-    ISI_Matrix_jj = ISI_Matrix(:,jj);
-    ISI_Matrix_jj = ISI_Matrix_jj(randperm(length(ISI_Matrix_jj)));
+    Block_Matrix_jj = Block_Matrix(:,jj)
+    Block_Matrix_jj(randperm(length(Block_Matrix_jj)
 
-        participant = [trial_vec, Block_Matrix_jj, Endowment_Matrix_jj, ITI_Matrix_jj, ISI_Matrix_jj]; % Trial, Partner, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
 
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
