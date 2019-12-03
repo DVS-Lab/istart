@@ -92,7 +92,7 @@ Vcenter=Rect(4)/2
 
 Screen('TextFont', Window, 'Arial');
 Screen('TextSize',Window,text_size);
-Screen('FillRect', Window, grey);  % 0 = black background
+Screen('FillRect', Window, 0);  % 0 = black background
 
 
 
@@ -221,49 +221,11 @@ for t = 1:length(trial_cond)
         output.trial_starts(t) = stimST-runST;
         output.target_starts(t) = targetST-runST;
         output.RT(t) = RT(1);
-        output.thresh(t) = RT_thresh(trial_cond(t)); 
-        output.trial_cond(t) = trial_cond(t);
+        output.thresh(t) = RT_thresh(trial_cond(t));  
         
         Screen('DrawTexture', Window, fix1);
         Screen('Flip', Window);
-        WaitSecs(fix_iti(t))
-        
-        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\ttrust_value\tchoice\n');
-        %if trust_val(t) == 999
-        %    fprintf(fid,'%f\t%f\t%s\t%f\t%s\t%s\t%d\t%d\n',choiceonset(t),3,'missed_trial',3,'n/a','n/a',min(options(t,:)),max(options(t,:)));
-        %else
-        %    if trust_val(t) == 0
-        %        fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type ],RT(t),0,response{t},min(options(t,:)),max(options(t,:))); %should always be 'low'
-        %    else
-        %        if reciprocate(t) == 1
-        %            fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-        %            fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',outcomeonset(t),1,['outcome_' trial_type '_recip'],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-        %        else
-        %            fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-        %            fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',outcomeonset(t),1,['outcome_' trial_type '_defect'],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-        %        end
-        %    end
-        %end
-        
-        %fprintf(fid,'trial_starts\target_starts\trial_cond\RT\thresh\outcome');
-        fname = '\istart\Monetary_Incentive\data'
-        fid = fopen(fullfile(fname,'w');
-        header = 'trial_starts\ttarget_starts\ttrial_cond\tRT\tthresh\toutcome\n'
-        if trust_val(t) == 999
-            fprintf(fid,'%f\t%f\t%s\t%f\t%s\t%s\t%d\t%d\n',choiceonset(t),3,'missed_trial',3,'n/a','n/a',min(options(t,:)),max(options(t,:)));
-        else
-            if trust_val(t) == 0
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type ],RT(t),0,response{t},min(options(t,:)),max(options(t,:))); %should always be 'low'
-            else
-                if reciprocate(t) == 1
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',outcomeonset(t),1,['outcome_' trial_type '_recip'],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-                else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',choiceonset(t),RT(t),['choice_' trial_type],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',outcomeonset(t),1,['outcome_' trial_type '_defect'],RT(t),trust_val(t),response{t},min(options(t,:)),max(options(t,:)));
-                end
-            end
-        end      
+        WaitSecs(fix_iti(t))   
 end
 
 if isscan == 0
@@ -272,14 +234,4 @@ elseif isscan == 1
   save([thePath.data '/' num2str(subnum) '/output_' num2str(now) '.mat'], 'output')
 end
 
-
 sca;
-fprintf(fid,header)
-%output_matrix = cell2mat(struct2cell(output))
-%output_matrix = output_matrix.'
-%ouput_matrix = array2table(output_matrix, 'VariableNames',{'outcome','trial_starts','target_starts','RT','thresh'})
-%mkdir(fullfile(thePath.data(1:end-23),'bids',strcat('sub-',num2str(subnum)), 'func'))
-%writematrix(output_matrix, fullfile(thePath.data(1:end-23),'bids',strcat('sub-',num2str(subnum)), 'func', strcat('sub-',num2str(subnum),'_task-MID_run-1_events.txt')),'Delimiter','tab')
-
-
-
