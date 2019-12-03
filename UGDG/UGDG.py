@@ -110,7 +110,7 @@ timer = core.Clock()
 
 #trial handler
 #trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
-trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_all.csv','rU'))]
+trial_data_1 = [r for r in csv.DictReader(open('sub-' + subj_id + '/sub-'+ subj_id + '_all.csv','rU'))]
 #trial_data_2  = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
 
 trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
