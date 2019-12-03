@@ -22,8 +22,9 @@ clc
 
 % Make 200 trials.
 
-trials= 72; % number of conditions
-subjects = 200; % number of total possible subjects
+trials= 36; % number of conditions
+subjects = 100; % number of total possible subjects
+runs = 2;
 
 %% Endowment Distribution
 
@@ -256,12 +257,23 @@ end
 
 % This is added to the participant matrix and then saved as an array and
 % exported as a CSV file.
-
+    
+for aa = 1:runs
+    
 for jj=1:subjects
 
     % Pick a participant
+    
+    Block_Matrix_jj = Block_Matrix(:,jj);
+    Block_Matrix_jj = Block_Matrix_jj(randperm(length(Block_Matrix_jj)));
+    Endowment_Matrix_jj = Endowment_Matrix(:,jj);
+    Endowment_Matrix_jj = Endowment_Matrix_jj(randperm(length(Endowment_Matrix_jj)));
+    ITI_Matrix_jj = ITI_Matrix(:,jj);
+    ITI_Matrix_jj = ITI_Matrix_jj(randperm(length(ITI_Matrix_jj)));
+    ISI_Matrix_jj = ISI_Matrix(:,jj);
+    ISI_Matrix_jj = ISI_Matrix_jj(randperm(length(ISI_Matrix_jj)));
 
-        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix_jj, Endowment_Matrix_jj, ITI_Matrix_jj, ISI_Matrix_jj]; % Trial, Partner, Task type, Endowment Amount
 
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
@@ -317,9 +329,11 @@ for jj=1:subjects
     % Convert the file into an array. Put a header for each column.
 
     participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = ['Subject_' num2str(jj) '.csv'];
+    name = ['Subject_' num2str(jj) '_run_' num2str(aa) '.csv'];
 
     % Save array as a CSV file
 
     writetable(participant, name); % Save as csv file
+end
+
 end
