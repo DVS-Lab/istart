@@ -92,7 +92,7 @@ Vcenter=Rect(4)/2
 
 Screen('TextFont', Window, 'Arial');
 Screen('TextSize',Window,text_size);
-Screen('FillRect', Window, 0);  % 0 = black background
+Screen('FillRect', Window, grey);  % 0 = black background
 
 
 
