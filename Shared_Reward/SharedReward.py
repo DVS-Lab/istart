@@ -36,7 +36,7 @@ if gui.OK:
     subj_id=subjDlg.data[0]
     friend_id=subjDlg.data[1]
     stranger_id=subjDlg.data[2]
-    run = range(0,1)
+    run = range(0)
 
 else:
     sys.exit()
@@ -331,7 +331,7 @@ def do_run(run, trials):
     core.wait(endTime)
     print(globalClock.getTime())
 
-for run, trials in enumerate([trials_run1, trials_run2]):
+for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
 
 # Exit
