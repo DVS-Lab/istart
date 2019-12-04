@@ -139,23 +139,23 @@ print("got to check 2")
 # Instructions
 instruct_screen.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen2.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen3.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen4.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen5.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen6.draw()
 sampleImage1 = os.path.join(expdir,'Images','UGResponder_circle.png')
@@ -174,15 +174,15 @@ sampleStimText1.draw()
 sampleStimText2.draw()
 sampleStimText3.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen7.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 instruct_screen8.draw()
 win.flip()
-event.waitKeys(keyList=('space'))
+event.waitKeys(keyList=('2'))
 
 def do_run(run, trials):
     resp=[]
