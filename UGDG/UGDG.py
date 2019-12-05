@@ -237,9 +237,6 @@ def do_run(run, trials):
                 endowment_offset = globalClock.getTime()
                 trials.addData('endowment_offset', endowment_offset)
 
-            resp_val=None
-            resp_onset=None
-
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
             timer.reset()
@@ -256,11 +253,14 @@ def do_run(run, trials):
 
             timer.reset()
 
+            resp_val=None
+            resp_onset=None
+
             #Decision
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < (decision_dur):
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 cueStim.draw()
                 resp_text_accept.draw()
                 resp_text_reject.draw()
@@ -346,7 +346,7 @@ def do_run(run, trials):
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < (decision_dur):
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Offer $%s' % resp_left
@@ -437,7 +437,7 @@ def do_run(run, trials):
             trials.addData('decision_onset', decision_onset)
 
 
-            while timer.getTime() < (decision_dur):
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Give $%s' % resp_left
@@ -535,7 +535,7 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 792
+    expected_dur = 360
     buffer_dur = 10
     total_dur = expected_dur + buffer_dur
     if globalClock.getTime() < total_dur:
@@ -545,8 +545,7 @@ def do_run(run, trials):
     core.wait(endTime)
     print("globalClock.getTime()")
 
-#for run, trials in enumerate([trials_run1, trials_run2]):
-for run, trials in enumerate([trials_run1]):
+for run, trials in enumerate([trials_run1, trials_run2]):
     do_run(run, trials)
 
 # Exit
