@@ -63,7 +63,6 @@ random.shuffle(left)
 # In[3]:
 
 
-from sklearn.utils import shuffle
 R_trials=pd.concat([N_trials,W_trials,S_trials])
 R_trials=R_trials.sample(frac=1).reset_index(drop=True)
 #display(R_trials.head())
