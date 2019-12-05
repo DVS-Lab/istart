@@ -316,7 +316,9 @@ for jj=1:subjects
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
                  options = round(row(3) * shuffled_recipient(ii,:));
-                 options = [row,options, 0]; % The right option will be zero. If you refuse, you get nothing.
+                 options = [options, 0]; % One option is value. The other is 0
+                 options = options(randperm(length(options))); % Randomly select
+                 options = [row,options]; % 
                  recipient = [recipient; options]; % Concatenate
             end
 
