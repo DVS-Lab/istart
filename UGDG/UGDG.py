@@ -58,7 +58,7 @@ print("got to check 1")
 fixation = visual.TextStim(win, text="+", height=2)
 
 #waiting for trigger
-ready_screen = visual.TextStim(win, text="Please wait for Lets Make a Deal to begin! \n\nRemember to keep your head still!", height=1.5)
+ready_screen = visual.TextStim(win, text="Please wait for Let's Make a Deal to begin! \n\nRemember to keep your head still!", height=1.5)
 
 
 #decision screen
@@ -82,7 +82,7 @@ endowment_text = visual.TextStim(win, pos =(0,-1.5), height=1, alignHoriz="cente
 outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
 
 #instructions
-instruct_screen = visual.TextStim(win, text='Welcome to Lets Make a Deal!\n\nIn this task you will be making decisions involving sending money to another person.\n', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen = visual.TextStim(win, text="Welcome to Let's Make a Deal!\n\nIn this task you will be making decisions involving sending money to another person.\n", pos = (0,1), wrapWidth=20, height = 1.2)
 instruct_screen2 = visual.TextStim(win, text = 'On most trials, you will be given between $15-25.\n\nOn some trials, you will decide how much to share with your partner. You will keep the remainder.', pos = (0,1), wrapWidth=20, height = 1.2)
 instruct_screen3 = visual.TextStim(win, text = 'On other trials, your partner will have the opportunity to reject your offer. If your partner rejects your offer, you will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
 instruct_screen4 = visual.TextStim(win, text = 'Sometimes you will receive offers from another person, which you can either accept or reject.\n\nIf you reject the offer, both you and your partner will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
@@ -108,13 +108,14 @@ logging.setDefaultClock(globalClock)
 
 timer = core.Clock()
 
+
 #trial handler
 #trial_data_1 = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-01_design.csv','rU'))]
-trial_data_1 = [r for r in csv.DictReader(open('sub-' + subj_id + '/sub-'+ subj_id + '_all.csv','rU'))]
-#trial_data_2  = [r for r in csv.DictReader(open('UGDG_blocks/sub-' + subj_id + '/sub-'+ subj_id + '_run-02_design.csv','rU'))]
+trial_data_1 = [r for r in csv.DictReader(open('Subject_' + subj_id + '_run_1.csv','rU'))]
+trial_data_2  = [r for r in csv.DictReader(open('Subject_' + subj_id + '_run_2.csv','rU'))]
 
 trials_run1 = data.TrialHandler(trial_data_1[:], 1, method="sequential") #change to [] for full run
-#trials_run2 = data.TrialHandler(trial_data_2[:], 1, method="sequential") #change to [] for full run
+trials_run2 = data.TrialHandler(trial_data_2[:], 1, method="sequential") #change to [] for full run
 
 
 subj_gen = int(subj_gen)
@@ -129,7 +130,7 @@ stim_map = {
 outcome_map = {
   #3: 'You have accepted the offer.\n\nYou: $%s.00\nPartner: $%s.00',
   #2: 'You have rejected the offer.\n\nYou: $0.00\nPartner: $0.00',
-  999: 'You have 3 seconds to respond.'
+  999: 'You missed the trial. Please respond faster.'
   }
 
 #checkpoint
@@ -203,8 +204,8 @@ def do_run(run, trials):
     for trial in trials:
         #condition_label = stim_map[trial['Partner']]
         imagepath = os.path.join(expdir,'Images')
-        image = os.path.join(imagepath, "human.png") # % condition_label
-        pictureStim.setImage(image)
+        #image = os.path.join(imagepath, "human.png") # % condition_label
+        #pictureStim.setImage(image)
 
         #decision phase
         timer.reset()
@@ -216,21 +217,31 @@ def do_run(run, trials):
             while timer.getTime() < 1:
                 cue = os.path.join(imagepath,"UGResponder_circle.png")
                 cueStim.setImage(cue)
+                cue_Onset = globalClock.getTime()
+                trials.addData('cue_Onset',cue_Onset)
                 cueStim.draw()
                 win.flip()
+                core.wait(1)
 
-            while timer.getTime() > 1 and timer.getTime() < 2:
+            while timer.getTime() >= 1 and timer.getTime() <= 2:
+                endowment_onset = globalClock.getTime()
+                trials.addData('endowment_onset', endowment_onset)
                 partner_offer = trial['L_Option']
                 endowment = trial['Endowment']
-                partnerOffer = 'Proposal: $%s out of $%s' % (partner_offer, endowment)
+                partnerOffer = 'Partner is given $%s.  Partner offers you: $%s' % (endowment, partner_offer)
                 offer_text.setText(partnerOffer)
+                cueStim.draw()
                 offer_text.draw()
-                pictureStim.draw()
+                #pictureStim.draw()
                 win.flip()
+                endowment_offset = globalClock.getTime()
+                trials.addData('endowment_offset', endowment_offset)
 
             resp_val=None
             resp_onset=None
 
+            endowment_offset = globalClock.getTime()
+            trials.addData('endowment_offset', endowment_offset)
             timer.reset()
 
             #ISI
@@ -250,9 +261,10 @@ def do_run(run, trials):
             trials.addData('decision_onset', decision_onset)
 
             while timer.getTime() < (decision_dur):
+                cueStim.draw()
                 resp_text_accept.draw()
                 resp_text_reject.draw()
-                pictureStim.draw()
+                #pictureStim.draw()
                 offer_text.setText(partnerOffer)
                 offer_text.draw()
                 win.flip()
@@ -274,9 +286,10 @@ def do_run(run, trials):
                         resp_text_reject.setColor('darkorange')
                     if resp_val == 3:
                         resp_text_accept.setColor('darkorange')
+                    cueStim.draw()
                     resp_text_accept.draw()
                     resp_text_reject.draw()
-                    pictureStim.draw()
+                    #pictureStim.draw()
                     offer_text.setText(partnerOffer)
                     offer_text.draw()
                     win.flip()
@@ -299,18 +312,24 @@ def do_run(run, trials):
                 cueStim.draw()
                 win.flip()
 
-            while timer.getTime() > 1 and timer.getTime() < 2:
+            while timer.getTime() >= 1 and timer.getTime() <= 2:
+                endowment_onset = globalClock.getTime()
+                trials.addData('endowment_onset', endowment_onset)
                 endowment = trial['Endowment']
-                endowmentOffer = 'You have $%s' % endowment
+                endowmentOffer = 'You are given $%s' % endowment
                 endowment_text.setText(endowmentOffer)
+                cueStim.draw()
                 endowment_text.draw()
-                pictureStim.draw()
+                #pictureStim.draw()
                 win.flip()
 
             resp_val=None
             resp_onset=None
 
             timer.reset()
+
+            endowment_offset = globalClock.getTime()
+            trials.addData('endowment_offset', endowment_offset)
 
             #ISI
             ISI_onset = globalClock.getTime()
@@ -330,13 +349,14 @@ def do_run(run, trials):
             while timer.getTime() < (decision_dur):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
-                respcLeft = 'Give $%s' % resp_left
+                respcLeft = 'Offer $%s' % resp_left
                 resp_text_left.setText(respcLeft)
-                respcRight = 'Give $%s' % resp_right
+                respcRight = 'Offer $%s' % resp_right
                 resp_text_right.setText(respcRight)
+                cueStim.draw()
                 resp_text_left.draw()
                 resp_text_right.draw()
-                pictureStim.draw()
+                #pictureStim.draw()
                 endowment_text.setText(endowmentOffer)
                 endowment_text.draw()
                 win.flip()
@@ -357,9 +377,10 @@ def do_run(run, trials):
                         resp_text_left.setColor('darkorange')
                     if resp_val == 3:
                         resp_text_right.setColor('darkorange')
+                    cueStim.draw()
                     resp_text_left.draw()
                     resp_text_right.draw()
-                    pictureStim.draw()
+                    #pictureStim.draw()
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
@@ -381,16 +402,22 @@ def do_run(run, trials):
                 cueStim.draw()
                 win.flip()
 
-            while timer.getTime() > 1 and timer.getTime() < 2:
+            while timer.getTime() >= 1 and timer.getTime() <= 2:
+                endowment_onset = globalClock.getTime()
+                trials.addData('endowment_onset', endowment_onset)
                 endowment = trial['Endowment']
-                endowmentOffer = 'You have $%s' % endowment
+                endowmentOffer = 'You are given $%s' % endowment
                 endowment_text.setText(endowmentOffer)
+                cueStim.draw()
                 endowment_text.draw()
-                pictureStim.draw()
+                #pictureStim.draw()
                 win.flip()
 
             resp_val=None
             resp_onset=None
+
+            endowment_offset = globalClock.getTime()
+            trials.addData('endowment_offset', endowment_offset)
 
             timer.reset()
 
@@ -419,7 +446,8 @@ def do_run(run, trials):
                 resp_text_right.setText(respcRight)
                 resp_text_left.draw()
                 resp_text_right.draw()
-                pictureStim.draw()
+                cueStim.draw()
+                #pictureStim.draw()
                 endowment_text.setText(endowmentOffer)
                 endowment_text.draw()
                 win.flip()
@@ -442,7 +470,8 @@ def do_run(run, trials):
                         resp_text_right.setColor('darkorange')
                     resp_text_left.draw()
                     resp_text_right.draw()
-                    pictureStim.draw()
+                    cueStim.draw()
+                    #pictureStim.draw()
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
