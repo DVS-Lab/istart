@@ -1,4 +1,4 @@
-nTrial,trial_type,Endowment,ITI,ISI,L_Option,R_Option
+nTrial,Block,Endowment,ITI,ISI,L_Option,R_Option
 1,1,17,4,3.5,8,1
 2,2,17,2,0.5,3,5
 3,3,23,6,0.5,0,1
