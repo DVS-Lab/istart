@@ -1,6 +1,4 @@
 
-# coding: utf-8
-
 # In[1]:
 
 
@@ -8,6 +6,7 @@
 #This cell imports out library and sets some global variables
 
 from psychopy import visual, core, event, data, logging,gui
+import pip
 import sys
 import os
 import csv
@@ -64,13 +63,12 @@ random.shuffle(left)
 # In[3]:
 
 
-from sklearn.utils import shuffle
 R_trials=pd.concat([N_trials,W_trials,S_trials])
 R_trials=R_trials.sample(frac=1).reset_index(drop=True)
 #display(R_trials.head())
-R_trials.sort_values(by=['Lot_color'])
+R_trials=R_trials.sort_values(by=['Lot_color'])
 
-aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in Lot_pers[[3,4,5,6,7,8,9]] for m in [8] ]
+aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in Lot_pers[[2,3,4,5,6,7,8]] for m in [8] ]
 A_trials=pd.DataFrame(data=aa_data,columns=['Risk_per','Money','Color','Amb'])
 A_trials['RiskisLeft'] = np.random.randint(0, 2, A_trials.shape[0])
 #A_trials=A_trials.sample(frac=1).reset_index(drop=True)
@@ -125,16 +123,17 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
     Lot_a_win.draw()
     
     
-    SureMoney=visual.TextStim(win=win,text="$ %s"%(sure_m),pos=sure_pos,bold=True)
+    SureMoney=visual.TextStim(win=win,text="$ %s"%(sure_m),pos=sure_pos,bold=True,units='pix')
     SureMoney.draw()
     
-    Lot_per=visual.TextStim(win=win,text="%s %%"%(lot_p),pos=(lot_pos,-50),bold=True)
-    Lot_Money=visual.TextStim(win=win,text="$ %s"%(lot_m),pos=(lot_pos,50),bold=True)
+    Lot_per=visual.TextStim(win=win,text="%s %%"%(lot_p),pos=(lot_pos,-50),bold=True,units='pix')
+    Lot_Money=visual.TextStim(win=win,text="$ %s"%(lot_m),pos=(lot_pos,50),bold=True,units='pix')
+
     Lot_per.draw()
     Lot_Money.draw()
-    focus=visual.TextStim(win=win,text='+')
     
-   
+    focus=visual.TextStim(win=win,text='+')
+       
     focus.draw()
    
     win.flip()
@@ -167,6 +166,8 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
 #Risk_per 	Money 	Color 	Amb 	RiskisLeft
 def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     event.clearEvents()
+    
+
 
     print([lot_left,lot_p,money,lot_col,Amb_level])
     if lot_col=='red':
@@ -195,7 +196,7 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     print(shade)
     
     # The risky lottery has 3 parts. The Outline Win ammount. & Lose Amount
-    R_Outline= visual.RadialStim( win=win, name='OUTLINE', color=col_code,opacity=1,
+    R_Outline= visual.RadialStim( win=win, name='OUTLINE', color=[1,1,1],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(400,400))
     R_Outline2= visual.RadialStim( win=win, name='OUTLINE_in', color=[0,0,0],opacity=1,
@@ -205,11 +206,11 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     R_Outline.draw()
     R_Outline2.draw()
     
-    Lot_a_win=visual.RadialStim(win=win,units="pix",name='Lot', color=col_code,opacity=1,
+    Lot_a_win=visual.RadialStim(win=win,units="pix",name='Lot', color=[-1,-1,-1],opacity=1,
                           angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                           ori= -90.0,pos=(lot_pos,0), size=(300,300),visibleWedge=(0.0, shade))
     
-    Lot_a_lose= visual.RadialStim( win=win, name='rad2', color=col_code,opacity=0.5,
+    Lot_a_lose= visual.RadialStim( win=win, name='rad2', color=[1,1,1],opacity=0.5,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(300,300))
     Lot_a_lose.draw()
@@ -241,8 +242,8 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     A_win.draw()
     cover.draw()
     
-    AmbMoney=visual.TextStim(win=win,text="$ %s"%(money),pos=(amb_pos,50),bold=True)
-    AmbMoney.draw()
+    #AmbMoney=visual.TextStim(win=win,text="$ %s"%(money),pos=(amb_pos,50),bold=True)
+    #AmbMoney.draw()
     if Amb_level==100:
         am_per_text="0% - 100%"
     elif Amb_level==50:
@@ -252,13 +253,15 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     
     
     Lot_per=visual.TextStim(win=win,text="%s %%"%(lot_p),pos=(lot_pos,-50),bold=True)
-    Lot_Money=visual.TextStim(win=win,text="$ %s"%(money),pos=(lot_pos,50),bold=True)
+    
     Lot_per.draw()
-    Lot_Money.draw()
     focus=visual.TextStim(win=win,text='+')
     
    
     focus.draw()
+    
+    Lot_Money=visual.TextStim(win=win,text="$ %s"%(money),pos=(0,50),bold=True)
+    Lot_Money.draw()
    
     win.flip()
     timer.reset()
@@ -329,8 +332,8 @@ subj_id=subjDlg.data[0]
 os.makedirs("../data/sub-%s"%(subj_id),exist_ok=True)
 
 
-R_inst=["img0.jpg","img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg","img6.jpg"]
-A_inst=["img7.jpg","img8.jpg","img9.jpg","img10.jpg","img11.jpg"]
+R_inst=["img0.jpg","img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg","img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"]
+A_inst=["img11.jpg","img12.jpg"]
 
 if len(subj_id) < 1: # Make sure participant entered name
     core.quit()
@@ -351,8 +354,9 @@ for i in range(len(R_trials)):
     # Lets participant quit at any time by pressing escape button
     if 'escape' in resp:
         win.close()
-        core.quit()
-R_resp=pd.DataFrame(data=responses,columns=np.concatenate([R_trials.columns.to_list(),['response','RT']]))
+        core.quit
+
+R_resp=pd.DataFrame(data=responses,columns=['LotisLeft','Lot_per','Lot_mon','Lot_color','Sure_mon','dist','response','RT']]
 R_resp.to_csv("../data/sub-%s/sub-%s_task-risk_events.csv"%(subj_id,subj_id),index = False)
        
 for page in A_inst:
@@ -373,7 +377,7 @@ for i in range(len(A_trials)):
     if 'escape' in resp:
         win.close()
         core.quit()
-A_resp=pd.DataFrame(data=responses,columns=np.concatenate([A_trials.columns.to_list(),['response','RT','dist']]))
+A_resp=pd.DataFrame(data=responses,columns=np.concatenate(['Risk_per','Money','Color','Amb','RiskisLeft'],['response','RT','dist']]))
 A_resp.to_csv("../data/sub-%s/sub-%s_task-ambiguity_events.csv"%(subj_id,subj_id),index = False)
 
 win.close()
@@ -384,4 +388,3 @@ core.quit()
 
 
 win.close()
-
