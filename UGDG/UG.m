@@ -182,7 +182,7 @@ ITI_Matrix = [];
 
 ISI_list = [repmat(2,1,round(20/36*trials)) repmat(3.5,1,round(10/36*trials)) repmat(5,1,round(6/36*trials))];
 ISI_list = ISI_list(randperm(length(ISI_list)));
-ISI_list = (ISI_list - 1.5)'; %shaving 1.5 seconds to account for "WAITING" screen
+ISI_list = (ISI_list)'; %shaving 1.5 seconds to account for "WAITING" screen
 
 ISI_Matrix = [];
 
