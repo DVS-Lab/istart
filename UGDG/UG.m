@@ -4,8 +4,14 @@ clear all
 close all
 clc
 
-% 09/05/2019
+% 12/06/2019
 % Daniel Sazhin
+
+% Change log
+
+% 12/06/2019: This version now has trial_types instead of blocks
+
+% ________________________
 
 % The goal is to make a random order of endowments and trial orders for
 % participants in the ISTART project while doing the Ultimatum Game tasks.
@@ -22,8 +28,9 @@ clc
 
 % Make 200 trials.
 
-trials= 72; % number of conditions
-subjects = 200; % number of total possible subjects
+trials= 36; % number of conditions
+subjects = 100; % number of total possible subjects
+runs = 2;
 
 %% Endowment Distribution
 
@@ -256,12 +263,23 @@ end
 
 % This is added to the participant matrix and then saved as an array and
 % exported as a CSV file.
-
+    
+for aa = 1:runs
+    
 for jj=1:subjects
 
     % Pick a participant
+    
+    Block_Matrix_jj = Block_Matrix(:,jj);
+    Block_Matrix_jj = Block_Matrix_jj(randperm(length(Block_Matrix_jj)));
+    Endowment_Matrix_jj = Endowment_Matrix(:,jj);
+    Endowment_Matrix_jj = Endowment_Matrix_jj(randperm(length(Endowment_Matrix_jj)));
+    ITI_Matrix_jj = ITI_Matrix(:,jj);
+    ITI_Matrix_jj = ITI_Matrix_jj(randperm(length(ITI_Matrix_jj)));
+    ISI_Matrix_jj = ISI_Matrix(:,jj);
+    ISI_Matrix_jj = ISI_Matrix_jj(randperm(length(ISI_Matrix_jj)));
 
-        participant = [trial_vec, Block_Matrix(:,jj), Endowment_Matrix(:,jj), ITI_Matrix(:,jj), ISI_Matrix(:,jj)]; % Trial, Partner, Task type, Endowment Amount
+        participant = [trial_vec, Block_Matrix_jj, Endowment_Matrix_jj, ITI_Matrix_jj, ISI_Matrix_jj]; % Trial, Partner, Task type, Endowment Amount
 
             % Now we want to make the UG and DG proposer amounts.
             % Logically index 1 and 2 on the second column as Proposers
@@ -293,7 +311,7 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_proposer(ii,:);
+                 options = round(row(3) * shuffled_proposer(ii,:));
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate
             end
@@ -303,24 +321,27 @@ for jj=1:subjects
                  % Take the row corresponding to the index
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
-                 options = row(3) * shuffled_recipient(ii,:);
-                 options = [row,options, 0]; % The right option will be zero. If you refuse, you get nothing.
+                 options = round(row(3) * shuffled_recipient(ii,:));
+                 options = [options, 0]; % One option is value. The other is 0
+                 options = options(randperm(length(options))); % Randomly select
+                 options = [row,options]; % 
                  recipient = [recipient; options]; % Concatenate
             end
 
             % Now we have both proposer and recipient binary choices for a
-            % given participant. % test
+            % given participant.
 
     participant = [proposer; recipient]; % Concatenated
     participant = sortrows(participant); % Sorted along trials.
 
     % Convert the file into an array. Put a header for each column.
 
-    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    %name = 'Subject_jj.csv';
-    name = "Subject_" + jj + '.csv';
+    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'trial_type', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
+    name = ['Subject_' num2str(jj) '_run_' num2str(aa) '.csv'];
 
     % Save array as a CSV file
 
     writetable(participant, name); % Save as csv file
+end
+
 end
