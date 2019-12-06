@@ -4,8 +4,14 @@ clear all
 close all
 clc
 
-% 09/05/2019
+% 12/06/2019
 % Daniel Sazhin
+
+% Change log
+
+% 12/06/2019: This version now has trial_types instead of blocks
+
+% ________________________
 
 % The goal is to make a random order of endowments and trial orders for
 % participants in the ISTART project while doing the Ultimatum Game tasks.
@@ -330,7 +336,7 @@ for jj=1:subjects
 
     % Convert the file into an array. Put a header for each column.
 
-    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
+    participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'trial_type', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
     name = ['Subject_' num2str(jj) '_run_' num2str(aa) '.csv'];
 
     % Save array as a CSV file
