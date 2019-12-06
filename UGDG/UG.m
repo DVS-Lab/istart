@@ -9,6 +9,8 @@ clc
 
 % Change log
 
+% 12/06/2019: Round the dollar amounts. Fixed the UG Recipient amounts
+% presented.
 % 12/06/2019: blocks reverted because Python code has them.
 % 12/06/2019: This version now has trial_types instead of blocks
 
@@ -314,6 +316,7 @@ for jj=1:subjects
                  row = participant((Proposer_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
                  options = round(row(3) * shuffled_proposer(ii,:));
+                 options = round(options);
                  options = [row,options];
                  proposer = [proposer; options]; % Concatenate
             end
@@ -324,9 +327,9 @@ for jj=1:subjects
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
                  options = round(row(3) * shuffled_recipient(ii,:));
-                 options = [options, 0]; % One option is value. The other is 0
-                 options = options(randperm(length(options))); % Randomly select
-                 options = [row,options]; % 
+                 options = round(row(3) * shuffled_proposer(ii,:));
+                 options = round(options);
+                 options = [row,options]; 
                  recipient = [recipient; options]; % Concatenate
             end
 
