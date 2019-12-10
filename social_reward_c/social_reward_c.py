@@ -282,6 +282,7 @@ def do_run(stimset):
             responsetime.append('999')
             
             #BIDS Log
+            
             #image or face being presented 
             b_1.append(decision_onset)
             b_2.append(decision_dur)
@@ -297,14 +298,6 @@ def do_run(stimset):
             b_1.append(feedback_onset)
             b_2.append(feedback_dur)
             b_3.append(fb_type)
-            b_4.append('n/a')
-            b_5.append('n/a')
-            b_6.append('n/a')
-            
-            #ITI
-            b_1.append(ITI_onset)
-            b_2.append(ITI_dur)
-            b_3.append('ITI')
             b_4.append('n/a')
             b_5.append('n/a')
             b_6.append('n/a')
@@ -324,6 +317,7 @@ def do_run(stimset):
                 'rt':b_4,
                 'resp':b_5,
                 'gender':b_6})
+        
         log.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_{stimset}-{version}.tsv"), sep='\t', index = False)
         bidsEvents.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_ses-1_task-socialReward_{stimset}{version}_events.tsv"), sep='\t', index = False)
     run_end = time.time()
