@@ -140,6 +140,9 @@ def do_run(stimset):
     b_1 = []
     b_2 = []
     b_3 = []
+    b_4 = []
+    b_5 = []
+    b_6 = []
 
     for trial in reference.iterrows():
         trial_start = clock.getTime()
@@ -174,19 +177,22 @@ def do_run(stimset):
                 resp = event.getKeys(keyList = responseKeys)
                 if len(resp)>0:
                     if 'z' in resp:
-                        log.to_csv(os.path.join("data",subj_id, f"{subj_id}_{stimset}-{version}.tsv"), sep='\t', index = False)
+                        log.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_{stimset}-{version}.tsv"), sep='\t', index = False)
+                        bidsEvents.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_ses-1_task-socialReward_{stimset}{version}_events.tsv"), sep='\t', index = False)
                         core.quit()
                     if selected == 2 or 3:
                         selected = int(resp[0])
                         if selected == 2:
                             pic_L.draw()
                             pic_R.draw()
+                            l_r = 'left'
                             select_2.draw()
                             win.flip()
                             core.wait(.5)
                         elif selected == 3:
                             pic_R.draw()
                             pic_L.draw()
+                            l_r = 'right'
                             select_3.draw()
                             win.flip()
                             core.wait(.5)
@@ -197,11 +203,12 @@ def do_run(stimset):
                         pic_L.draw()
                         pic_R.draw()
                         win.flip()
-                        core.wait(decision_time - rt - .5)
+                        core.wait(decision_time - rt)
                         break
                 else:
-                    selected = '999'
-                    rt = '999'
+                    selected = 'n/a'
+                    rt = 'n/a'
+                    l_r = 'n/a'
                     core.wait(.25)
             decision_dur = clock.getTime() - decision_onset 
             border.autoDraw=False
@@ -241,6 +248,8 @@ def do_run(stimset):
                 core.wait(ITI)
             ITI_dur = clock.getTime() - ITI_onset
             
+            gender = (pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_L'])
+            
             #logging
             condition.append('fixation_1')
             onset.append(trial_start)
@@ -273,9 +282,25 @@ def do_run(stimset):
             responsetime.append('999')
             
             #BIDS Log
+            
+            #image or face being presented 
             b_1.append(decision_onset)
             b_2.append(decision_dur)
+            if rt == 'n/a':
+                b_3.append('decision-missed')
+            else:
+                b_3.append('decision')
+            b_4.append(rt)
+            b_5.append(l_r)
+            b_6.append(gender[1][0:1])
+            
+            #feedback
+            b_1.append(feedback_onset)
+            b_2.append(feedback_dur)
             b_3.append(fb_type)
+            b_4.append('n/a')
+            b_5.append('n/a')
+            b_6.append('n/a')
 
         #data to frame 
         log = pd.DataFrame(
@@ -288,9 +313,13 @@ def do_run(stimset):
         bidsEvents = pd.DataFrame(
                 {'onset':b_1, 
                 'duration':b_2,
-                'trial_type':b_3})
+                'trial_type':b_3,
+                'rt':b_4,
+                'resp':b_5,
+                'gender':b_6})
+        
         log.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_{stimset}-{version}.tsv"), sep='\t', index = False)
-        bidsEvents.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_task-socialReward-{stimset}-{version}.tsv"), sep='\t', index = False)
+        bidsEvents.to_csv(os.path.join("data",subj_id, f"sub-{subj_id}_ses-1_task-socialReward_{stimset}{version}_events.tsv"), sep='\t', index = False)
     run_end = time.time()
     run_length = run_end -run_start
     print(run_length)
