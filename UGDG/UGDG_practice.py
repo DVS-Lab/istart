@@ -196,7 +196,7 @@ def do_run(run, trials):
     #wait for trigger
     ready_screen.draw()
     win.flip()
-    event.waitKeys(keyList=('equal'))
+    event.waitKeys(keyList=('2'))
     globalClock.reset()
     studyStart = globalClock.getTime()
 
