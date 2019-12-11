@@ -58,7 +58,7 @@ print("got to check 1")
 fixation = visual.TextStim(win, text="+", height=2)
 
 #waiting for trigger
-ready_screen = visual.TextStim(win, text="Please wait for Let's Make a Deal to begin! \n\nRemember to keep your head still!", height=1.5)
+ready_screen = visual.TextStim(win, text="Please press button 2 to begin the practice trials.", height=1.5)
 
 #end of run Screen
 run_over_screen = visual.TextStim(win, text="You have completed the first run of Let's Make a Deal!", height=1.5)
@@ -97,14 +97,14 @@ instruct_screen8 = visual.TextStim(win, text = 'Do you have any questions?',pos 
 
 
 #exit
-exit_screen = visual.TextStim(win, text='Thanks for playing! Please wait for instructions from the experimenter.', pos = (0,1), wrapWidth=20, height = 1.2)
+exit_screen = visual.TextStim(win, text='You have reached the end of the practice round.\n\nDo you have any questions?.', pos = (0,1), wrapWidth=20, height = 1.2)
 
 #logging
 expdir = os.getcwd()
 subjdir = '%s/logs/%s' % (expdir, subj_id)
 if not os.path.exists(subjdir):
     os.makedirs(subjdir)
-log_file = os.path.join(subjdir,'sub-{}_task-ultimatum_run-{}_raw.csv')
+log_file = os.path.join(subjdir,'sub-{}_task-ultimatum_run-{}_practice_raw.csv')
 
 
 globalClock = core.Clock()
@@ -264,7 +264,8 @@ def do_run(run, trials):
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
+            #while timer.getTime() < (decision_onset - (decision_dur)):
+            while timer.getTime() < decision_dur:
                 cueStim.draw()
                 resp_text_accept.draw()
                 resp_text_reject.draw()
@@ -353,7 +354,13 @@ def do_run(run, trials):
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
+            print(decision_onset)
+            print(decision_dur)
+            x = decision_onset - decision_dur
+            print(x)
+
+            #while timer.getTime() < (decision_onset - (decision_dur)):
+            while timer.getTime() < decision_dur:
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Offer $%s' % resp_left
@@ -447,7 +454,8 @@ def do_run(run, trials):
             trials.addData('decision_onset', decision_onset)
 
 
-            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
+            #while timer.getTime() < (decision_onset - (decision_dur)):
+            while timer.getTime() < decision_dur:
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Give $%s' % resp_left
@@ -545,21 +553,17 @@ def do_run(run, trials):
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
     endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 360
-    buffer_dur = 10
-    total_dur = expected_dur + buffer_dur
-    if globalClock.getTime() < total_dur:
-        endTime = (total_dur - globalClock.getTime())
-    else:
-        endTime = buffer_dur
-    core.wait(endTime)
-    print("globalClock.getTime()")
+    #expected_dur = 60
+    #buffer_dur = 5
+    #total_dur = expected_dur + buffer_dur
+    #if globalClock.getTime() < total_dur:
+    #    endTime = (total_dur - globalClock.getTime())
+    #else:
+    #    endTime = buffer_dur
+    #core.wait(endTime)
+    #print("globalClock.getTime()")
 
-    run_over_screen.draw()
-    win.flip()
-    core.wait(4)
-
-for run, trials in enumerate([trials_run1, trials_run2]):
+for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
 
 # Exit
