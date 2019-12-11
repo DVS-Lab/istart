@@ -244,6 +244,7 @@ def do_run(run, trials):
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
             timer.reset()
+            event.clearEvents()
 
             #ISI
             ISI_onset = globalClock.getTime()
@@ -338,6 +339,8 @@ def do_run(run, trials):
 
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
+
+            event.clearEvents()
 
             #ISI
             ISI_onset = globalClock.getTime()
@@ -437,6 +440,7 @@ def do_run(run, trials):
             trials.addData('endowment_offset', endowment_offset)
 
             timer.reset()
+            event.clearEvents()
 
             #ISI
             ISI_onset = globalClock.getTime()
