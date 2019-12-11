@@ -33,7 +33,7 @@ clc
 % Make 200 trials.
 
 trials= 36; % number of conditions
-subjects = 100; % number of total possible subjects
+subjects = 200; % number of total possible subjects
 runs = 2;
 
 %% Endowment Distribution
@@ -327,9 +327,10 @@ for jj=1:subjects
                  row = participant((Recipient_Ind(ii)),:);
                  % Now we take the shuffled_proposer for the ii row. And multiply by the endowment.
                  options = round(row(3) * shuffled_recipient(ii,:));
-                 options = round(row(3) * shuffled_proposer(ii,:));
                  options = round(options);
-                 options = [row,options]; 
+                 add = [options,0];
+                 add = add(randperm(length(add)));
+                 options = [row,add]; 
                  recipient = [recipient; options]; % Concatenate
             end
 
@@ -342,7 +343,7 @@ for jj=1:subjects
     % Convert the file into an array. Put a header for each column.
 
     participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = ['Subject_' num2str(jj) '_run_' num2str(aa) '.csv'];
+    name = ['Subject_' sprintf('%04d',jj+1000) '_run_' num2str(aa) '.csv'];
 
     % Save array as a CSV file
 
