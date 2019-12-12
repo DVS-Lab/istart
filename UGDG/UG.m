@@ -127,7 +127,7 @@ end
 
 % Dave's Code:
 
-ITI_list = [repmat(2,1,round(trials*(18/36))) repmat(4,1,round(trials*(10/36))) repmat(6,1,round(trials*(5/36))) repmat(8,1,round(trials*(3/36)))];
+ITI_list = [repmat(1,1,round(trials*(18/36))) repmat(3,1,round(trials*(10/36))) repmat(5,1,round(trials*(5/36))) repmat(8,1,round(trials*(3/36)))];
 ITI_list = ITI_list(randperm(length(ITI_list)))';
 
 % Participant
@@ -180,7 +180,7 @@ ITI_Matrix = [];
 
 % Dave's code:
 
-ISI_list = [repmat(2,1,round(20/36*trials)) repmat(3.5,1,round(10/36*trials)) repmat(5,1,round(6/36*trials))];
+ISI_list = [repmat(1,1,round(20/36*trials)) repmat(2.5,1,round(10/36*trials)) repmat(4,1,round(6/36*trials))];
 ISI_list = ISI_list(randperm(length(ISI_list)));
 ISI_list = (ISI_list)'; %shaving 1.5 seconds to account for "WAITING" screen
 

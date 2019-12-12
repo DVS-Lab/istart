@@ -1,106 +1,163 @@
 function convertUG_BIDS(subj)
 maindir = pwd;
 
-try
+%try
+
+
+for r = 0:1
     
-
-    for r = 0:1
-
-        % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
-        fname = fullfile(maindir,'psychopy','logs',num2str(subj),sprintf('sub-%03d_task-ultimatum_run-%d_raw.csv',subj,r));
-        if exist(fname,'file')
-            fid = fopen(fname,'r');
+    % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
+    fname = fullfile(maindir,'logs',num2str(subj),sprintf('sub-%04d_task-ultimatum_run-%d_raw.csv',subj,r)); % Psychopy taken out from Logs to make work for now.
+    if exist(fname,'file')
+        fid = fopen(fname,'r');
+    else
+        fprintf('sub-%d -- Let''s Make a Deal Game, Run %d: No data found.\n', subj, r+1)
+        continue;
+    end
+    C = textscan(fid,repmat('%f',1,23),'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
+    fclose(fid);
+    
+    
+    % "Feedback" is the offer value (out of $20)
+    
+    decision_onset = C{16};
+    endowment_onset = C{12};
+    endowment_offset = C{13};
+    onset = C{11};
+    RT = C{18};
+    duration = C{21};
+    Block = C{3};
+    Endowment = C{4};
+    response = C{17};
+    response = round(response);
+    L_Option = C{7};
+    R_Option = C{8};
+    
+    fname = sprintf('sub-%03d_task-ultimatum_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
+    output = fullfile(maindir,'bids',['sub-' num2str(subj)],'func');
+    if ~exist(output,'dir')
+        mkdir(output)
+    end
+    myfile = fullfile(output,fname);
+    fid = fopen(myfile,'w');
+    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
+    
+    for t = 1:length(onset);
+        
+        
+        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
+        if (Block(t) == 1)
+            trial_type = 'dec_ug-prop';
+        elseif (Block(t) == 2)
+            trial_type = 'dec_dg-prop';
+        elseif (Block(t) == 3)
+            trial_type = 'dec_ug-resp';
         else
-            fprintf('sub-%d -- Let''s Make a Deal Game, Run %d: No data found.\n', subj, r+1)
-            continue;
+            keyboard
         end
-        C = textscan(fid,repmat('%f',1,17),'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
-        fclose(fid);
-
         
-        % "Feedback" is the offer value (out of $20)
+        % 2 is reject
+        % 3 is accept
+        % 999 is miss
         
-        onset = C{10};
-        RT = C{12};
-        duration = C{15};
-        IsFairBlock = C{2};
-        Partner = C{5};
-        Offer = C{4};
-        response = C{11};
+        % L_option
+        % R_Option
         
-        fname = sprintf('sub-%03d_task-ultimatum_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
-        output = fullfile(maindir,'bids',['sub-' num2str(subj)],'func');
-        if ~exist(output,'dir')
-            mkdir(output)
+        if response(t) == 999
+            fprintf(fid,'%f\t%f\t%s\t%s\t%d\n',decision_onset(t),RT(t),'missed_trial','n/a', Endowment(t));
         end
-        myfile = fullfile(output,fname);
-        fid = fopen(myfile,'w');
-        fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tOffer\n');
         
-        for t = 1:length(onset);
-
-            %{
-  if subj_gen==0 and subj_eth==0 and subj_age > 35:
-    stim_map = {
-    '3': 'olderadultMale_C', --> IN-GROUP
-    '2': 'youngadultMale_C', --> OUT-GROUP
-    '1': 'computer',
-    }
-        
-            %}
-            
-            
-            %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
-            if (IsFairBlock(t) == 1) && (Partner(t) == 1)
-                trial_type = 'computer_fair';
-            elseif (IsFairBlock(t) == 1) && (Partner(t) == 2)
-                trial_type = 'ingroup_fair';
-            elseif (IsFairBlock(t) == 1) && (Partner(t) == 3)
-                trial_type = 'outgroup_fair';
-            elseif (IsFairBlock(t) == 0) && (Partner(t) == 1)
-                trial_type = 'computer_unfair';
-            elseif (IsFairBlock(t) == 0) && (Partner(t) == 2)
-                trial_type = 'ingroup_unfair';
-            elseif (IsFairBlock(t) == 0) && (Partner(t) == 3)
-                trial_type = 'outgroup_unfair';
-            else
-                keyboard
-            end
-            
-            % 2 is reject
-            % 3 is accept
-            
+        if Block(t) == 3
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',onset(t),duration(t),['event_reject_' trial_type],RT(t),Offer(t));
-            elseif response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',onset(t),duration(t),['event_accept_' trial_type],RT(t),Offer(t));
-            elseif response(t) == 999
-                fprintf(fid,'%f\t%f\t%s\t%s\t%d\n',onset(t),duration(t),'missed_trial','n/a', Offer(t));
+                if round(L_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t));
+                end
             end
             
-            block_starts = [1 9 17 25 33 41 49 57 65];
-            if ismember(t,block_starts)
-                fprintf(fid,'%f\t%f\t%s\t%s\t%s\n',onset(t),33.5,['block_' trial_type],'n/a','n/a');
+            if response(t) == 3
+                if round(R_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t));
+                end
             end
-            
         end
-        fclose(fid);
         
-        %display payment information
-        rand_trial = randsample(1:72,1);
-        if response(rand_trial) == 2
-            fprintf('sub-%d -- Let''s Make a Deal Game, Run %d: On trial %d, Participant REJECTED the deal and walks away with $0.\n', subj, r+1, rand_trial);
-        elseif response(rand_trial) == 3
-            fprintf('sub-%d -- Let''s Make a Deal Game, Run %d: On trial %d, Participant ACCEPTED the deal and walks away with $%.2f.\n', subj, r+1, rand_trial, Offer(rand_trial));
-        elseif response(rand_trial) == 999
-            fprintf('sub-%d -- Let''s Make a Deal Game, Run %d: On trial %d, Participant did not respond and walks away with $0.\n', subj, r+1, rand_trial);
+        
+        if Block(t) == 2
+            if response(t) == 2
+                if L_Option(t) > R_Option(t);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                end
+            end
+            
+            
+            if response(t) == 3
+                if L_Option(t) > R_Option(t);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t));
+                end
+            end
         end
+        
+        if Block(t) == 1
+            if response(t) == 2
+                if L_Option(t) > R_Option(t);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                end
+            end
+            
+            if response(t) == 3
+                if L_Option(t) > R_Option(t);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t));
+                end
+            end
+        end
+        
+        %% Adding in the cue onsets
+        
+        %cue_dict
+        %cue_ug-resp
+        %cue_ug-prop
+        
+        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
+        if (Block(t) == 1)
+            trial_type = 'cue_dict';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        elseif (Block(t) == 2)
+            trial_type = 'cue_ug-resp';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        elseif (Block(t) == 3)
+            trial_type = 'cue_ug-prop';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        else
+            keyboard
+        end
+        
+        
     end
     
     
-catch ME
-    disp(ME.message)
-    msg = sprintf('check line %d', ME.stack.line);
-    disp(msg);
-    keyboard
+    % for t = 1:length(onset);
+    %
+    %     if Block(t) == 1
+    
+    % catch ME
+    %     disp(ME.message)
+    %     msg = sprintf('check line %d', ME.stack.line);
+    %     disp(msg);
+    %     keyboard
+    
+    fopen(fid); % Changed from fclose
+    
 end
+
