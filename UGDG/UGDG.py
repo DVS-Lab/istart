@@ -86,9 +86,14 @@ cueStimTriText = visual.TextStim(win,text = "Partner cannot reject offer.",pos=(
 outcome_stim = visual.TextStim(win, pos = (0,-2.5),text='')
 
 #instructions
-instruct_screen0 = visual.TextStim(win, text="Welcome to Let's Make a Deal!\n\nIn this task you will be making decisions involving sending money to another person.\n", pos = (0,1), wrapWidth=20, height = 1.2)
-instruct_screen1 = visual.TextStim(win, text = "Remember, you will play 3 different types of trials in this task.", pos = (0,5), wrapWidth=20, height = 1.2)
-instruct_screen2 = visual.TextStim(win, text = 'Do you have any questions?',pos = (0,1),wrapWidth=20,height=1.2)
+instruct_screen = visual.TextStim(win, text="Welcome to Let's Make a Deal!\n\nIn this task you will be making decisions involving sending money to another person.\n", pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text = 'On most trials, you will be given between $15-25.\n\nOn some trials, you will decide how much to share with your partner. You will keep the remainder.', pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen3 = visual.TextStim(win, text = 'On other trials, your partner will have the opportunity to reject your offer. If your partner rejects your offer, you will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen4 = visual.TextStim(win, text = 'Sometimes you will receive offers from another person, which you can either accept or reject.\n\nIf you reject the offer, both you and your partner will earn $0.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen5 = visual.TextStim(win, text = 'On all trials, if you would like to select the option on the left side of the screen, press Button 2.\n\nIf you would like to select the option on the right side of the screen, press Button 3.',pos = (0,1), wrapWidth=20, height = 1.2)
+instruct_screen6 = visual.TextStim(win, text = "You will know which type of trial it will be by the presentation of a unique cue designating your role and your partner's role.", pos = (0,5), wrapWidth=20, height = 1.2)
+instruct_screen7 = visual.TextStim(win, text = 'The choices you will see are from people who have participated in past studies. Your choices will be used in future studies with real people.\n\nOne trial will be randomly selected at the end of the study and you will be paid based on its result.',pos = (0,1),wrapWidth=20,height=1.2)
+instruct_screen8 = visual.TextStim(win, text = 'Do you have any questions?',pos = (0,1),wrapWidth=20,height=1.2)
 
 
 #exit
@@ -137,11 +142,27 @@ print("got to check 2")
 
 # main task loop
 # Instructions
-instruct_screen0.draw()
+instruct_screen.draw()
 win.flip()
 event.waitKeys(keyList=('2'))
 
-instruct_screen1.draw()
+instruct_screen2.draw()
+win.flip()
+event.waitKeys(keyList=('2'))
+
+instruct_screen3.draw()
+win.flip()
+event.waitKeys(keyList=('2'))
+
+instruct_screen4.draw()
+win.flip()
+event.waitKeys(keyList=('2'))
+
+instruct_screen5.draw()
+win.flip()
+event.waitKeys(keyList=('2'))
+
+instruct_screen6.draw()
 sampleImage1 = os.path.join(expdir,'Images','UGResponder_circle.png')
 sampleImage2 = os.path.join(expdir,'Images','UGProposer_sq.png')
 sampleImage3 = os.path.join(expdir,'Images','DGProposer_triangle.png')
@@ -160,7 +181,11 @@ sampleStimText3.draw()
 win.flip()
 event.waitKeys(keyList=('2'))
 
-instruct_screen2.draw()
+instruct_screen7.draw()
+win.flip()
+event.waitKeys(keyList=('2'))
+
+instruct_screen8.draw()
 win.flip()
 event.waitKeys(keyList=('2'))
 
@@ -213,7 +238,6 @@ def do_run(run, trials):
                 offer_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
                 endowment_offset = globalClock.getTime()
                 trials.addData('endowment_offset', endowment_offset)
 
@@ -233,8 +257,6 @@ def do_run(run, trials):
 
             timer.reset()
 
-            event.clearEvents()
-
             resp_val=None
             resp_onset=None
 
@@ -242,7 +264,7 @@ def do_run(run, trials):
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < decision_dur:
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 cueStim.draw()
                 resp_text_accept.draw()
                 resp_text_reject.draw()
@@ -296,7 +318,6 @@ def do_run(run, trials):
                 cueStim.draw()
                 cueStimSqText.draw()
                 win.flip()
-                core.wait(1)
 
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
@@ -308,14 +329,11 @@ def do_run(run, trials):
                 endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
 
             resp_val=None
             resp_onset=None
 
             timer.reset()
-
-            event.clearEvents()
 
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
@@ -335,7 +353,7 @@ def do_run(run, trials):
             decision_onset = globalClock.getTime()
             trials.addData('decision_onset', decision_onset)
 
-            while timer.getTime() < decision_dur:
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Offer $%s' % resp_left
@@ -393,7 +411,6 @@ def do_run(run, trials):
                 cueStim.draw()
                 cueStimTriText.draw()
                 win.flip()
-                core.wait(1)
 
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
@@ -405,7 +422,6 @@ def do_run(run, trials):
                 endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
 
             resp_val=None
             resp_onset=None
@@ -414,8 +430,6 @@ def do_run(run, trials):
             trials.addData('endowment_offset', endowment_offset)
 
             timer.reset()
-
-            event.clearEvents()
 
             #ISI
             ISI_onset = globalClock.getTime()
@@ -433,7 +447,7 @@ def do_run(run, trials):
             trials.addData('decision_onset', decision_onset)
 
 
-            while timer.getTime() < decision_dur:
+            while timer.getTime() < (globalClock.getTime() + (decision_dur)):
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
                 respcLeft = 'Give $%s' % resp_left

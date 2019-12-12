@@ -9,7 +9,8 @@ clc
 
 % Change log
 
-
+% 12/06/2019: Round the dollar amounts. Fixed the UG Recipient amounts
+% presented.
 % 12/06/2019: blocks reverted because Python code has them.
 % 12/06/2019: This version now has trial_types instead of blocks
 
@@ -32,7 +33,7 @@ clc
 % Make 200 trials.
 
 trials= 36; % number of conditions
-subjects = 100; % number of total possible subjects
+subjects = 1000; % number of total possible subjects
 runs = 2;
 
 %% Endowment Distribution
@@ -181,7 +182,7 @@ ITI_Matrix = [];
 
 ISI_list = [repmat(2,1,round(20/36*trials)) repmat(3.5,1,round(10/36*trials)) repmat(5,1,round(6/36*trials))];
 ISI_list = ISI_list(randperm(length(ISI_list)));
-ISI_list = (ISI_list - 1.5)'; %shaving 1.5 seconds to account for "WAITING" screen
+ISI_list = (ISI_list)'; %shaving 1.5 seconds to account for "WAITING" screen
 
 ISI_Matrix = [];
 
@@ -341,7 +342,7 @@ for jj=1:subjects
     % Convert the file into an array. Put a header for each column.
 
     participant = array2table(participant(1:end,:),'VariableNames', {'nTrial', 'Block', 'Endowment', 'ITI', 'ISI', 'L_Option', 'R_Option' });
-    name = ['Subject_' num2str(jj) '_run_' num2str(aa) '.csv'];
+    name = ['Subject_' sprintf('%04d',jj) '_run_' num2str(aa) '.csv'];
 
     % Save array as a CSV file
 
