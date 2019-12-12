@@ -1,0 +1,8 @@
+onset	duration	trial_type	response_time	Offer
+4.008521	3.517536	accept_dec_ug-respr	0.818449	17
+4.008521	33.500000	block_dec_ug-respr	n/a	n/a
+19.096530	3.516889	accept_dec_dg-prop	1.283764	21
+31.681547	3.512335	accept_dec_ug-prop	1.019463	19
+45.264378	3.515072	accept_dec_dg-prop	1.339465	15
+56.347157	3.513987	accept_dec_ug-prop	0.840251	15
+73.419846	3.514671	reject_dec_ug-prop	0.846615	15
