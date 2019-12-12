@@ -299,7 +299,7 @@ def do_run(run, trials):
                     offer_text.setText(partnerOffer)
                     offer_text.draw()
                     win.flip()
-                    core.wait(.5)
+                    core.wait((decision_dur - rt + .5))
                     decision_offset = globalClock.getTime()
                     break
                 else:
@@ -401,7 +401,7 @@ def do_run(run, trials):
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
-                    core.wait(.5)
+                    core.wait((decision_dur - rt + .5))
                     decision_offset = globalClock.getTime()
                     break
                 else:
@@ -497,7 +497,7 @@ def do_run(run, trials):
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
-                    core.wait(.5)
+                    core.wait((decision_dur - rt + .5))
                     decision_offset = globalClock.getTime()
                     break
                 else:
