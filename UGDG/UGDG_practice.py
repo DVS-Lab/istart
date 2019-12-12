@@ -232,9 +232,12 @@ def do_run(run, trials):
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
                 trials.addData('endowment_onset', endowment_onset)
-                partner_offer = trial['L_Option']
+                if trial['L_Option']=='0':
+                    partner_offer = trial['R_Option']
+                else:
+                    partner_offer = trial['L_Option']
                 endowment = trial['Endowment']
-                partnerOffer = 'Partner is given $%s.\nPartner offers you: $%s.' % (endowment, partner_offer)
+                partnerOffer = 'Partner is given $%s\nPartner offers you: $%s' % (endowment, partner_offer)
                 offer_text.setText(partnerOffer)
                 cueStim.draw()
                 cueStimCirText.draw()
