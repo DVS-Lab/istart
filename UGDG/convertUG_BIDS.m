@@ -64,7 +64,7 @@ for r = 0:1
         % R_Option
         
         if response(t) == 999
-            fprintf(fid,'%f\t%f\t%s\t%s\t%d\n',decision_onset(t),RT(t),'missed_trial','n/a', Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',decision_onset(t),4,'missed_trial','n/a', Endowment(t));
         end
         
         if Block(t) == 3
