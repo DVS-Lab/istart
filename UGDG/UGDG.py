@@ -471,8 +471,8 @@ def do_run(run, trials):
                     endowment_text.setText(endowmentOffer)
                     endowment_text.draw()
                     win.flip()
-                    core.wait(.5)
-                    decision_offset = globalClock.getTime()
+                    core.wait((decision_dur - rt + .5))
+                    decision_offset=globalClock.getTime()
                     break
                 else:
                     resp_val = 999
