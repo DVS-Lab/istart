@@ -1,4 +1,4 @@
-%function MID2(isscan, subnum)
+MID %function MID2(isscan, subnum)
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
@@ -222,6 +222,7 @@ for t = 1:length(trial_cond)
         output.target_starts(t) = targetST-runST;
         output.RT(t) = RT(1);
         output.thresh(t) = RT_thresh(trial_cond(t));  
+        output.trial_type(t) = trial_cond(t);
         
         Screen('DrawTexture', Window, fix1);
         Screen('Flip', Window);
