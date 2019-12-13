@@ -356,7 +356,7 @@ for i in range(len(R_trials)):
         win.close()
         core.quit
 
-R_resp=pd.DataFrame(data=responses,columns=['LotisLeft','Lot_per','Lot_mon','Lot_color','Sure_mon','dist','response','RT']]
+R_resp=pd.DataFrame(data=responses,columns=['LotisLeft','Lot_per','Lot_mon','Lot_color','Sure_mon','dist','response','RT'])
 R_resp.to_csv("../data/sub-%s/sub-%s_task-risk_events.csv"%(subj_id,subj_id),index = False)
        
 for page in A_inst:
@@ -377,7 +377,7 @@ for i in range(len(A_trials)):
     if 'escape' in resp:
         win.close()
         core.quit()
-A_resp=pd.DataFrame(data=responses,columns=np.concatenate(['Risk_per','Money','Color','Amb','RiskisLeft'],['response','RT','dist']]))
+A_resp=pd.DataFrame(data=responses,columns=np.concatenate(['Risk_per','Money','Color','Amb','RiskisLeft'],['response','RT','dist']))
 A_resp.to_csv("../data/sub-%s/sub-%s_task-ambiguity_events.csv"%(subj_id,subj_id),index = False)
 
 win.close()
