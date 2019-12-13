@@ -202,7 +202,7 @@ def do_run(run, trials):
                 cueStim.draw()
                 cueStimCirText.draw()
                 win.flip()
-                core.wait(1)
+                #core.wait(1)
 
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
@@ -215,9 +215,7 @@ def do_run(run, trials):
                 endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
-                endowment_offset = globalClock.getTime()
-                trials.addData('endowment_offset', endowment_offset)
+                #core.wait(1)
 
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
@@ -318,9 +316,9 @@ def do_run(run, trials):
                 cueStim.draw()
                 cueStimSqText.draw()
                 win.flip()
-                core.wait(1)
+                #core.wait(1)
 
-            while timer.getTime() >= 1 and timer.getTime() <= 2:
+            while timer.getTime() >=1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
                 trials.addData('endowment_onset', endowment_onset)
                 endowment = trial['Endowment']
@@ -331,17 +329,15 @@ def do_run(run, trials):
                 endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
+                #core.wait(1)
+            endowment_offset = globalClock.getTime()
+            trials.addData('endowment_offset', endowment_offset)
 
             resp_val=None
             resp_onset=None
 
             timer.reset()
-
             event.clearEvents()
-
-            endowment_offset = globalClock.getTime()
-            trials.addData('endowment_offset', endowment_offset)
 
             #ISI
             ISI_onset = globalClock.getTime()
@@ -418,7 +414,7 @@ def do_run(run, trials):
                 cueStim.draw()
                 cueStimTriText.draw()
                 win.flip()
-                core.wait(1)
+                #core.wait(1)
 
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
@@ -431,16 +427,14 @@ def do_run(run, trials):
                 endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
-                core.wait(1)
-
-            resp_val=None
-            resp_onset=None
+                #core.wait(1)
 
             endowment_offset = globalClock.getTime()
             trials.addData('endowment_offset', endowment_offset)
 
+            resp_val=None
+            resp_onset=None
             timer.reset()
-
             event.clearEvents()
 
             #ISI
