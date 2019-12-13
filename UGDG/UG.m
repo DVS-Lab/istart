@@ -101,7 +101,7 @@ end
 ITI_list = [repmat(1,1,18) repmat(3,1,10) repmat(5,1,5) repmat(8,1,3)];
 ITI_list = ITI_list(randperm(length(ITI_list)))';
 
-ITI_Matrix = []; % DVS: Necessary? only need ITI_list
+ITI_Matrix = []; 
 for ii = 1:subjects
     Temp_ITI = ITI_list(randperm(length(ITI_list))); % take the ITI_list and shuffle
     ITI_Matrix = [ITI_Matrix, Temp_ITI]; % Add it in
@@ -110,28 +110,34 @@ end
 
 %% ISI Waiting Matrix
 
-ISI_list = [repmat(1,1,20) repmat(2.5,1,10) repmat(4,1,6)];
-ISI_list = ISI_list(randperm(length(ISI_list)));
+ISI_list = [repmat(1,1,20) repmat(2.5,1,10) repmat(4,1,6)] + .5; % Added .5 seconds to the list.
+ISI_list = ISI_list(randperm(length(ISI_list)))';
 
-ISI_Matrix = []; %DVS: Neccesary? only need ISI_list
+ISI_Matrix = [];
 for ii = 1:subjects
-    Temp_ISI = ISI_list(randperm(length(ISI_list))); % take the ISI_list and shuffle
+    Temp_ISI = ISI_list(randperm(length(ISI_list))); % take the ITI_list and shuffle
     ISI_Matrix = [ISI_Matrix, Temp_ISI]; % Add it in
 end
 
 
+
 %% Proposer Matrix for DG and UG
+
 A = combnk(0.06:0.13:0.48,2); % 6 possible combinations we will use for proposers
 B = fliplr(A); % To counterbalance.
-Proposer_Options = [A; B;A;B;A;B;A;B;A;B;A;B;]; % Now the options are counterbalanced
+Proposer_Options = [A;B;A;B;A;B;]; % Now the options are counterbalanced
 
-% We now have a pool of 50 combinations to choose from.
-% DVS: No, should be 36 or 24 rows? No choosing and nothing left to chance. 
+% We now have a pool of 36 combinations to choose from.
+
+% ((((DVS: No, should be 36 or 24 rows? No choosing and nothing left to
+% chance. )))
+% (((DS: Fixed)))
 
 % We need to randomly select 48 of these rows.
 
-rows =[1:(trials*(2/3))]; % Number of desired rows
+rows =[1:(trials)]; % Number of desired rows
 shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through 48.
+
 %shuffled_rows = shuffled_rows(1:2)'; % We need two items
 
 % Take those elements from Proposer_Options and add in six randomly chosen
@@ -147,12 +153,16 @@ end
 
 
 %% Recipient Matrix for UG
-Recipient_Options = [0.05 0.15 0.25 0.35 0.45]; % Pool of options. DVS: These should match above. 
-Recipient_Options = [Recipient_Options,Recipient_Options,Recipient_Options,Recipient_Options,Recipient_Options]; % Repeated five times.
+
+% Fixed to address DVS comment that proportions are the same.
+
+A = combnk(0.06:0.13:0.48,2); % 6 possible combinations we will use for proposers
+B = fliplr(A); % To counterbalance.
+Recipient_Options = [A;B;A;B;A;B;]; % Now the options are counterbalanced
 
 % Shuffle the recipient options
 
-rows =[1:(trials*(1/3))]; % Number of desired rows
+rows =[1:(trials)]; % Number of desired rows
 shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through rows
 
 % Pick a random number between 1 and 24. Index that number from
