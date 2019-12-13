@@ -74,13 +74,13 @@ sampleStimText2 = visual.TextStim(win,text = "You propose a split of money.\nYou
 sampleStimText3 = visual.TextStim(win,text = "You propose a split of money.\nYour partner cannot respond.",pos = (12,-8),wrapWidth = 20, height = 0.8)
 #resp_text_reject = visual.TextStim(win,text="Reject Offer", pos =(-7,-4.8), height=1, alignHoriz="center")
 #resp_text_accept = visual.TextStim(win,text="Accept Offer", pos =(7,-4.8), height=1, alignHoriz="center")
-offer_text = visual.TextStim(win,pos = (0,-3.5), height=1, alignHoriz="center")
-resp_text_left = visual.TextStim(win, pos =(-7,-5.2), height=1, alignHoriz="center")
-resp_text_right = visual.TextStim(win, pos =(7,-5.2), height=1, alignHoriz="center")
+offer_text = visual.TextStim(win,pos = (0,-4.0), height=1, alignHoriz="center")
+resp_text_left = visual.TextStim(win, pos =(-7,-5), height=1, alignHoriz="center")
+resp_text_right = visual.TextStim(win, pos =(7,-5), height=1, alignHoriz="center")
 endowment_text = visual.TextStim(win, pos =(0,-3.0), height=1, alignHoriz="center")
-cueStimSqText = visual.TextStim(win,text = "Partner can reject offer",pos=(0,-1.5), wrapWidth=20,height = 1,alignHoriz="center")
-cueStimTriText = visual.TextStim(win,text = "Partner cannot reject offer",pos=(0,-1.5), wrapWidth=20,height = 1,alignHoriz="center")
-cueStimCirText = visual.TextStim(win,text = "You can reject offer", pos=(0,-1.5), wrapWidth=20,height=1,alignHoriz="center")
+cueStimSqText = visual.TextStim(win,text = "Partner can reject offer",pos=(0,-1.5), wrapWidth=20,height = 1)
+cueStimTriText = visual.TextStim(win,text = "Partner cannot reject offer",pos=(0,-1.5), wrapWidth=20,height = 1)
+cueStimCirText = visual.TextStim(win,text = "You can reject offer", pos=(0,-1.5), wrapWidth=20,height=1)
 
 
 #outcome screen
@@ -232,16 +232,12 @@ def do_run(run, trials):
             while timer.getTime() >= 1 and timer.getTime() <= 2:
                 endowment_onset = globalClock.getTime()
                 trials.addData('endowment_onset', endowment_onset)
-                if trial['L_Option']=='0':
-                    partner_offer = trial['R_Option']
-                else:
-                    partner_offer = trial['L_Option']
                 endowment = trial['Endowment']
-                partnerOffer = 'Partner is given $%s\nPartner offers you: $%s' % (endowment, partner_offer)
-                offer_text.setText(partnerOffer)
+                endowmentText = 'Partner was given $%s' % (endowment)
+                endowment_text.setText(endowmentText)
                 cueStim.draw()
                 cueStimCirText.draw()
-                offer_text.draw()
+                endowment_text.draw()
                 #pictureStim.draw()
                 win.flip()
                 core.wait(1)
@@ -276,8 +272,14 @@ def do_run(run, trials):
             while timer.getTime() < decision_dur:
                 cueStim.draw()
                 cueStimCirText.draw()
+                if trial['L_Option']=='0':
+                    partner_offer = trial['R_Option']
+                else:
+                    partner_offer = trial['L_Option']
+                partnerOffer = 'Partner offers you: $%s' % (partner_offer)
                 resp_left = trial['L_Option']
                 resp_right = trial['R_Option']
+
                 if resp_left == '0':
                     resp_text_left.setText('Reject offer')
                     resp_text_right.setText('Accept offer')
@@ -289,6 +291,7 @@ def do_run(run, trials):
                 #resp_text_accept.draw()
                 #resp_text_reject.draw()
                 #pictureStim.draw()
+                endowment_text.draw()
                 offer_text.setText(partnerOffer)
                 offer_text.draw()
                 win.flip()
@@ -314,6 +317,7 @@ def do_run(run, trials):
                     cueStimCirText.draw()
                     resp_text_left.draw()
                     resp_text_right.draw()
+                    endowment_text.draw()
                     #pictureStim.draw()
                     offer_text.setText(partnerOffer)
                     offer_text.draw()
@@ -327,7 +331,6 @@ def do_run(run, trials):
                     resp_onset = 999
                     outcome_txt = outcome_map[resp_val]
                     decision_offset = globalClock.getTime()
-
 
 
         elif trial['Block'] == '1': #UGProposer
