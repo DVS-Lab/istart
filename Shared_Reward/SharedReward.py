@@ -90,9 +90,9 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-trial_data_1 = [r for r in csv.DictReader(open('params/SR_blocks/sub-' + subj_id + '/sub-'
+trial_data_1 = [r for r in csv.DictReader(open('params/SR_blocks_NEW/sub-' + subj_id + '/sub-'
     + subj_id + '_run-01_design.csv','rU'))]
-trial_data_2  = [r for r in csv.DictReader(open('params/SR_blocks/sub-' + subj_id + '/sub-'
+trial_data_2  = [r for r in csv.DictReader(open('params/SR_blocks_NEW/sub-' + subj_id + '/sub-'
     + subj_id + '_run-02_design.csv','rU'))]
 
 #trial_data = [r for r in csv.DictReader(open('SharedReward_design.csv','rU'))]
@@ -279,7 +279,7 @@ def do_run(run, trials):
                 trials.addData('outcome_val',int(outcome_value))
 
 
-      
+
         #print outcome_txt
             outcome_text.setText(outcome_txt)
             outcome_money.setText(outcome_moneyTxt)
@@ -314,21 +314,21 @@ def do_run(run, trials):
 
 
     # Final Fixation screen after trials completed
-    fixation.draw()
-    win.flip()
+    #fixation.draw()
+    #win.flip()
     #core.wait(final_fixation_dur)
     os.chdir(subjdir)
     trials.saveAsWideText(fileName)
     os.chdir(expdir)
-    endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
-    expected_dur = 398
-    buffer_dur = 10
-    total_dur = expected_dur + buffer_dur
-    if globalClock.getTime() < total_dur:
-        endTime = (total_dur - globalClock.getTime())
-    else:
-        endTime = buffer_dur
-    core.wait(endTime)
+    #endTime = 0.01 # not sure if this will take a 0, so giving it 0.01 and making sure it is defined
+    #expected_dur = 398
+    #buffer_dur = 10
+    #total_dur = expected_dur + buffer_dur
+    #if globalClock.getTime() < total_dur:
+    #    endTime = (total_dur - globalClock.getTime())
+    #else:
+    #    endTime = buffer_dur
+    #core.wait(endTime)
     print(globalClock.getTime())
 
 for run, trials in enumerate([trials_run1, trials_run2]):
