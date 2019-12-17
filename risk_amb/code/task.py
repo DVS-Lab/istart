@@ -332,13 +332,13 @@ subj_id=subjDlg.data[0]
 os.makedirs("../data/sub-%s"%(subj_id),exist_ok=True)
 
 
-R_inst=["img0.jpg","img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg","img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"]
-A_inst=["img11.jpg","img12.jpg"]
+R_inst=[0,1,2,3,4,5,6,7,8,9,10]
+A_inst=[11,12,13,14,15,16,17,18,19,20,21]
 
 if len(subj_id) < 1: # Make sure participant entered name
     core.quit()
 for page in R_inst:
-    instruction(Stimdir+page)
+    instruction(Stimdir+"img%s.jpg"%(page))
     
 #LotisLeft 	Lot_per 	Lot_mon 	Lot_color 	Sure_mon 	dist
 #def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
@@ -360,7 +360,7 @@ R_resp=pd.DataFrame(data=responses,columns=['LotisLeft','Lot_per','Lot_mon','Lot
 R_resp.to_csv("../data/sub-%s/sub-%s_task-risk_events.csv"%(subj_id,subj_id),index = False)
        
 for page in A_inst:
-    instruction(Stimdir+page)
+    instruction(Stimdir+"img%s.jpg"%(page))
     
 #Risk_per 	Money 	Color 	Amb 	RiskisLeft
 #def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
