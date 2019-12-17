@@ -140,8 +140,8 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
     timer.reset()
     
     
-    core.wait(0.5)
-    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=5)
+    core.wait(0.3)
+    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=4.5)
     RT=timer.getTime()
 
         
@@ -151,11 +151,11 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
 
             
    
-    wait_sec=6-RT
+    wait_sec=5-RT
     focus.draw()
     win.flip()   
     core.wait(wait_sec)
-    core.wait(0.5)
+    core.wait(0.3)
     return keys,RT
 
 
@@ -267,8 +267,8 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     timer.reset()
     
     
-    core.wait(0.5)
-    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=3)
+    core.wait(0.3)
+    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=4.5)
     RT=timer.getTime()
     print(RT)
     
@@ -287,11 +287,11 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
         keys='No_resp'
         RT=3
         
-    wait_sec=6-RT
+    wait_sec=5-RT
     focus.draw()
     win.flip()   
     core.wait(wait_sec)
-    core.wait(0.5)
+    core.wait(0.3)
     return keys,RT,dist
 
 
