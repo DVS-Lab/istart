@@ -156,11 +156,15 @@ def do_run(run, trials):
     event.waitKeys(keyList=('equal'))
     globalClock.reset()
     studyStart = globalClock.getTime()
+    trials.addData('studyStart',studyStart)
 
     #Initial Fixation screen
     fixation.draw()
     win.flip()
+    initial_fixation_Onset = globalClock.getTime()
+    trials.addData('InitFixOnset',initial_fixation_Onset)
     core.wait(initial_fixation_dur)
+
 
 
     for trial in trials:
@@ -230,7 +234,8 @@ def do_run(run, trials):
 
         ###reset question mark color
         question.setColor('white')
-#outcome phase
+
+        #outcome phase
         timer.reset()
         #win.flip()
         outcome_onset = globalClock.getTime()
@@ -279,8 +284,6 @@ def do_run(run, trials):
                 trials.addData('outcome_val',int(outcome_value))
 
 
-
-        #print outcome_txt
             outcome_text.setText(outcome_txt)
             outcome_money.setText(outcome_moneyTxt)
             outcome_money.setColor(outcome_color)
@@ -296,6 +299,7 @@ def do_run(run, trials):
 
             duration = outcome_offset - decision_onset
             trials.addData('trialDuration', duration)
+
             event.clearEvents()
         print("got to check 3")
 
