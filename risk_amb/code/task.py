@@ -18,8 +18,8 @@ import pandas as pd
 # Ambiguity should need Amb_RL|Amb_type|Amb$|Risk%|Risk$
 lot_color=['red','green','blue']
 random.shuffle(lot_color)
-Prizes=[8]
-sure_prize=[5]
+Prizes=[13]
+sure_prize=[7]
 Lot_pers=np.array([0,10,20,30,40,50,60,70,80,90,100])
 # Distribution of lotteries
 wide_d=[0,0,0,0,1,1,1,1,2,2,8,8,9,9,9,9,10,10,10,10]
