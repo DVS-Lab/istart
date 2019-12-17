@@ -90,9 +90,9 @@ logging.setDefaultClock(globalClock)
 timer = core.Clock()
 
 #trial handler
-trial_data_1 = [r for r in csv.DictReader(open('params/SR_blocks_NEW/sub-' + subj_id + '/sub-'
+trial_data_1 = [r for r in csv.DictReader(open('params/SR_blocks/sub-' + subj_id + '/sub-'
     + subj_id + '_run-01_design.csv','rU'))]
-trial_data_2  = [r for r in csv.DictReader(open('params/SR_blocks_NEW/sub-' + subj_id + '/sub-'
+trial_data_2  = [r for r in csv.DictReader(open('params/SR_blocks/sub-' + subj_id + '/sub-'
     + subj_id + '_run-02_design.csv','rU'))]
 
 #trial_data = [r for r in csv.DictReader(open('SharedReward_design.csv','rU'))]
