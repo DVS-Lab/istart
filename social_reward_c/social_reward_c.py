@@ -1,4 +1,4 @@
-2###social_reward - Caleb Haynes 11/29/2019
+###social_reward - Caleb Haynes 11/29/2019
 from psychopy import visual, core, event, gui, data
 from psychopy.visual import ShapeStim
 import pandas as pd
