@@ -231,7 +231,7 @@ end
 if isscan == 0
     save([thePath.data '/' num2str(subnum) '/practice_array.mat'], 'RTs')
 elseif isscan == 1
-  save([thePath.data '/' num2str(subnum) '/output_' num2str(now) '.mat'], 'output')
+  save([thePath.data '/sub-' num2str(subnum) '/run-' num2str(whichrun) '_output-' num2str(now) '.mat'], 'output')
 end
 
 sca;
