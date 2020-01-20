@@ -12,19 +12,18 @@ try
             fprintf('sub-%d -- Gambling Game, Run %d: No data found.\n', subj, r+1)
             continue;
         end
-        C = textscan(fid,repmat('%f',1,19),'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
+        C = textscan(fid,[repmat('%f',1,9) '%s%s' repmat('%f',1,11)], 'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
         fclose(fid);
         
         % Partner is Friend=3, Stranger=2, Computer=1
         % Feedback is Reward=3, Neutral=2, Punishment=1
         
-        
-        onset = C{10};
-        RT = C{13};
-        duration = C{17};
-        block_types = C{6};
+        onset = C{12};
+        RT = C{15};
+        duration = C{19};
+        block_types = C{4};
         Partner = C{5};
-        feedback = C{3};
+        feedback = C{6};
         
         
         fname = sprintf('sub-%03d_task-sharedreward_run-%02d_events.tsv',subj,r+1); % need to make fMRI run number consistent with this?
