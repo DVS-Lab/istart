@@ -84,21 +84,21 @@ try
         end
         fclose(fid);
         
-        %rand_trial = randsample(1:72,1);
-        %if (Partner(rand_trial) == 1)
-        %    trial_type = 'Computer';
-        %elseif (Partner(rand_trial) == 2)
-        %    trial_type = 'Stranger';
-        %elseif (Partner(rand_trial) == 3)
-        %    trial_type = 'Friend';
-        %end
-        %if feedback(rand_trial) == 1 %punish
-        %    fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant LOSES $5 and %s LOSES $5.\n', subj, r+1, rand_trial, trial_type);
-        %elseif feedback(rand_trial) == 2 %neutral
-        %    fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant sees a card with a 5 on it.\n', subj, r+1, rand_trial);
-        %elseif feedback(rand_trial) == 3 %reward
-        %    fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant WINS $5 and %s WINS $5.\n', subj, r+1, rand_trial, trial_type);
-        %end
+        rand_trial = randsample(1:72,1);
+        if (Partner(rand_trial) == 1)
+            trial_type = 'Computer';
+        elseif (Partner(rand_trial) == 2)
+            trial_type = 'Stranger';
+        elseif (Partner(rand_trial) == 3)
+            trial_type = 'Friend';
+        end
+        if feedback(rand_trial) == 1 %punish
+            fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant LOSES $5 and %s LOSES $5.\n', subj, r+1, rand_trial, trial_type);
+        elseif feedback(rand_trial) == 2 %neutral
+            fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant sees a card with a 5 on it.\n', subj, r+1, rand_trial);
+        elseif feedback(rand_trial) == 3 %reward
+            fprintf('sub-%d -- Gambling Game, Run %d: On trial %d, Participant WINS $5 and %s WINS $5.\n', subj, r+1, rand_trial, trial_type);
+        end
         
     end
     
