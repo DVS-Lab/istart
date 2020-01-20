@@ -1,0 +1,4 @@
+onset	duration	trial_type	response_time
+0.000004	6.607997	event_stranger_punish	2.000000
+0.000004	33.500000	block_stranger_punish	n/a
+NaN	NaN	event_stranger_punish	NaN

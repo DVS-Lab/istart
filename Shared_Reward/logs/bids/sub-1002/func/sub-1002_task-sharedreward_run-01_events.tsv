@@ -1,0 +1,4 @@
+onset	duration	trial_type	response_time
+0.000004	7.158817	event_friend_punish	2.000000
+0.000004	33.500000	block_computer_reward	n/a
+NaN	NaN	event_friend_punish	NaN
