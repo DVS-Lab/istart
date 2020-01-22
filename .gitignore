@@ -1,11 +1,10 @@
-
 Social_NonSocial_Reward/.DS_Store
 .DS_Store
 UGDG/.DS_Store
 UGDG/UGDG_blocks/.DS_Store
-.DS_Store
 UGDG/.DS_Store
 UGDG/UGDG_blocks/.DS_Store
-.DS_Store
 Shared_Reward/Images/*
+Shared_Reward\Images\*
+Shared_Reward/Images/friend.png
 bids/*
