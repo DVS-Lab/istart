@@ -6,7 +6,7 @@
 #This cell imports out library and sets some global variables
 
 from psychopy import visual, core, event, data, logging,gui
-import pip
+
 import sys
 import os
 import csv
@@ -68,7 +68,7 @@ R_trials=R_trials.sample(frac=1).reset_index(drop=True)
 #display(R_trials.head())
 R_trials=R_trials.sort_values(by=['Lot_color'])
 
-aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in Lot_pers[[4,5,6,6.5,7,7.5,8]] for m in Prizes]
+aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in [30,35,40,45,50,55,60,65,70,75] for m in Prizes]
 A_trials=pd.DataFrame(data=aa_data,columns=['Risk_per','Money','Color','Amb'])
 A_trials['RiskisLeft'] = np.random.randint(0, 2, A_trials.shape[0])
 #A_trials=A_trials.sample(frac=1).reset_index(drop=True)
@@ -205,7 +205,7 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
      
     R_Outline.draw()
     R_Outline2.draw()
-    
+   
     Lot_a_win=visual.RadialStim(win=win,units="pix",name='Lot', color=[-1,-1,-1],opacity=1,
                           angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                           ori= -90.0,pos=(lot_pos,0), size=(300,300),visibleWedge=(0.0, shade))
@@ -217,6 +217,10 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     Lot_a_win.draw()
 
     #The Ambiguous Lottery has 4 parts the Outline, Win shade, Lose Shade, & ambiguity shade
+    if Amb_level==75:
+        orn=45
+    else:
+        orn=90
     A_Outline= visual.RadialStim( win=win, name='OUTLINE', color=col_code,opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 0, pos=(amb_pos,0), size=(400,400))
@@ -236,7 +240,7 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
                                 ori= 0, pos=(amb_pos,0), size=(300,300))
     cover= visual.RadialStim( win=win, name='rad2', color=[0.2,0.2,0.2],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
-                                ori= 90.0, pos=(amb_pos,0), size=(300,300),visibleWedge=(0.0,amb_shade))
+                                ori=orn, pos=(amb_pos,0), size=(300,300),visibleWedge=(0.0,amb_shade))
     
     A_lose.draw()
     A_win.draw()
@@ -244,10 +248,9 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     
     #AmbMoney=visual.TextStim(win=win,text="$ %s"%(money),pos=(amb_pos,50),bold=True)
     #AmbMoney.draw()
-    if Amb_level==100:
-        am_per_text="0% - 100%"
-    elif Amb_level==50:
-        am_per_text="25% - 75%"
+    
+    am_per_text="%s %% - %s %%"%(50-np.divide(Amb_level,2),50+np.divide(Amb_level,2))
+
     AmbPer=visual.TextStim(win=win,text=am_per_text,pos=(amb_pos,-50),bold=True)
     AmbPer.draw()
     
@@ -266,9 +269,9 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     win.flip()
     timer.reset()
     
-    
+    maxwait=4
     core.wait(0.3)
-    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=4.5)
+    keys=event.waitKeys(keyList=['f', 'j','escape'],maxWait=maxwait)
     RT=timer.getTime()
     print(RT)
     
@@ -285,9 +288,9 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     
     if not keys:
         keys='No_resp'
-        RT=3
+        RT=maxwait
         
-    wait_sec=5-RT
+    wait_sec=4.5-RT
     focus.draw()
     win.flip()   
     core.wait(wait_sec)
@@ -344,8 +347,8 @@ for page in R_inst:
 #def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
 
 
-#for i in range(2):
-for i in range(len(R_trials)):
+for i in range(2):
+#for i in range(len(R_trials)):
     row=R_trials.iloc[i]
     print(row)
     resp,RT=risk_choice(row[3],row[2],row[1],row[0],row[4])
