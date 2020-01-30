@@ -45,7 +45,7 @@ fix_iti = run.isi1;
 trial_cond = run.cond;
 
 backtick = '=';
-mkdir(fullfile(thePath.data,num2str(subnum)));
+mkdir([thePath.data '/sub-' num2str(subnum)]);
 
 RTs  =[];
 
@@ -230,7 +230,7 @@ for t = 1:length(trial_cond)
 end
 
 if isscan == 0
-    save([thePath.data '/' num2str(subnum) '/practice_array.mat'], 'RTs')
+    save([thePath.data '/sub-' num2str(subnum) '/practice_array.mat'], 'RTs')
 elseif isscan == 1
   save([thePath.data '/sub-' num2str(subnum) '/run-' num2str(whichrun) '_output.mat'], 'output')
 end
