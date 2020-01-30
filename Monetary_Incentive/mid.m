@@ -2,7 +2,13 @@
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%git 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%subnum - subject number is 0 for practice, real number if it is a run
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subnum = input('subnumber: ');
+isscan = input('is scan(practice = 0 scan = 1): ');
+whichrun = input('which run (1 or 2):'); 
+
 
 % Add this at top of new scripts for maximum portability due to unified names on all systems:
 KbName('UnifyKeyNames');
