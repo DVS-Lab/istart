@@ -68,7 +68,7 @@ R_trials=R_trials.sample(frac=1).reset_index(drop=True)
 #display(R_trials.head())
 R_trials=R_trials.sort_values(by=['Lot_color'])
 
-aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in [30,35,40,45,50,55,60,65,70,75] for m in Prizes]
+aa_data=[[r,m,c,Amb] for c in np.concatenate((lot_color,['yellow']))for Amb in [100,50]for r in [20,30,40,50,60,70,80,90] for m in Prizes]
 A_trials=pd.DataFrame(data=aa_data,columns=['Risk_per','Money','Color','Amb'])
 A_trials['RiskisLeft'] = np.random.randint(0, 2, A_trials.shape[0])
 #A_trials=A_trials.sample(frac=1).reset_index(drop=True)
@@ -347,8 +347,8 @@ for page in R_inst:
 #def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
 
 
-for i in range(2):
-#for i in range(len(R_trials)):
+#for i in range(2):
+for i in range(len(R_trials)):
     row=R_trials.iloc[i]
     print(row)
     resp,RT=risk_choice(row[3],row[2],row[1],row[0],row[4])
