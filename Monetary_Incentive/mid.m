@@ -2,7 +2,13 @@
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%git 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%subnum - subject number is 0 for practice, real number if it is a run
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subnum = input('subnumber: ');
+isscan = input('is scan(practice = 0 scan = 1): ');
+whichrun = input('which run (1 or 2):'); 
+
 
 % Add this at top of new scripts for maximum portability due to unified names on all systems:
 KbName('UnifyKeyNames');
@@ -39,7 +45,7 @@ fix_iti = run.isi1;
 trial_cond = run.cond;
 
 backtick = '=';
-mkdir(fullfile(thePath.data,num2str(subnum)));
+mkdir([thePath.data '/sub-' num2str(subnum)]);
 
 RTs  =[];
 
@@ -224,7 +230,7 @@ for t = 1:length(trial_cond)
 end
 
 if isscan == 0
-    save([thePath.data '/' num2str(subnum) '/practice_array.mat'], 'RTs')
+    save([thePath.data '/sub-' num2str(subnum) '/practice_array.mat'], 'RTs')
 elseif isscan == 1
   save([thePath.data '/sub-' num2str(subnum) '/run-' num2str(whichrun) '_output.mat'], 'output')
 end
