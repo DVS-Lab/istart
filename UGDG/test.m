@@ -2,9 +2,6 @@ maindir = pwd;
 
 %try
 
-subj = 1006;
-r = 1;
-
 for r = 0:1
     
     % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv

@@ -99,8 +99,8 @@ onset	duration	trial_type	response_time	Endowment	DeMeaned
 342.901820	2	cue_dict	n/a	15	n/a
 342.901820	2	cue_dict_parametric	n/a	15	-4.500000e+00
 363.482500	1.068899	dec_ug-prop_choice	1.068899	19	n/a
-360.949650	2	cue_dict	n/a	19	n/a
-360.949650	2	cue_dict_parametric	n/a	19	-5.000000e-01
+360.949650	2380.532170	2	cue_ug-prop_parametric	n/a	15
+-4.444444		n/a	19	-5.000000e-01
 375.025420	1.652887	dec_dg-prop_choice	1.652887	23	n/a
 370.991030	2	cue_ug-resp	n/a	23	n/a
 370.991030	2	cue_ug-resp_parametric	n/a	23	3
