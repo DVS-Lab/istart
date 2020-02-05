@@ -107,17 +107,17 @@ for r = 0:1
         if Block(t) == 1
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 end
             end
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 end
             end
         end

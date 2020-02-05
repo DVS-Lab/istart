@@ -11,10 +11,10 @@ onset	duration	trial_type	response_time	Endowment
 34.661620	1.837193	dec_dg-prop_choice	1.837193	17
 30.628054	2	cue_ug-resp	n/a	17	n/a
 30.628054	2	cue_ug-resp_parametric	n/a	17
-46.204590	1.636910	dec_ug-prop_choice	1.636910	25	n/a
+46.204590	1.636910	dec_ug-prop_choice	1.636910	25
 42.170704	2	cue_dict	n/a	25	n/a
 42.170704	2	cue_dict_parametric	n/a	25
-25.000000	61.247930	1.756352	dec_ug-prop_choice	1.756352	19	n/a
+25.000000	61.247930	1.756352	dec_ug-prop_choice	1.756352	19
 55.715580	2	cue_dict	n/a	19	n/a
 55.715580	2	cue_dict_parametric	n/a	19
 19.000000	69.291565	2.319395	dec_ug-resp_choice	2.319395	25
@@ -26,7 +26,7 @@ onset	duration	trial_type	response_time	Endowment
 91.875060	1.787438	dec_ug-resp_choice	1.787438	23
 87.842155	2	cue_ug-prop	n/a	23	n/a
 87.842155	2	cue_ug-prop_parametric	n/a	23
-103.418060	1.337022	dec_ug-prop_choice	1.337022	21	n/a
+103.418060	1.337022	dec_ug-prop_choice	1.337022	21
 99.384476	2	cue_dict	n/a	21	n/a
 99.384476	2	cue_dict_parametric	n/a	21
 21.000000	118.465360	2.352744	dec_ug-resp_choice	2.352744	19
@@ -41,7 +41,7 @@ onset	duration	trial_type	response_time	Endowment
 151.091770	1.435679	dec_dg-prop_choice	1.435679	19
 148.558150	2	cue_ug-resp	n/a	19	n/a
 148.558150	2	cue_ug-resp_parametric	n/a	19
-161.133290	2.152674	dec_ug-prop_choice	2.152674	21	n/a
+161.133290	2.152674	dec_ug-prop_choice	2.152674	21
 158.600050	2	cue_dict	n/a	21	n/a
 158.600050	2	cue_dict_parametric	n/a	21
 21.000000	169.173140	1.569657	dec_dg-prop_choice	1.569657
@@ -50,19 +50,19 @@ onset	duration	trial_type	response_time	Endowment
 179.214780	1.502589	dec_dg-prop_choice	1.502589
 15.000000	176.681400	2	cue_ug-resp	n/a	15	n/a
 176.681400	2	cue_ug-resp_parametric	n/a	15
-191.259100	0.967811	dec_ug-prop_choice	0.967811	15	n/a
+191.259100	0.967811	dec_ug-prop_choice	0.967811	15
 188.724600	2	cue_dict	n/a	15	n/a
 188.724600	2	cue_dict_parametric	n/a	15
 15.000000	200.814060	1.437681	dec_dg-prop_choice	1.437681
 19.000000	196.781300	2	cue_ug-resp	n/a	19	n/a
 196.781300	2	cue_ug-resp_parametric	n/a	19
-208.855880	1.135242	dec_ug-prop_choice	1.135242	19	n/a
+208.855880	1.135242	dec_ug-prop_choice	1.135242	19
 206.322360	2	cue_dict	n/a	19	n/a
 206.322360	2	cue_dict_parametric	n/a	19
 19.000000	218.897830	1.068278	dec_dg-prop_choice	1.068278	25
 216.363950	2	cue_ug-resp	n/a	25	n/a
 216.363950	2	cue_ug-resp_parametric	n/a	25
-228.938930	1.519462	dec_ug-prop_choice	1.519462	25	n/a
+228.938930	1.519462	dec_ug-prop_choice	1.519462	25
 226.405430	2	cue_dict	n/a	25	n/a
 226.405430	2	cue_dict_parametric	n/a	25
 25.000000	238.478940	2.271225	dec_ug-resp_choice	2.271225	19
@@ -71,16 +71,16 @@ onset	duration	trial_type	response_time	Endowment
 252.022840	1.838519	dec_dg-prop_choice	1.838519	23
 247.989870	2	cue_ug-resp	n/a	23	n/a
 247.989870	2	cue_ug-resp_parametric	n/a	23
-267.067780	1.421624	dec_ug-prop_choice	1.421624	21	n/a
+267.067780	1.421624	dec_ug-prop_choice	1.421624	21
 261.534640	2	cue_dict	n/a	21	n/a
 261.534640	2	cue_dict_parametric	n/a	21
-21.000000	277.112400	1.268822	dec_ug-prop_choice	1.268822	17	n/a
+21.000000	277.112400	1.268822	dec_ug-prop_choice	1.268822	17
 274.578830	2	cue_dict	n/a	17	n/a
 274.578830	2	cue_dict_parametric	n/a	17
 17.000000	285.168700	1.502338	dec_dg-prop_choice	1.502338	19
 282.634950	2	cue_ug-resp	n/a	19	n/a
 282.634950	2	cue_ug-resp_parametric	n/a	19
-293.208370	0.852179	dec_ug-prop_choice	0.852179	17	n/a
+293.208370	0.852179	dec_ug-prop_choice	0.852179	17
 290.691700	2	cue_dict	n/a	17	n/a
 290.691700	2	cue_dict_parametric	n/a	17
 17.000000	306.250000	1.471687	dec_dg-prop_choice	1.471687	15
@@ -95,10 +95,10 @@ onset	duration	trial_type	response_time	Endowment
 330.389600	1.569473	dec_ug-resp_choice	1.569473	17
 327.872070	2	cue_ug-prop	n/a	17	n/a
 327.872070	2	cue_ug-prop_parametric	n/a	17
-348.434940	1.471982	dec_ug-prop_choice	1.471982	15	n/a
+348.434940	1.471982	dec_ug-prop_choice	1.471982	15
 342.901820	2	cue_dict	n/a	15	n/a
 342.901820	2	cue_dict_parametric	n/a	15
-15.000000	363.482500	1.068899	dec_ug-prop_choice	1.068899	19	n/a
+15.000000	363.482500	1.068899	dec_ug-prop_choice	1.068899	19
 360.949650	2	cue_dict	n/a	19	n/a
 360.949650	2	cue_dict_parametric	n/a	19
 19.000000	375.025420	1.652887	dec_dg-prop_choice	1.652887	23
