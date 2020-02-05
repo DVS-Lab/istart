@@ -3,7 +3,6 @@ maindir = pwd;
 
 %try
 
-
 for r = 0:1
     
     % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
@@ -40,9 +39,39 @@ for r = 0:1
     end
     myfile = fullfile(output,fname);
     fid = fopen(myfile,'w');
-    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
+    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\tDeMeaned\n');
     
     for t = 1:length(onset);
+        
+        %% Block level endowment means
+        
+        % We need to split up the endowments per the blocks. Then take the
+        % mean of those blocks. We do this to generate the parametric
+        % regressors, which require the demeaned endowment
+
+        
+        Block1Mean = [];
+        Block2Mean = [];
+        Block3Mean = [];
+        
+        for ii = 1:length(Block)
+            
+        if (Block(ii) == 1)
+            Block1Mean = [Block1Mean;Endowment(ii)];
+           
+        elseif (Block(ii) == 2)
+            Block2Mean = [Block2Mean;Endowment(ii)];
+            
+        elseif (Block(ii) == 3)
+            Block3Mean = [Block3Mean;Endowment(ii)];
+            
+        end   
+            
+        end
+        
+Block1Mean = mean(Block1Mean);
+Block2Mean = mean(Block2Mean);
+Block3Mean = mean(Block3Mean);
         
         
         %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
@@ -64,23 +93,23 @@ for r = 0:1
         % R_Option
         
         if response(t) == 999
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',decision_onset(t),4,'missed_trial','n/a', Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%s\n',decision_onset(t),4,'missed_trial','n/a', Endowment(t),'n/a');
         end
         
         if Block(t) == 3
             if response(t) == 2
                 if round(L_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 end
             end
             
             if response(t) == 3
                 if round(R_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 end
             end
         end
@@ -89,18 +118,18 @@ for r = 0:1
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 end
             end
             
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a');
                 end
             end
         end
@@ -108,17 +137,17 @@ for r = 0:1
         if Block(t) == 1
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 end
             end
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
                 end
             end
         end
@@ -132,19 +161,20 @@ for r = 0:1
         %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
         if (Block(t) == 1)
             trial_type = 'cue_dict';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),'n/a');
         elseif (Block(t) == 2)
             trial_type = 'cue_ug-resp';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),'n/a');
         elseif (Block(t) == 3)
             trial_type = 'cue_ug-prop';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),'n/a');
         else
             keyboard
         end
         
         
-       %% Add in Cue Parametric regressors
+        
+        %% Add in Cue Parametric regressors
        
        % These regressors play with the endowment. 1) Demean them and take
        % the difference.
@@ -153,16 +183,18 @@ for r = 0:1
        
        if (Block(t) == 1)
             trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t),Endowment(t)-Block1Mean);
         elseif (Block(t) == 2)
             trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t),Endowment(t)-Block2Mean);
         elseif (Block(t) == 3)
             trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t),Endowment(t)-Block3Mean);
         else
             keyboard
-        end
+       end
+        
+
     end
     
     
