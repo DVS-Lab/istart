@@ -93,23 +93,23 @@ Block3Mean = mean(Block3Mean);
         % R_Option
         
         if response(t) == 999
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%s\n',decision_onset(t),4,'missed_trial','n/a', Endowment(t),'n/a');
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',decision_onset(t),4,'missed_trial','n/a', Endowment(t));
         end
         
         if Block(t) == 3
             if response(t) == 2
                 if round(L_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 end
             end
             
             if response(t) == 3
                 if round(R_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 end
             end
         end
@@ -118,18 +118,18 @@ Block3Mean = mean(Block3Mean);
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 end
             end
             
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a');
+                    fprintf(fid,'%f\t%f\t%s\t%f\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
                 end
             end
         end

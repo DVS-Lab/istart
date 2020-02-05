@@ -146,26 +146,7 @@ for r = 0:1
             keyboard
         end
         
-         %% Add in Cue Parametric regressors
-       
-       % These regressors play with the endowment. 1) Demean them and take
-       % the difference.
-       
-    Endowment_Mean = mean(Endowment);
-       
-       if (Block(t) == 1)
-            trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
-        elseif (Block(t) == 2)
-            trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
-        elseif (Block(t) == 3)
-            trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
-        else
-            keyboard
-        end
-    end
+
     
     %% Add in Cue Parametric regressors
        
@@ -176,13 +157,13 @@ for r = 0:1
        
        if (Block(t) == 1)
             trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
         elseif (Block(t) == 2)
             trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
         elseif (Block(t) == 3)
             trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',(Endowment(t)-Endowment_Mean));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
         else
             keyboard
         end
