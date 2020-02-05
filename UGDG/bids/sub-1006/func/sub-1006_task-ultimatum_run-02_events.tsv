@@ -1,109 +1,109 @@
-onset	duration	trial_type	response_time	Endowment
-9.022706	1.354304	dec_dg-prop_less	1.354304	19
-5.006106	2	cue_ug-resp	n/a	19
-5.006106	2	cue_ug-resp_parametric	n/a	-4.444444e-01
-20.565569	1.270488	dec_ug-prop_more	1.270488	21
-16.532312	2	cue_dict	n/a	21
-16.532312	2	cue_dict_parametric	n/a	1.555556e+00
-31.607557	2.488296	dec_ug-resp_accept	2.488296	25
-26.073368	2	cue_ug-prop	n/a	25
-26.073368	2	cue_ug-prop_parametric	n/a	5.555556e+00
-43.151173	1.687172	dec_ug-prop_more	1.687172	15
-39.117813	2	cue_dict	n/a	15
-39.117813	2	cue_dict_parametric	n/a	-4.444444e+00
-51.192070	1.469420	dec_ug-resp_accept	1.469420	19
-48.659096	2	cue_ug-prop	n/a	19
-48.659096	2	cue_ug-prop_parametric	n/a	-4.444444e-01
-66.235340	1.905678	dec_ug-resp_reject	1.905678	17
-60.701920	2	cue_ug-prop	n/a	17
-60.701920	2	cue_ug-prop_parametric	n/a	-2.444444e+00
-76.278946	1.686417	dec_ug-prop_more	1.686417	21
-73.746150	2	cue_dict	n/a	21
-73.746150	2	cue_dict_parametric	n/a	1.555556e+00
-88.322570	1.435878	dec_dg-prop_more	1.435878	25
-85.789620	2	cue_ug-resp	n/a	25
-85.789620	2	cue_ug-resp_parametric	n/a	5.555556e+00
-96.362300	1.602831	dec_dg-prop_more	1.602831	19
-93.829280	2	cue_ug-resp	n/a	19
-93.829280	2	cue_ug-resp_parametric	n/a	-4.444444e-01
-107.904335	1.203285	dec_ug-resp_accept	1.203285	15
-103.870760	2	cue_ug-prop	n/a	15
-103.870760	2	cue_ug-prop_parametric	n/a	-4.444444e+00
-117.946980	1.502835	dec_ug-resp_accept	1.502835	19
-115.413540	2	cue_ug-prop	n/a	19
-115.413540	2	cue_ug-prop_parametric	n/a	-4.444444e-01
-128.986920	1.521834	dec_dg-prop_more	1.521834	19
-123.470200	2	cue_ug-resp	n/a	19
-123.470200	2	cue_ug-resp_parametric	n/a	-4.444444e-01
-139.031160	1.986373	dec_ug-resp_accept	1.986373	17
-136.497700	2	cue_ug-prop	n/a	17
-136.497700	2	cue_ug-prop_parametric	n/a	-2.444444e+00
-147.088130	1.569144	dec_dg-prop_more	1.569144	17
-144.554300	2	cue_ug-resp	n/a	17
-144.554300	2	cue_ug-resp_parametric	n/a	-2.444444e+00
-156.627600	1.637345	dec_ug-prop_more	1.637345	15
-152.594280	2	cue_dict	n/a	15
-152.594280	2	cue_dict_parametric	n/a	-4.444444e+00
-168.672060	1.369054	dec_dg-prop_more	1.369054	15
-166.138640	2	cue_ug-resp	n/a	15
-166.138640	2	cue_ug-resp_parametric	n/a	-4.444444e+00
-183.716020	1.254538	dec_ug-resp_accept	1.254538	17
-178.181870	2	cue_ug-prop	n/a	17
-178.181870	2	cue_ug-prop_parametric	n/a	-2.444444e+00
-195.259960	1.336268	dec_ug-resp_accept	1.336268	23
-191.225780	2	cue_ug-prop	n/a	23
-191.225780	2	cue_ug-prop_parametric	n/a	3.555556e+00
-203.300920	2.419511	dec_dg-prop_more	2.419511	19
-200.766890	2	cue_ug-resp	n/a	19
-200.766890	2	cue_ug-resp_parametric	n/a	-4.444444e-01
-211.340560	1.085594	dec_dg-prop_more	1.085594	17
-208.823930	2	cue_ug-resp	n/a	17
-208.823930	2	cue_ug-resp_parametric	n/a	-2.444444e+00
-219.380860	1.635821	dec_dg-prop_more	1.635821	21
-216.847140	2	cue_ug-resp	n/a	21
-216.847140	2	cue_ug-resp_parametric	n/a	1.555556e+00
-227.420840	2.085969	dec_dg-prop_more	2.085969	25
-224.903580	2	cue_ug-resp	n/a	25
-224.903580	2	cue_ug-resp_parametric	n/a	5.555556e+00
-239.463780	1.402112	dec_ug-prop_more	1.402112	17
-236.930190	2	cue_dict	n/a	17
-236.930190	2	cue_dict_parametric	n/a	-2.444444e+00
-254.510030	1.184975	dec_dg-prop_more	1.184975	25
-251.975830	2	cue_ug-resp	n/a	25
-251.975830	2	cue_ug-resp_parametric	n/a	5.555556e+00
-265.565770	2.422579	dec_ug-resp_accept	2.422579	19
-260.032600	2	cue_ug-prop	n/a	19
-260.032600	2	cue_ug-prop_parametric	n/a	-4.444444e-01
-273.607420	1.720198	dec_ug-resp_accept	1.720198	19
-271.074770	2	cue_ug-prop	n/a	19
-271.074770	2	cue_ug-prop_parametric	n/a	-4.444444e-01
-281.648770	1.635459	dec_ug-resp_accept	1.635459	19
-279.114650	2	cue_ug-prop	n/a	19
-279.114650	2	cue_ug-prop_parametric	n/a	-4.444444e-01
-296.694580	1.685292	dec_ug-prop_more	1.685292	15
-294.160680	2	cue_dict	n/a	15
-294.160680	2	cue_dict_parametric	n/a	-4.444444e+00
-308.235600	2.304296	dec_ug-resp_accept	2.304296	17
-304.202100	2	cue_ug-prop	n/a	17
-304.202100	2	cue_ug-prop_parametric	n/a	-2.444444e+00
-317.776500	1.954401	dec_ug-prop_more	1.954401	23
-313.743300	2	cue_dict	n/a	23
-313.743300	2	cue_dict_parametric	n/a	3.555556e+00
-327.819500	1.352535	dec_ug-prop_more	1.352535	19
-325.286500	2	cue_dict	n/a	19
-325.286500	2	cue_dict_parametric	n/a	-4.444444e-01
-342.865330	1.035308	dec_ug-prop_more	1.035308	15
-340.331700	2	cue_dict	n/a	15
-340.331700	2	cue_dict_parametric	n/a	-4.444444e+00
-352.404240	1.137625	dec_dg-prop_more	1.137625	21
-348.388240	2	cue_ug-resp	n/a	21
-348.388240	2	cue_ug-resp_parametric	n/a	1.555556e+00
-360.446140	1.119265	dec_ug-prop_more	1.119265	23
-357.912960	2	cue_dict	n/a	23
-357.912960	2	cue_dict_parametric	n/a	3.555556e+00
-373.487850	1.205749	dec_ug-prop_more	1.205749	23
-367.954530	2	cue_dict	n/a	23
-367.954530	2	cue_dict_parametric	n/a	3.555556e+00
-383.030270	1.186988	dec_ug-prop_more	1.186988	25
-378.996700	2	cue_dict	n/a	25
-378.996700	2	cue_dict_parametric	n/a	5.555556e+00
+onset	duration	trial_type	response_time	Endowment	DeMeaned
+9.022706	1.354304	dec_dg-prop_choice	1.354304	19	n/a
+5.006106	2	cue_ug-resp	n/a	19	n/a
+5.006106	2	cue_ug-resp_parametric	n/a	19	-1.166667e+00
+20.565569	1.270488	dec_ug-prop_choice	1.270488	21	n/a
+16.532312	2	cue_dict	n/a	21	n/a
+16.532312	2	cue_dict_parametric	n/a	21	1.666667e+00
+31.607557	2.488296	dec_ug-resp_choice	2.488296	25	n/a
+26.073368	2	cue_ug-prop	n/a	25	n/a
+26.073368	2	cue_ug-prop_parametric	n/a	25	6.166667e+00
+43.151173	1.687172	dec_ug-prop_choice	1.687172	15	n/a
+39.117813	2	cue_dict	n/a	15	n/a
+39.117813	2	cue_dict_parametric	n/a	15	-4.333333e+00
+51.192070	1.469420	dec_ug-resp_choice	1.469420	19	n/a
+48.659096	2	cue_ug-prop	n/a	19	n/a
+48.659096	2	cue_ug-prop_parametric	n/a	19	1.666667e-01
+66.235340	1.905678	dec_ug-resp_choice	1.905678	17	n/a
+60.701920	2	cue_ug-prop	n/a	17	n/a
+60.701920	2	cue_ug-prop_parametric	n/a	17	-1.833333e+00
+76.278946	1.686417	dec_ug-prop_choice	1.686417	21	n/a
+73.746150	2	cue_dict	n/a	21	n/a
+73.746150	2	cue_dict_parametric	n/a	21	1.666667e+00
+88.322570	1.435878	dec_dg-prop_choice	1.435878	25	n/a
+85.789620	2	cue_ug-resp	n/a	25	n/a
+85.789620	2	cue_ug-resp_parametric	n/a	25	4.833333e+00
+96.362300	1.602831	dec_dg-prop_choice	1.602831	19	n/a
+93.829280	2	cue_ug-resp	n/a	19	n/a
+93.829280	2	cue_ug-resp_parametric	n/a	19	-1.166667e+00
+107.904335	1.203285	dec_ug-resp_choice	1.203285	15	n/a
+103.870760	2	cue_ug-prop	n/a	15	n/a
+103.870760	2	cue_ug-prop_parametric	n/a	15	-3.833333e+00
+117.946980	1.502835	dec_ug-resp_choice	1.502835	19	n/a
+115.413540	2	cue_ug-prop	n/a	19	n/a
+115.413540	2	cue_ug-prop_parametric	n/a	19	1.666667e-01
+128.986920	1.521834	dec_dg-prop_choice	1.521834	19	n/a
+123.470200	2	cue_ug-resp	n/a	19	n/a
+123.470200	2	cue_ug-resp_parametric	n/a	19	-1.166667e+00
+139.031160	1.986373	dec_ug-resp_choice	1.986373	17	n/a
+136.497700	2	cue_ug-prop	n/a	17	n/a
+136.497700	2	cue_ug-prop_parametric	n/a	17	-1.833333e+00
+147.088130	1.569144	dec_dg-prop_choice	1.569144	17	n/a
+144.554300	2	cue_ug-resp	n/a	17	n/a
+144.554300	2	cue_ug-resp_parametric	n/a	17	-3.166667e+00
+156.627600	1.637345	dec_ug-prop_choice	1.637345	15	n/a
+152.594280	2	cue_dict	n/a	15	n/a
+152.594280	2	cue_dict_parametric	n/a	15	-4.333333e+00
+168.672060	1.369054	dec_dg-prop_choice	1.369054	15	n/a
+166.138640	2	cue_ug-resp	n/a	15	n/a
+166.138640	2	cue_ug-resp_parametric	n/a	15	-5.166667e+00
+183.716020	1.254538	dec_ug-resp_choice	1.254538	17	n/a
+178.181870	2	cue_ug-prop	n/a	17	n/a
+178.181870	2	cue_ug-prop_parametric	n/a	17	-1.833333e+00
+195.259960	1.336268	dec_ug-resp_choice	1.336268	23	n/a
+191.225780	2	cue_ug-prop	n/a	23	n/a
+191.225780	2	cue_ug-prop_parametric	n/a	23	4.166667e+00
+203.300920	2.419511	dec_dg-prop_choice	2.419511	19	n/a
+200.766890	2	cue_ug-resp	n/a	19	n/a
+200.766890	2	cue_ug-resp_parametric	n/a	19	-1.166667e+00
+211.340560	1.085594	dec_dg-prop_choice	1.085594	17	n/a
+208.823930	2	cue_ug-resp	n/a	17	n/a
+208.823930	2	cue_ug-resp_parametric	n/a	17	-3.166667e+00
+219.380860	1.635821	dec_dg-prop_choice	1.635821	21	n/a
+216.847140	2	cue_ug-resp	n/a	21	n/a
+216.847140	2	cue_ug-resp_parametric	n/a	21	8.333333e-01
+227.420840	2.085969	dec_dg-prop_choice	2.085969	25	n/a
+224.903580	2	cue_ug-resp	n/a	25	n/a
+224.903580	2	cue_ug-resp_parametric	n/a	25	4.833333e+00
+239.463780	1.402112	dec_ug-prop_choice	1.402112	17	n/a
+236.930190	2	cue_dict	n/a	17	n/a
+236.930190	2	cue_dict_parametric	n/a	17	-2.333333e+00
+254.510030	1.184975	dec_dg-prop_choice	1.184975	25	n/a
+251.975830	2	cue_ug-resp	n/a	25	n/a
+251.975830	2	cue_ug-resp_parametric	n/a	25	4.833333e+00
+265.565770	2.422579	dec_ug-resp_choice	2.422579	19	n/a
+260.032600	2	cue_ug-prop	n/a	19	n/a
+260.032600	2	cue_ug-prop_parametric	n/a	19	1.666667e-01
+273.607420	1.720198	dec_ug-resp_choice	1.720198	19	n/a
+271.074770	2	cue_ug-prop	n/a	19	n/a
+271.074770	2	cue_ug-prop_parametric	n/a	19	1.666667e-01
+281.648770	1.635459	dec_ug-resp_choice	1.635459	19	n/a
+279.114650	2	cue_ug-prop	n/a	19	n/a
+279.114650	2	cue_ug-prop_parametric	n/a	19	1.666667e-01
+296.694580	1.685292	dec_ug-prop_choice	1.685292	15	n/a
+294.160680	2	cue_dict	n/a	15	n/a
+294.160680	2	cue_dict_parametric	n/a	15	-4.333333e+00
+308.235600	2.304296	dec_ug-resp_choice	2.304296	17	n/a
+304.202100	2	cue_ug-prop	n/a	17	n/a
+304.202100	2	cue_ug-prop_parametric	n/a	17	-1.833333e+00
+317.776500	1.954401	dec_ug-prop_choice	1.954401	23	n/a
+313.743300	2	cue_dict	n/a	23	n/a
+313.743300	2	cue_dict_parametric	n/a	23	3.666667e+00
+327.819500	1.352535	dec_ug-prop_choice	1.352535	19	n/a
+325.286500	2	cue_dict	n/a	19	n/a
+325.286500	2	cue_dict_parametric	n/a	19	-3.333333e-01
+342.865330	1.035308	dec_ug-prop_choice	1.035308	15	n/a
+340.331700	2	cue_dict	n/a	15	n/a
+340.331700	2	cue_dict_parametric	n/a	15	-4.333333e+00
+352.404240	1.137625	dec_dg-prop_choice	1.137625	21	n/a
+348.388240	2	cue_ug-resp	n/a	21	n/a
+348.388240	2	cue_ug-resp_parametric	n/a	21	8.333333e-01
+360.446140	1.119265	dec_ug-prop_choice	1.119265	23	n/a
+357.912960	2	cue_dict	n/a	23	n/a
+357.912960	2	cue_dict_parametric	n/a	23	3.666667e+00
+373.487850	1.205749	dec_ug-prop_choice	1.205749	23	n/a
+367.954530	2	cue_dict	n/a	23	n/a
+367.954530	2	cue_dict_parametric	n/a	23	3.666667e+00
+383.030270	1.186988	dec_ug-prop_choice	1.186988	25	n/a
+378.996700	2	cue_dict	n/a	25	n/a
+378.996700	2	cue_dict_parametric	n/a	25	5.666667e+00
