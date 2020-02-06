@@ -166,6 +166,46 @@ for r = 0:1
         end
     
         
+        %% Add choice only regessors for parametric model
+
+% Ditto above, but naming structure is made to make the rest of the
+% following code happy.
+        
+        
+        if Block(t) == 3
+            if response(t) == 2
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
+               
+            end
+            
+            if response(t) == 3
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
+            end
+        end
+        
+        
+        if Block(t) == 2
+            
+            if response(t) == 2
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));  
+            end
+            
+            
+            if response(t) == 3
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));   
+           end
+        
+        if Block(t) == 1
+            if response(t) == 2
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric' ],RT(t),Endowment(t));
+            end
+            
+            if response(t) == 3
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
+            end
+        end
+        end
+        
         %% Adding in the cue onsets
         
         %cue_dict
