@@ -16,7 +16,7 @@ UGRespDemeaned = UGResp(:,3)-UGRespMean;
 UGResp = UGResp(:,1:2);
 UGResp = [UGResp,UGRespDemeaned];   
 
-output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_ug-resp_parametric_demeaned.txt");
+output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_ug-resp_parametric_pmod_demeaned.txt");
 dlmwrite(output,UGResp,'delimiter','\t','precision',4)
 
 data = (path + "sub-" + subj + "run-0" + r + ".bids_cue_ug-prop_parametric_pmod.txt");
@@ -26,7 +26,7 @@ UGPropDemeaned = UGProp(:,3)-UGPropMean;
 UGProp = UGProp(:,1:2);
 UGProp = [UGProp,UGPropDemeaned];   
 
-output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_ug-prop_parametric_demeaned.txt");
+output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_ug-prop_parametric_pmod_demeaned.txt");
 dlmwrite(output,UGProp,'delimiter','\t','precision',4)
 
 data = (path + "sub-" + subj + "run-0" + r + ".bids_cue_dict_parametric_pmod.txt");
@@ -36,5 +36,5 @@ DictDemeaned = Dict(:,3)-DictMean;
 Dict = Dict(:,1:2);
 Dict = [Dict,DictDemeaned];   
 
-output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_dict_parametric_demeaned.txt");
+output = (path + "sub-" + subj + "run-0" + r + ".bids_cue_dict_parametric_pmod_demeaned.txt");
 dlmwrite(output,Dict,'delimiter','\t','precision',4)
