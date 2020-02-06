@@ -153,6 +153,7 @@ for r = 0:1
             if response(t) == 3
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));   
            end
+        end
         
         if Block(t) == 1
             if response(t) == 2
@@ -162,7 +163,7 @@ for r = 0:1
             if response(t) == 3
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
             end
-        end
+        
         end
     
         

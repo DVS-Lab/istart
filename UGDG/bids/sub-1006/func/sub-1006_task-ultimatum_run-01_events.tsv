@@ -16,9 +16,11 @@ onset	duration	trial_type	response_time	Endowment
 30.628054	2	cue_ug-resp	n/a	17
 30.628054	2	cue_ug-resp_parametric	n/a	17
 46.204590	1.636910	dec_ug-prop_more	1.636910	25
+46.204590	1.636910	dec_ug-prop_choice	1.636910	25
 42.170704	2	cue_dict	n/a	25
 42.170704	2	cue_dict_parametric	n/a	25
 61.247930	1.756352	dec_ug-prop_more	1.756352	19
+61.247930	1.756352	dec_ug-prop_choice	1.756352	19
 55.715580	2	cue_dict	n/a	19
 55.715580	2	cue_dict_parametric	n/a	19
 69.291565	2.319395	dec_ug-resp_accept	2.319395	25
@@ -34,6 +36,7 @@ onset	duration	trial_type	response_time	Endowment
 87.842155	2	cue_ug-prop	n/a	23
 87.842155	2	cue_ug-prop_parametric	n/a	23
 103.418060	1.337022	dec_ug-prop_more	1.337022	21
+103.418060	1.337022	dec_ug-prop_choice	1.337022	21
 99.384476	2	cue_dict	n/a	21
 99.384476	2	cue_dict_parametric	n/a	21
 118.465360	2.352744	dec_ug-resp_reject	2.352744	19
@@ -53,6 +56,7 @@ onset	duration	trial_type	response_time	Endowment
 148.558150	2	cue_ug-resp	n/a	19
 148.558150	2	cue_ug-resp_parametric	n/a	19
 161.133290	2.152674	dec_ug-prop_less	2.152674	21
+161.133290	2.152674	dec_ug-prop_choice	2.152674	21
 158.600050	2	cue_dict	n/a	21
 158.600050	2	cue_dict_parametric	n/a	21
 169.173140	1.569657	dec_dg-prop_more	1.569657	25
@@ -64,6 +68,7 @@ onset	duration	trial_type	response_time	Endowment
 176.681400	2	cue_ug-resp	n/a	15
 176.681400	2	cue_ug-resp_parametric	n/a	15
 191.259100	0.967811	dec_ug-prop_more	0.967811	15
+191.259100	0.967811	dec_ug-prop_choice	0.967811	15
 188.724600	2	cue_dict	n/a	15
 188.724600	2	cue_dict_parametric	n/a	15
 200.814060	1.437681	dec_dg-prop_more	1.437681	19
@@ -71,6 +76,7 @@ onset	duration	trial_type	response_time	Endowment
 196.781300	2	cue_ug-resp	n/a	19
 196.781300	2	cue_ug-resp_parametric	n/a	19
 208.855880	1.135242	dec_ug-prop_more	1.135242	19
+208.855880	1.135242	dec_ug-prop_choice	1.135242	19
 206.322360	2	cue_dict	n/a	19
 206.322360	2	cue_dict_parametric	n/a	19
 218.897830	1.068278	dec_dg-prop_more	1.068278	25
@@ -78,6 +84,7 @@ onset	duration	trial_type	response_time	Endowment
 216.363950	2	cue_ug-resp	n/a	25
 216.363950	2	cue_ug-resp_parametric	n/a	25
 228.938930	1.519462	dec_ug-prop_more	1.519462	25
+228.938930	1.519462	dec_ug-prop_choice	1.519462	25
 226.405430	2	cue_dict	n/a	25
 226.405430	2	cue_dict_parametric	n/a	25
 238.478940	2.271225	dec_ug-resp_accept	2.271225	19
@@ -89,9 +96,11 @@ onset	duration	trial_type	response_time	Endowment
 247.989870	2	cue_ug-resp	n/a	23
 247.989870	2	cue_ug-resp_parametric	n/a	23
 267.067780	1.421624	dec_ug-prop_more	1.421624	21
+267.067780	1.421624	dec_ug-prop_choice	1.421624	21
 261.534640	2	cue_dict	n/a	21
 261.534640	2	cue_dict_parametric	n/a	21
 277.112400	1.268822	dec_ug-prop_more	1.268822	17
+277.112400	1.268822	dec_ug-prop_choice	1.268822	17
 274.578830	2	cue_dict	n/a	17
 274.578830	2	cue_dict_parametric	n/a	17
 285.168700	1.502338	dec_dg-prop_less	1.502338	19
@@ -99,6 +108,7 @@ onset	duration	trial_type	response_time	Endowment
 282.634950	2	cue_ug-resp	n/a	19
 282.634950	2	cue_ug-resp_parametric	n/a	19
 293.208370	0.852179	dec_ug-prop_more	0.852179	17
+293.208370	0.852179	dec_ug-prop_choice	0.852179	17
 290.691700	2	cue_dict	n/a	17
 290.691700	2	cue_dict_parametric	n/a	17
 306.250000	1.471687	dec_dg-prop_more	1.471687	15
@@ -118,9 +128,11 @@ onset	duration	trial_type	response_time	Endowment
 327.872070	2	cue_ug-prop	n/a	17
 327.872070	2	cue_ug-prop_parametric	n/a	17
 348.434940	1.471982	dec_ug-prop_more	1.471982	15
+348.434940	1.471982	dec_ug-prop_choice	1.471982	15
 342.901820	2	cue_dict	n/a	15
 342.901820	2	cue_dict_parametric	n/a	15
 363.482500	1.068899	dec_ug-prop_more	1.068899	19
+363.482500	1.068899	dec_ug-prop_choice	1.068899	19
 360.949650	2	cue_dict	n/a	19
 360.949650	2	cue_dict_parametric	n/a	19
 375.025420	1.652887	dec_dg-prop_more	1.652887	23
