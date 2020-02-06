@@ -166,46 +166,6 @@ for r = 0:1
         end
     
         
-        %% Add choice only regessors for parametric model
-
-% Ditto above, but naming structure is made to make the rest of the
-% following code happy.
-        
-        
-        if Block(t) == 3
-            if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
-               
-            end
-            
-            if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
-            end
-        end
-        
-        
-        if Block(t) == 2
-            
-            if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));  
-            end
-            
-            
-            if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));   
-           end
-        
-        if Block(t) == 1
-            if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric' ],RT(t),Endowment(t));
-            end
-            
-            if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_parametric'],RT(t),Endowment(t));
-            end
-        end
-        end
-        
         %% Adding in the cue onsets
         
         %cue_dict
@@ -226,6 +186,25 @@ for r = 0:1
             keyboard
         end
         
+        %% Adding in the cue onsets for parametric model
+        
+        %cue_dict
+        %cue_ug-resp
+        %cue_ug-prop
+        
+        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
+        if (Block(t) == 1)
+            trial_type = 'cue_dict_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        elseif (Block(t) == 2)
+            trial_type = 'cue_ug-resp_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        elseif (Block(t) == 3)
+            trial_type = 'cue_ug-prop_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+        else
+            keyboard
+        end
 
         
         end 
