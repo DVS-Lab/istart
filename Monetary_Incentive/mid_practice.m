@@ -1,4 +1,4 @@
-2344451%function MID2(isscan, subnum)
+%function MID2(isscan, subnum)
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
