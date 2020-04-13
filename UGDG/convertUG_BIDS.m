@@ -1,4 +1,4 @@
-function convertUG_BIDS(subj)
+function convertUG_BIDS_use(subj)
 maindir = pwd;
 
 %try
