@@ -401,3 +401,195 @@ Bins_save = array2table(Bins_save(1:end,:),'VariableNames', {'0','.1','.2','.3',
 name = ['Rejection_Behavior.csv'];
 writetable(Bins_save, name); % Save as csv file
 end
+
+%%
+
+Strategic_Behavior = DG_P + UG_P_Total;
+
+
+%% EQ Scale
+
+% Find the columns you will need.
+t = readtable('TEIQUE.xlsx');
+start = 2;
+finish = 31;
+
+N = 30; % Number of questions
+IndexedColumns = round(linspace(start,finish, N));
+data = table2array(t);
+EQ_data = data(:,IndexedColumns);
+EQ_data = EQ_data(3:end,:); % Eliminating 1001 and 1002, which had bad data.
+Total_Subjects = size(EQ_data);
+Total_Subjects = Total_Subjects(1);
+
+WellbeingScore = [];
+SelfcontrolScore = [];
+EmotionalityScore = [];
+SociabilityScore = [];
+TotalEQScore = [];
+max_EQ = 7;
+min_EQ = 1;
+add_EQ = max_EQ + min_EQ;
+
+for ii = 1:Total_Subjects % ii is the subject
+    EQ1 = EQ_data(ii,1);
+    EQ2 = add_EQ+(-1*(EQ_data(ii,2)));% Reverse code
+    EQ3 = EQ_data(ii,3);
+    EQ4 = add_EQ+(-1*(EQ_data(ii,4)));% Reverse code
+    EQ5 = add_EQ+(-1*(EQ_data(ii,5)));% Reverse code
+    EQ6 = EQ_data(ii,6);
+    EQ7 = add_EQ+(-1*(EQ_data(ii,7)));% Reverse code
+    EQ8 = add_EQ+(-1*(EQ_data(ii,8)));% Reverse code
+    EQ9 = EQ_data(ii,9);
+    EQ10 = add_EQ+(-1*(EQ_data(ii,10)));% Reverse code
+    EQ11 = EQ_data(ii,11);
+    EQ12 = add_EQ+(-1*(EQ_data(ii,12)));% Reverse code
+    EQ13 = add_EQ+(-1*(EQ_data(ii,13)));% Reverse code
+    EQ14 = add_EQ+(-1*(EQ_data(ii,14)));% Reverse code
+    EQ15 = EQ_data(ii,15);
+    EQ16 = add_EQ+(-1*(EQ_data(ii,16)));% Reverse code
+    EQ17 = EQ_data(ii,17);
+    EQ18 = add_EQ+(-1*(EQ_data(ii,18)));% Reverse code
+    EQ19 = EQ_data(ii,19);
+    EQ20 = EQ_data(ii,20);
+    EQ21 = EQ_data(ii,21);
+    EQ22 = add_EQ+(-1*(EQ_data(ii,22)));% Reverse code 
+    EQ23 = EQ_data(ii,23); 
+    EQ24 = EQ_data(ii,24);
+    EQ25 = add_EQ+(-1*(EQ_data(ii,25)));% Reverse code
+    EQ26 = add_EQ+(-1*(EQ_data(ii,26)));% Reverse code
+    EQ27 = EQ_data(ii,27);
+    EQ28 = add_EQ+(-1*(EQ_data(ii,28)));% Reverse code
+    EQ29 = EQ_data(ii,29); 
+    EQ30 = EQ_data(ii,30); 
+    
+    total = EQ1+EQ2+EQ3+EQ4+EQ5+EQ6+EQ7+EQ8+EQ9+EQ10+EQ11+EQ12+EQ13+EQ14+EQ15+EQ16+EQ17+EQ18+EQ19+EQ20+EQ21+EQ22+EQ23+EQ24+EQ25+EQ26+EQ27+EQ28+EQ29+EQ30;
+    TotalEQScore = [TotalEQScore, total];
+    
+    % Subscales are calculated from Deshawn's code
+
+    WS = EQ5 + EQ20 + EQ9 + EQ24 + EQ12 + EQ27;
+    WellbeingScore = [WellbeingScore, WS]; 
+    
+    SC = EQ4 + EQ19 + EQ7 +EQ22 + EQ15 + EQ30;
+    SelfcontrolScore = [SelfcontrolScore, SC];
+    
+    ES = EQ1 + EQ16 + EQ2 + EQ17 + EQ8 + EQ23 + EQ13 + EQ28;
+    EmotionalityScore = [EmotionalityScore, ES];
+    
+    SS = EQ6 + EQ21 + EQ10 + EQ25 + EQ11 + EQ26;
+    SociabilityScore = [SociabilityScore, SS]; 
+end 
+
+
+%% Correlation with EQ and Strategic Behavior
+
+
+[R,P] = corrcoef(Strategic_Behavior,TotalEQScore);
+
+figure
+subplot(2,4,2)
+scatter(Strategic_Behavior, TotalEQScore)
+title 'Strategic Behavior and EQ'
+
+% Hypothesis 
+
+[R,P] = corrcoef(Strategic_Behavior,PNRScore);
+
+subplot(2,4,3)
+scatter(Strategic_Behavior, PNRScore)
+title 'Proportion and PNR'
+
+%% Histogram of EQ scires
+
+figure
+h = histogram(TotalEQScore);
+counts = h.Values;
+h.NumBins = 12
+ax = gca
+ax.FontSize = 12
+xlabel ('Emotional Intelligence','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'EQ_Scores.png')
+
+%% Figure 2
+
+figure
+h = histogram(UG_P_Total(:));
+counts = h.Values;
+h.NumBins = 11
+ax = gca
+ax.FontSize = 9
+xlabel ('Ultimatum Game Offers as Proposer','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'UG_P.png')
+
+%% Figure 3
+
+figure
+h = histogram(DG_P(:));
+counts = h.Values;
+h.NumBins = 11
+ax = gca
+ax.FontSize = 9
+xlabel ('Earnings as DG Proposer','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'DGP.png')
+
+%% Figure 4
+
+[R,P] = corrcoef(Strategic_Behavior, TotalEQScore)
+figure
+scatter(Strategic_Behavior, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+ax = gca
+ax.FontSize = 12
+xlabel ('Total Earnings in Dollars', 'FontSize', 16);
+ylabel  ('EI Score', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'TotalEarnings.png')
+
+%% Figure 7
+
+[R,P] = corrcoef(DG_P, TotalEQScore);
+figure
+scatter(DG_P, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('Total Earnings as Proposer in DG Task', 'FontSize', 16);
+ylabel  ('EI Score', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
+%% Figure 7
+
+[R,P] = corrcoef(UG_P_Total, TotalEQScore);
+figure
+scatter(UG_P_Total, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('Total Earnings as Proposer in UG Task', 'FontSize', 16);
+ylabel  ('EI Score', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+

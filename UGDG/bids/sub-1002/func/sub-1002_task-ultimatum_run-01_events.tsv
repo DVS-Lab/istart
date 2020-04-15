@@ -1,5 +1,7 @@
 onset	duration	trial_type	response_time	Endowment
 7.525942	4	missed_trial	n/a	15
 4.992838	2	cue_ug-resp	n/a	15
+4.992838	2	cue_ug-resp_parametric	n/a	15
 22.572514	4	missed_trial	n/a	25
 20.038551	2	cue_ug-prop	n/a	25
+20.038551	2	cue_ug-prop_parametric	n/a	25

@@ -136,9 +136,17 @@ Bin3_rejection_rate = Bin3(1) / (Bin3(1) + Bin3a(1));
 Bin4_rejection_rate = Bin4(1) / (Bin4(1) + Bin4a(1));
 Bin5_rejection_rate = Bin5(1) / (Bin5(1) + Bin5a(1));
 
-[Bin1_rejection_rate, Bin2_rejection_rate, Bin1_rejection_rate, Bin1_rejection_rate, Bin1_rejection_rate]
+Bins = [Bin1_rejection_rate, Bin2_rejection_rate, Bin3_rejection_rate, Bin4_rejection_rate, Bin5_rejection_rate];
 
 
+x = [.05,.15,.25,.35,.45]
+figure
+
+bar(x,Bins)
+title 'Rejection rates'
+xlabel 'Offers'
+ylabel 'Rate of Rejection'
+axis([-.0 .5 0 1])
 
 % Bin2 = Bin2(1) / total(1);
 % Bin3 = Bin3(1) / total(1);
@@ -383,3 +391,92 @@ UGDG_Data = array2table(UGDG_Data(1:end,:),'VariableNames', {'Subjects','UG_P','
 name = ['UGDG_Data.csv'];
 writetable(UGDG_Data, name); % Save as csv file
 end
+
+%% Save 2
+
+Bins_save = Bins;
+
+try
+Bins_save = array2table(Bins_save(1:end,:),'VariableNames', {'0','.1','.2','.3','.4'});
+name = ['Rejection_Behavior.csv'];
+writetable(Bins_save, name); % Save as csv file
+end
+
+%%
+
+Strategic_Behavior = DG_P + UG_P_Total;
+
+%% 
+
+%% EQ Scale
+
+% Find the columns you will need.
+
+start = find(strcmp('EQ_1',data(1,:)));
+finish = find(strcmp('EQ_30',data(1,:)));
+
+%%
+N = 30; % Number of questions
+IndexedColumns = round(linspace(start,finish, N));
+EQ_data = data(:,IndexedColumns);
+EQ_data = cell2mat(EQ_data(2:end,:)); % This is the subset of data we will use.
+
+WellbeingScore = [];
+SelfcontrolScore = [];
+EmotionalityScore = [];
+SociabilityScore = [];
+TotalEQScore = [];
+TotalSubjects = TotalSubjects; % Put in total subjects
+max_EQ = 7;
+min_EQ = 1;
+add_EQ = max_EQ + min_EQ;
+
+for ii = 1:TotalSubjects % ii is the subject
+    EQ1 = EQ_data(ii,1);
+    EQ2 = add_EQ+(-1*(EQ_data(ii,2)));% Reverse code
+    EQ3 = EQ_data(ii,3);
+    EQ4 = add_EQ+(-1*(EQ_data(ii,4)));% Reverse code
+    EQ5 = add_EQ+(-1*(EQ_data(ii,5)));% Reverse code
+    EQ6 = EQ_data(ii,6);
+    EQ7 = add_EQ+(-1*(EQ_data(ii,7)));% Reverse code
+    EQ8 = add_EQ+(-1*(EQ_data(ii,8)));% Reverse code
+    EQ9 = EQ_data(ii,9);
+    EQ10 = add_EQ+(-1*(EQ_data(ii,10)));% Reverse code
+    EQ11 = EQ_data(ii,11);
+    EQ12 = add_EQ+(-1*(EQ_data(ii,12)));% Reverse code
+    EQ13 = add_EQ+(-1*(EQ_data(ii,13)));% Reverse code
+    EQ14 = add_EQ+(-1*(EQ_data(ii,14)));% Reverse code
+    EQ15 = EQ_data(ii,15);
+    EQ16 = add_EQ+(-1*(EQ_data(ii,16)));% Reverse code
+    EQ17 = EQ_data(ii,17);
+    EQ18 = add_EQ+(-1*(EQ_data(ii,18)));% Reverse code
+    EQ19 = EQ_data(ii,19);
+    EQ20 = EQ_data(ii,20);
+    EQ21 = EQ_data(ii,21);
+    EQ22 = add_EQ+(-1*(EQ_data(ii,22)));% Reverse code 
+    EQ23 = EQ_data(ii,23); 
+    EQ24 = EQ_data(ii,24);
+    EQ25 = add_EQ+(-1*(EQ_data(ii,25)));% Reverse code
+    EQ26 = add_EQ+(-1*(EQ_data(ii,26)));% Reverse code
+    EQ27 = EQ_data(ii,27);
+    EQ28 = add_EQ+(-1*(EQ_data(ii,28)));% Reverse code
+    EQ29 = EQ_data(ii,29); 
+    EQ30 = EQ_data(ii,30); 
+    
+    total = EQ1+EQ2+EQ3+EQ4+EQ5+EQ6+EQ7+EQ8+EQ9+EQ10+EQ11+EQ12+EQ13+EQ14+EQ15+EQ16+EQ17+EQ18+EQ19+EQ20+EQ21+EQ22+EQ23+EQ24+EQ25+EQ26+EQ27+EQ28+EQ29+EQ30;
+    TotalEQScore = [TotalEQScore, total];
+    
+    % Subscales are calculated from Deshawn's code
+
+    WS = EQ5 + EQ20 + EQ9 + EQ24 + EQ12 + EQ27;
+    WellbeingScore = [WellbeingScore, WS]; 
+    
+    SC = EQ4 + EQ19 + EQ7 +EQ22 + EQ15 + EQ30;
+    SelfcontrolScore = [SelfcontrolScore, SC];
+    
+    ES = EQ1 + EQ16 + EQ2 + EQ17 + EQ8 + EQ23 + EQ13 + EQ28;
+    EmotionalityScore = [EmotionalityScore, ES];
+    
+    SS = EQ6 + EQ21 + EQ10 + EQ25 + EQ11 + EQ26;
+    SociabilityScore = [SociabilityScore, SS]; 
+end 
