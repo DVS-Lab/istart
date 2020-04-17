@@ -33,7 +33,7 @@ end
 
 Rejections_final = [Subjects, Rejections_analyze];
 
-%% Accepted
+%% DG/More
 
 values = 1002:1021;
 Accepted_analyze = [];
@@ -45,7 +45,7 @@ for ii = 1:length(values);
     try
         saveme = [];
         subj = [];
-        name = ['Subject_' num2str(values(ii)) '_accepted.csv'];
+        name = ['Subject_' num2str(values(ii)) '_more.csv'];
         
         T = readtable(name);
         saveme = table2array(T);
@@ -61,3 +61,5 @@ for ii = 1:length(values);
 end
 
 Accepted_final = [Subjects, Accepted_analyze];
+
+

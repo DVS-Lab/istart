@@ -188,11 +188,11 @@ if r2 > 0
         
         if Block(t) == 2
             if response(t) == 2;
-                update = [Trial(t), Endowment(t), R_Option(t)];
+                update = [Trial(t), Endowment(t), L_Option(t)];
                 DG_P_2 = [DG_P_2; update];
             end
             if response(t) == 3;
-                update = [Trial(t), Endowment(t), L_Option(t)];
+                update = [Trial(t), Endowment(t), R_Option(t)];
                 DG_P_2 = [DG_P_2; update];
             end
         end
@@ -201,11 +201,11 @@ if r2 > 0
         
         if Block(t) == 1
             if response(t) == 2;
-                update = [Trial(t), Endowment(t), R_Option(t)];
+                update = [Trial(t), Endowment(t), L_Option(t)];
                 UG_P_2 = [UG_P_2; update];
             end
             if response(t) == 3;
-                update = [Trial(t), Endowment(t), L_Option(t)];
+                update = [Trial(t), Endowment(t), R_Option(t)];
                 UG_P_2 = [UG_P_2; update];
             end
         end
@@ -340,37 +340,13 @@ name = ['Subject_' num2str(subj) '_UGP2.csv'];
 writetable(UG_P_Behavior_r2, name); % Save as csv file
 end
 
-% Save array as a CSV file
 
+%% Save Proposer
 
-% %% UG_P Earnings
-%
-% % UG_P is a bit more complicated. Need to multiply offer by expected value
-% % of it being acceped.
-%
-% % HAVE TO UPDATE DISTRIBUTIONS!!!!!!!!!!
-%
-% UG_P_Earnings = [];
-%
-% for ii = 1:length(UG_P)
-%      proportion = UG_P(ii,3)/UG_P(ii,2);
-%     if proportion<.1
-%         trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (.1);
-%         UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-%     elseif proportion>.1 && proportion<.2;
-%         trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (.3);
-%         UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-%     elseif proportion>.2 && proportion<.3;
-%         trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (.5);
-%         UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-%     elseif proportion>.3 && proportion<.4;
-%         trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (.9);
-%         UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-%     elseif proportion>.4 && proportion<.5;
-%         trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (1);
-%         UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-%     end
-%
-% end
-%
-% UG_P_Earnings = sum(UG_P_Earnings);
+raw = [DG_P;DG_P_2];
+try 
+DG_P_Raw = array2table(raw(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_DGP.csv'];
+writetable(DG_P_Raw, name); % Save as csv file
+end
+

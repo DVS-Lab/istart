@@ -4,7 +4,7 @@ clc
 
 %% Rejection analysis
 
-values = 1003:1021;
+values = 1002:1021;
 UG_Reject = [];
 
 for ii = 1:length(values);
@@ -136,13 +136,13 @@ Bin3_rejection_rate = Bin3(1) / (Bin3(1) + Bin3a(1));
 Bin4_rejection_rate = Bin4(1) / (Bin4(1) + Bin4a(1));
 Bin5_rejection_rate = Bin5(1) / (Bin5(1) + Bin5a(1));
 
-Bins = [Bin1_rejection_rate, Bin2_rejection_rate, Bin3_rejection_rate, Bin4_rejection_rate, Bin5_rejection_rate];
+Binsuse = [Bin1_rejection_rate, Bin2_rejection_rate, Bin3_rejection_rate, Bin4_rejection_rate, Bin5_rejection_rate];
 
 
 x = [.05,.15,.25,.35,.45]
 figure
 
-bar(x,Bins)
+bar(x,Binsuse)
 title 'Rejection rates'
 xlabel 'Offers'
 ylabel 'Rate of Rejection'
@@ -306,6 +306,7 @@ for jj = 1:length(values)
 end
 
 
+
  %% Subjects
  
 
@@ -377,10 +378,37 @@ UG_R_Earnings = table2array(Earnings(:,2));
 
 
 figure
-histogram(UG_R_Earnings)
-title 'UG Recipient Earnings'
-xlabel 'Earnings'
-ylabel 'Frequency'
+histogram(UG_R_Earnings, 5)
+ylim([0, 7]);
+ax = gca
+ax.FontSize = 9
+xlabel ('Ultimatum Game Offers as Recipient','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+
+saveas(gcf,'UG_P.png')
+
+%%
+
+
+Total_Earnings = UG_P_Total + UG_R_Earnings + DG_P
+
+figure
+histogram(Total_Earnings, 14)
+ylim('auto');
+ax = gca
+ax.FontSize = 9
+xlabel ('Total Earnings','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+
+saveas(gcf,'Total_Earnings.png')
+
+
 
 %% Save 
 
@@ -394,7 +422,7 @@ end
 
 %% Save 2
 
-Bins_save = Bins;
+Bins_save = Binsuse;
 
 try
 Bins_save = array2table(Bins_save(1:end,:),'VariableNames', {'0','.1','.2','.3','.4'});
@@ -418,7 +446,7 @@ N = 30; % Number of questions
 IndexedColumns = round(linspace(start,finish, N));
 data = table2array(t);
 EQ_data = data(:,IndexedColumns);
-EQ_data = EQ_data(3:end,:); % Eliminating 1001 and 1002, which had bad data.
+EQ_data = EQ_data(2:end,:); % Eliminating 1001 and 1002, which had bad data.
 Total_Subjects = size(EQ_data);
 Total_Subjects = Total_Subjects(1);
 
@@ -481,6 +509,45 @@ for ii = 1:Total_Subjects % ii is the subject
     SociabilityScore = [SociabilityScore, SS]; 
 end 
 
+%% Personal Norm Scale
+
+% Find the columns you will need.
+
+% Find the columns you will need.
+data = readtable('PNR.xlsx');
+start = 2;
+finish = 11;
+Total_Subjects = [];
+
+N = 9; % Number of questions
+IndexedColumns = round(linspace(start,finish, N));
+data = table2array(t);
+PNR_data = data(:,IndexedColumns);
+PNR_data = PNR_data(2:end,:); % Eliminating 1001 which had bad data.
+Total_Subjects = size(PNR_data);
+Total_Subjects = Total_Subjects(1);
+
+% PNR Scale
+
+PNRScore = [];
+Total_Subjects = Total_Subjects;
+max_pnr = 7;
+min_pnr = 1;
+add_pnr = max_pnr + min_pnr;
+
+for ii = 1:Total_Subjects % ii is the subject
+    a = PNR_data(ii,1); 
+    b = PNR_data(ii,2);
+    c = PNR_data(ii,3);
+    d = PNR_data(ii,4);
+    e = PNR_data(ii,5);
+    f = PNR_data(ii,6);
+    g = PNR_data(ii,7);
+    h = PNR_data(ii,8);
+    i = PNR_data(ii,9);
+    total = a+b+c+d+e+f+g+h+i;
+    PNRScore = [PNRScore, total];
+end 
 
 %% Correlation with EQ and Strategic Behavior
 
@@ -489,7 +556,7 @@ end
 
 figure
 subplot(2,4,2)
-scatter(Strategic_Behavior, TotalEQScore)
+scatter(TotalEQScore, Strategic_Behavior)
 title 'Strategic Behavior and EQ'
 
 % Hypothesis 
@@ -547,13 +614,13 @@ saveas(gcf,'DGP.png')
 
 %% Figure 4
 
-[R,P] = corrcoef(Strategic_Behavior, TotalEQScore)
+[R,P] = corrcoef(Total_Earnings, TotalEQScore)
 figure
-scatter(Strategic_Behavior, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+scatter(TotalEQScore, Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
 ax = gca
 ax.FontSize = 12
-xlabel ('Total Earnings in Dollars', 'FontSize', 16);
-ylabel  ('EI Score', 'FontSize', 16);
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Total Earnings', 'FontSize', 16);
 i = lsline;
 i.LineWidth = 5;
 i.Color = [0 0 0];
@@ -565,11 +632,11 @@ saveas(gcf,'TotalEarnings.png')
 
 [R,P] = corrcoef(DG_P, TotalEQScore);
 figure
-scatter(DG_P, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+scatter(TotalEQScore, DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
 ax = gca;
 ax.FontSize = 12;
-xlabel ('Total Earnings as Proposer in DG Task', 'FontSize', 16);
-ylabel  ('EI Score', 'FontSize', 16);
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
 i = lsline;
 i.LineWidth = 5;
 i.Color = [0 0 0];
@@ -579,17 +646,257 @@ saveas(gcf,'DGPEQ.png')
 
 %% Figure 7
 
-[R,P] = corrcoef(UG_P_Total, TotalEQScore);
+[R,P] = corrcoef(UG_R_Earnings, TotalEQScore);
 figure
-scatter(UG_P_Total, TotalEQScore, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+scatter(TotalEQScore, UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
 ax = gca;
 ax.FontSize = 12;
-xlabel ('Total Earnings as Proposer in UG Task', 'FontSize', 16);
-ylabel  ('EI Score', 'FontSize', 16);
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in UG Task', 'FontSize', 16);
 i = lsline;
 i.LineWidth = 5;
 i.Color = [0 0 0];
 set(gcf,'color','w');
 
 saveas(gcf,'DGPEQ.png')
+
+
+%% 
+
+Cope7 = [2.228924845, -69.20036055, -6.422717132, -7.836157196, -6.854206813, 45.61579082, 26.75282526, 75.98362988, -16.59662775, -2.63439245 , -0.5985225, 22.40339789, 37.572792, -1.068525052]; 
+
+[R,P] = corrcoef(Cope7, TotalEQScore);
+figure
+scatter(TotalEQScore, Cope7, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 14);
+ylabel  ('UG and DG Contrast during Decision Phase', 'FontSize', 14);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'UG and dg.png')
+
+%% Cope 8
+
+Cope8 = [-1.238865074, -28.61567736,  -15.02178652,  -15.54505961,  -9.324916225,  42.9214861,  44.3428182,  -36.82699058,  -10.59545914, -18.05904204,  53.6336315,  -26.17917893,  83.02145275, 22.16178178];  
+ 
+[R,P] = corrcoef(Cope8, TotalEQScore);
+figure
+scatter(TotalEQScore, Cope8, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 14);
+ylabel  ('UG and DG Contrast during Endowment Phase', 'FontSize', 14);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'UG and dg.png')
+
+%% DG/UG proportions
+
+
+values = 1002:1021;
+DG_P_Proportions = [];
+
+for ii = 1:length(values);
+    
+    try
+        name = ['Subject_' num2str(values(ii)) '_DGP.csv'];
+        
+       
+        O = readtable(name);
+        DG_P_Proportions = vertcat(DG_P_Proportions,O);
+        
+    end
+end
+
+DG_P_Proportions = table2array(DG_P_Proportions);
+
+Proportion_DG = DG_P_Proportions(:,3) ./ DG_P_Proportions(:,2)
+
+figure
+h = histogram(Proportion_DG(:));
+counts = h.Values;
+h.NumBins = 5
+ax = gca
+ax.FontSize = 9
+xlabel ('Dictator Game Offers as Proposer','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'DGProportions.png')
+
+bin1 = [];
+bin2 = [];
+bin3 = [];
+bin4 = [];
+bin5 = [];
+
+for jj = 1:length(Proportion_DG)
+    
+    ii = Proportion_DG(jj);
+    
+    if ii > 0 && ii <= .1
+        saveme = .05;
+        bin1 = [bin1,saveme];
+    end
+    
+    if ii > .1 && ii <= .2
+        saveme = .15;
+        bin2 = [bin2,saveme];
+    end
+    if ii > .2 && ii <= .3
+        saveme = .25;
+        bin3 = [bin3,saveme];
+    end
+    if ii > .3 && ii <= .4
+        saveme = .35;
+        bin4 = [bin4,saveme];
+    end
+    if ii > .4 && ii <= .5
+        saveme = .45;
+        bin5 = [bin5,saveme];
+    end
+
+end
+figure
+
+x = [.05,.15,.25,.35,.45];
+
+bin511 = size(bin5);
+bin511 = bin511(2);
+bin411 = size(bin4);
+bin411 = bin411(2);
+bin311 = size(bin3);
+bin311 = bin311(2);
+bin211 = size(bin2);
+bin211 = bin211(2);
+bin111 = size(bin1);
+bin111 = bin111(2);
+
+total = bin511 + bin411+ bin311 + bin211 + bin111;
+Binsuse = [(bin111/total), (bin211/total), (bin311/total), (bin411/total), (bin511/total)];
+
+figure
+bar(x,Binsuse)
+title 'Offers as Proposer in Dictator Game'
+xlabel 'Offers'
+ylabel 'Rate Offered'
+axis([-.0 .5 0 .6])
+
+%% DG/UG proportions
+
+
+values = 1002:1021;
+UG_P_Proportions_1 = [];
+UG_P_Proportions_2 = [];
+for ii = 1:length(values);
+    
+    try
+        name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
+        
+       
+        N = readtable(name);
+        UG_P_Proportions_1 = vertcat(UG_P_Proportions_1,N);
+        
+    end
+end
+
+for ii = 1:length(values);
+    
+    try
+        name = ['Subject_' num2str(values(ii)) '_UGP2.csv'];
+        
+       
+        M = readtable(name);
+        UG_P_Proportions_2 = vertcat(UG_P_Proportions_2,M);
+        
+    end
+end
+
+
+UG_P_Proportions_1 = table2array(UG_P_Proportions_1);
+UG_P_Proportions_2 = table2array(UG_P_Proportions_2);
+
+Proportion_UG1 = UG_P_Proportions_1(:,3) ./ UG_P_Proportions_1(:,2);
+Proportion_UG2 = UG_P_Proportions_2(:,3) ./ UG_P_Proportions_2(:,2);
+
+Proportion_UG = [Proportion_UG1; Proportion_UG2];
+
+figure
+h = histogram(Proportion_UG(:));
+counts = h.Values;
+h.NumBins = 5
+ax = gca
+ax.FontSize = 9
+xlabel ('Ultimatum Game Offers as Proposer','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'UGProportions.png')
+
+bin1 = [];
+bin2 = [];
+bin3 = [];
+bin4 = [];
+bin5 = [];
+
+for ii = 1:length(Proportion_UG)
+    
+    ii = Proportion_UG(ii);
+    
+    if ii > 0 && ii <= .1
+        saveme = .05;
+        bin1 = [bin1,saveme];
+    end
+    
+    if ii > .1 && ii <= .2
+        saveme = .15;
+        bin2 = [bin2,saveme];
+    end
+    if ii > .2 && ii <= .3
+        saveme = .25;
+        bin3 = [bin3,saveme];
+    end
+    if ii > .3 && ii <= .4
+        saveme = .35;
+        bin4 = [bin4,saveme];
+    end
+    if ii > .4 && ii <= .5
+        saveme = .45;
+        bin5 = [bin5,saveme];
+    end
+
+end
+figure
+
+x = [.05,.15,.25,.35,.45];
+
+bin51 = size(bin5);
+bin51 = bin51(2);
+bin41 = size(bin4);
+bin41 = bin41(2);
+bin31 = size(bin3);
+bin31 = bin31(2);
+bin21 = size(bin2);
+bin21 = bin21(2);
+bin11 = size(bin1);
+bin11 = bin11(2);
+
+total2 = bin51 + bin41+ bin31 + bin21 + bin11;
+Binsuse2 = [(bin11/total2), (bin21/total2), (bin31/total2), (bin41/total2), (bin51/total2)];
+
+
+bar(x,Binsuse2)
+title 'Offers as Proposer in Ultimatum Game'
+xlabel 'Offers'
+ylabel 'Rate Offered'
+axis([-.0 .5 0 .6])
 
