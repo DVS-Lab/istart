@@ -13,9 +13,9 @@ Top=109
 Width=1171
 Height=582
 [Object2]
-Name=TrialListA
+Name=RecallQ
 WindowState=0
-Left=363
-Top=61
-Width=602
-Height=580
+Left=208
+Top=208
+Width=1869
+Height=530
