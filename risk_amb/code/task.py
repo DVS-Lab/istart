@@ -1,4 +1,3 @@
-
 # In[1]:
 
 
@@ -102,10 +101,10 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
     shade=np.multiply(360.00,tmp_div)+1
     print(shade)
     
-    Outline= visual.RadialStim( win=win, name='OUTLINE', color=col_code,opacity=1,
+    Outline= visual.RadialStim( win=win,units="pix", name='OUTLINE', color=col_code,opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(400,400))
-    Outline2= visual.RadialStim( win=win, name='OUTLINE_in', color=[0,0,0],opacity=1,
+    Outline2= visual.RadialStim( win=win,units="pix", name='OUTLINE_in', color=[0,0,0],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                ori= 45.0, pos=(lot_pos,0), size=(380,380))
      
@@ -116,7 +115,7 @@ def risk_choice(lot_col,lot_m,lot_p,lot_left,sure_m):
                           angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                           ori= -90.0,pos=(lot_pos,0), size=(300,300),visibleWedge=(0.0, shade))
     
-    Lot_a_lose= visual.RadialStim( win=win, name='rad2', color=col_code,opacity=0.5,
+    Lot_a_lose= visual.RadialStim( win=win,units="pix", name='rad2', color=col_code,opacity=0.5,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(300,300))
     Lot_a_lose.draw()
@@ -196,10 +195,10 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     print(shade)
     
     # The risky lottery has 3 parts. The Outline Win ammount. & Lose Amount
-    R_Outline= visual.RadialStim( win=win, name='OUTLINE', color=[1,1,1],opacity=1,
+    R_Outline= visual.RadialStim( win=win,units="pix", name='OUTLINE', color=[1,1,1],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(400,400))
-    R_Outline2= visual.RadialStim( win=win, name='OUTLINE_in', color=[0,0,0],opacity=1,
+    R_Outline2= visual.RadialStim( win=win,units="pix", name='OUTLINE_in', color=[0,0,0],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                ori= 45.0, pos=(lot_pos,0), size=(380,380))
      
@@ -210,7 +209,7 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
                           angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                           ori= -90.0,pos=(lot_pos,0), size=(300,300),visibleWedge=(0.0, shade))
     
-    Lot_a_lose= visual.RadialStim( win=win, name='rad2', color=[1,1,1],opacity=0.5,
+    Lot_a_lose= visual.RadialStim( win=win,units="pix", name='rad2', color=[1,1,1],opacity=0.5,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 45.0, pos=(lot_pos,0), size=(300,300))
     Lot_a_lose.draw()
@@ -321,9 +320,6 @@ def instruction(instructions):
 
 response_R_trials=pd.DataFrame(columns=['Keypress','RT'])
 timer = core.Clock()
-win=visual.Window(fullscr=False,
-                  size=[3000,1000],
-                  units="pix")
 
 Stimdir="Stim/"
 
@@ -333,6 +329,8 @@ subjDlg.addField('Enter Subject ID: ')
 subjDlg.show()
 subj_id=subjDlg.data[0]
 os.makedirs("../data/sub-%s"%(subj_id),exist_ok=True)
+win=visual.Window([1800,900])
+
 
 
 R_inst=[0,1,2,3,4,5,6,7,8,9,10]
