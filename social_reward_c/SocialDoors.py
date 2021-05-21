@@ -124,10 +124,6 @@ def do_run(stimset):
         select_2 = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', lineColor = 'white')
         select_3 = visual.ShapeStim(win, vertices=pic_R.verticesPix, units='pix', lineColor = 'white')
         
-        
-        print(pic_L)
-        
-        
         trial_timer = core.CountdownTimer(5.2)   
         while trial_timer.getTime() > 0:
             #1st fixation

@@ -1,7 +1,7 @@
 Trial,A_ITI,B_ITI,A_feedback,B_feedback,A_faces_L,A_faces_R,A_doors_L,A_doors_R,B_faces_L,B_faces_R,B_doors_L,B_doors_R,practice_faces_L,practice_faces_R,practice_doors_L,practice_doors_R,practice_ITI,practice_feedback
-1,5.3,5.3,win,loss,A_M25.jpg,A_M111.jpg,AD_001.jpg,AD_061.jpg,B_F118.jpg,B_F120.jpg,BD_121.jpg,BD_181.jpg,P_face1.bmp,P_face3.bmp,D_275.jpg,D_277.jpg,2,loss
-2,1.1,5.3,loss,win,A_M39.jpg,A_M109.jpg,AD_002.jpg,AD_062.jpg,B_F114.jpg,B_F106.jpg,BD_122.jpg,BD_182.jpg,P_face2.bmp,P_face4.bmp,D_276.jpg,D_278.jpg,2,win
-3,1.1,5.3,win,loss,A_M65.jpg,A_M95.jpg,AD_003.jpg,AD_063.jpg,B_M38.jpg,B_M112.jpg,BD_123.jpg,BD_183.jpg,P_face5.bmp,P_face6.bmp,,,,
+1,5.3,5.3,win,loss,A_M25.jpg,A_M111.jpg,AD_001.jpg,AD_061.jpg,B_F118.jpg,B_F120.jpg,BD_121.jpg,BD_181.jpg,P_face1.bmp,P_face3.bmp,PD_241.jpg,PD_242.jpg,2,win
+2,1.1,5.3,loss,win,A_M39.jpg,A_M109.jpg,AD_002.jpg,AD_062.jpg,B_F114.jpg,B_F106.jpg,BD_122.jpg,BD_182.jpg,P_face2.bmp,P_face4.bmp,PD_243.jpg,PD_244.jpg,2,loss
+3,1.1,5.3,win,loss,A_M65.jpg,A_M95.jpg,AD_003.jpg,AD_063.jpg,B_M38.jpg,B_M112.jpg,BD_123.jpg,BD_183.jpg,P_face5.bmp,P_face6.bmp,PD_245.jpg,PD_246.jpg,2,win
 4,3.2,1.1,win,loss,A_F13.jpg,A_F61.jpg,AD_004.jpg,AD_064.jpg,B_F42.jpg,B_F96.jpg,BD_124.jpg,BD_184.jpg,,,,,,
 5,5.3,1.1,loss,loss,A_F39.jpg,A_F115.jpg,AD_005.jpg,AD_065.jpg,B_M114.jpg,B_M12.jpg,BD_125.jpg,BD_185.jpg,,,,,,
 6,3.2,1.1,loss,win,A_M113.jpg,A_M33.jpg,AD_006.jpg,AD_066.jpg,B_M60.jpg,B_M78.jpg,BD_126.jpg,BD_186.jpg,,,,,,
