@@ -220,10 +220,10 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
         orn=45
     else:
         orn=90
-    A_Outline= visual.RadialStim( win=win, name='OUTLINE', color=col_code,opacity=1,
+    A_Outline= visual.RadialStim( win=win,units="pix", name='OUTLINE', color=col_code,opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 0, pos=(amb_pos,0), size=(400,400))
-    A_Outline2= visual.RadialStim( win=win, name='OUTLINE_in', color=[0,0,0],opacity=1,
+    A_Outline2= visual.RadialStim( win=win,units="pix", name='OUTLINE_in', color=[0,0,0],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                ori= 0, pos=(amb_pos,0), size=(380,380))
      
@@ -234,10 +234,10 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
                           angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                           ori= 0,pos=(amb_pos,0), size=(300,300),visibleWedge=(0.0,180))
     
-    A_lose = visual.RadialStim( win=win, name='rad2', color=col_code,opacity=0.3,
+    A_lose = visual.RadialStim( win=win,units="pix", name='rad2', color=col_code,opacity=0.3,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori= 0, pos=(amb_pos,0), size=(300,300))
-    cover= visual.RadialStim( win=win, name='rad2', color=[0.2,0.2,0.2],opacity=1,
+    cover= visual.RadialStim( win=win,units="pix", name='rad2', color=[0.2,0.2,0.2],opacity=1,
                                 angularCycles = 0, radialCycles = 0, radialPhase = 0.5, colorSpace = 'rgb', 
                                 ori=orn, pos=(amb_pos,0), size=(300,300),visibleWedge=(0.0,amb_shade))
     
@@ -250,19 +250,19 @@ def Amb_choice(lot_left,lot_p,money,lot_col,Amb_level):
     
     am_per_text="%s %% - %s %%"%(50-np.divide(Amb_level,2),50+np.divide(Amb_level,2))
 
-    AmbPer=visual.TextStim(win=win,text=am_per_text,pos=(amb_pos,-50),bold=True)
+    AmbPer=visual.TextStim(win=win,units="pix",text=am_per_text,pos=(amb_pos,-50),bold=True)
     AmbPer.draw()
     
     
-    Lot_per=visual.TextStim(win=win,text="%s %%"%(lot_p),pos=(lot_pos,-50),bold=True)
+    Lot_per=visual.TextStim(win=win,units="pix",text="%s %%"%(lot_p),pos=(lot_pos,-50),bold=True)
     
     Lot_per.draw()
-    focus=visual.TextStim(win=win,text='+')
+    focus=visual.TextStim(win=win,text='+',units="pix")
     
    
     focus.draw()
     
-    Lot_Money=visual.TextStim(win=win,text="$ %s"%(money),pos=(0,50),bold=True)
+    Lot_Money=visual.TextStim(win=win,units="pix",text="$ %s"%(money),pos=(0,50),bold=True)
     Lot_Money.draw()
    
     win.flip()
