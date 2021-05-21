@@ -1,10 +1,12 @@
 ###social_reward - Caleb Haynes 11/29/2019
 from psychopy import visual, core, event, gui, data
 from psychopy.visual import ShapeStim
+from instructions import *
 import pandas as pd
 import os
 import datetime
 import time
+
 
 #gui set up for subject id and picture order
 subjDlg = gui.Dlg(title="Picture Task")
@@ -21,7 +23,7 @@ task_order = subjDlg.data[1]
 version = subjDlg.data[2]
 
 #parameter file for Trial, ITI, win or lose, and image and face ordering, set window, response keys
-reference = pd.read_csv(('reference2.csv'), header = 0)
+reference = pd.read_csv(('reference.csv'), header = 0)
 win = visual.Window([1000,750], monitor="testMonitor", units="deg", 
                     fullscr=True, allowGUI=False, screen=1)
 responseKeys=('2','3','z')
@@ -37,50 +39,20 @@ fixation_time = 0.54
 decision_time = 3.0
 fb_dur = 1.0
 
-instruct_screen = visual.TextStim(win, text='''Hello! This is the picture task.
-\n\nPress the index finger button to continue.''', pos = (.5,0), wrapWidth=45, height = 1.2)
+#instruction display settings, variables are from imported instructions file
+instruct_screen = visual.TextStim(win, text=instruction_hello, pos = (.5,0), wrapWidth=45, height = 1.2)
+instruct_screen_practice = visual.TextStim(win, text=instruction_hello_practice, pos = (.5,0), wrapWidth=45, height = 1.2)
 
-instruct_screen_practice = visual.TextStim(win, text='''Hello! This is a practice for the picture task.
-\n\nPress the index finger (or the number 2 on your keyboard) button to continue.''', pos = (.5,0), wrapWidth=45, height = 1.2)
+instruct_screen1_image = visual.TextStim(win, text=instruction1_door, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen1_face = visual.TextStim(win, text=instruction1_face, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text=instruction2, pos = (.5,0), wrapWidth=45, height = 1.2)
+instruct_screen3_image = visual.TextStim(win, text=instruction3_door, pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3_image_practice = visual.TextStim(win, text=instruction3_door_practice, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_face = visual.TextStim(win, text=instruction3_door_practice, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_face_practice = visual.TextStim(win, text=instruction3_face_practice, pos = (0,0), wrapWidth=25, height = 1.2)
 
-instruct_screen1_image = visual.TextStim(win, text='''In this task, you will see two pictures on the computer screen, only one of them will have a prize behind it. 
-\n \nWe want you to tell us which picture you think contains a prize. 
-\n \nPress the index finger (or the number 2 on your keyboard) button to continue.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen1_face = visual.TextStim(win, text='''In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. 
-\n \nWe want you to tell us which person you think liked you based on your photo. 
-\n \nPress the index finger (or 2 on your keyboard) button to continue.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen2 = visual.TextStim(win, text='''Press Button 2 (index finger) for the LEFT picture. 
-\n \nPress Button 3 (middle finger) for the RIGHT picture.''', pos = (.5,0), wrapWidth=45, height = 1.2)
-
-instruct_screen3_image = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
-\n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
-\n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\n Once you see the arrow, that round is over.''', pos = (0,0), wrapWidth=45, height = 1.2)
-
-instruct_screen3_image_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
-\n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
-\n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nRemember that this is just a practice, these outcomes are based on another participant's choices and will not affect your earnings.  
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen3_face = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
-\nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen3_face_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
-\nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nRemember that this is just a practice, these outcomes are based on another participant's ratings and not those based on your photo.   
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-ready_screen = visual.TextStim(win, text='''Please wait for the game to begin! 
-\n\nRemember to keep your head still!''', height=1.5, wrapWidth=30)
-
-ready_screen_practice = visual.TextStim(win, text='''Please wait for the practice game to begin! 
-\n\nRemember to keep your head still!''', height=1.5, wrapWidth=30)
+ready_screen = visual.TextStim(win, text=ready_screen, height=1.5, wrapWidth=30)
+ready_screen_practice = visual.TextStim(win, text=ready_screen_practice, height=1.5, wrapWidth=30)
 
 def do_run(stimset):
     #instructions
