@@ -18,9 +18,12 @@ thePath.start = pwd;                                % starting directory
 thePath.data = fullfile(thePath.start, 'data');     % path to Data directory
 thePath.scripts = fullfile(thePath.start, 'scripts');
 thePath.stims = fullfile(thePath.start, 'stimuli');
+thePath.timing = fullfile(thePath.start, 'timing');
 
 addpath(thePath.scripts)
 addpath(thePath.stims)
+addpath(genpath(thePath.data))
+addpath(thePath.timing)
 
 % set up device number
 if IsOSX
