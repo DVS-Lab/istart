@@ -45,10 +45,12 @@ instruct_screen_practice = visual.TextStim(win, text=instruction_hello_practice,
 
 instruct_screen1_image = visual.TextStim(win, text=instruction1_door, pos = (0,0), wrapWidth=25, height = 1.2)
 instruct_screen1_face = visual.TextStim(win, text=instruction1_face, pos = (0,0), wrapWidth=25, height = 1.2)
+
 instruct_screen2 = visual.TextStim(win, text=instruction2, pos = (.5,0), wrapWidth=45, height = 1.2)
+
 instruct_screen3_image = visual.TextStim(win, text=instruction3_door, pos = (0,0), wrapWidth=45, height = 1.2)
 instruct_screen3_image_practice = visual.TextStim(win, text=instruction3_door_practice, pos = (0,0), wrapWidth=25, height = 1.2)
-instruct_screen3_face = visual.TextStim(win, text=instruction3_door_practice, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_face = visual.TextStim(win, text=instruction3_face, pos = (0,0), wrapWidth=25, height = 1.2)
 instruct_screen3_face_practice = visual.TextStim(win, text=instruction3_face_practice, pos = (0,0), wrapWidth=25, height = 1.2)
 
 ready_screen = visual.TextStim(win, text=ready_screen, height=1.5, wrapWidth=30)
@@ -63,7 +65,7 @@ def do_run(stimset):
     win.flip()
     event.waitKeys(keyList=('space','2'))
 
-    if stimset == 'face':
+    if stimset == 'faces':
         instruct_screen1_face.draw()
     else:
         instruct_screen1_image.draw()
@@ -74,7 +76,7 @@ def do_run(stimset):
     win.flip()
     event.waitKeys(keyList=('space','2'))
     
-    if stimset == 'face':
+    if stimset == 'faces':
         if version == ('A' or 'B'):
             instruct_screen3_face.draw()
         else:
@@ -117,6 +119,10 @@ def do_run(stimset):
     for trial in reference.iterrows():
         trial_start = clock.getTime()
         row_counter = trial[0]
+        if version == 'practice' and row_counter == 3:
+            print('Practice Complete')
+            core.quit()
+        
         pic_L = visual.ImageStim(win,os.path.join(pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_L']), pos =(-7,0),size=(11.2,17.14))
         pic_R = visual.ImageStim(win,os.path.join(pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_R']), pos =(7,0),size=(11.2,17.14))
         border = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', fillColor = 'grey', lineColor = 'grey')
@@ -302,7 +308,6 @@ def all_run():
         os.mkdir(f'data/{subj_id}')
     except:
         print("Subject File Exists, Overwrite Warning")
-        print("Subject File Exists, Overwrite Warning")
     if task_order == 'doors' or 'faces':
         do_run(task_order)
     else:
@@ -311,6 +316,7 @@ def all_run():
     return;
 
 all_run()
+print('Task Completed')
 core.quit()
 
 ###beta###
