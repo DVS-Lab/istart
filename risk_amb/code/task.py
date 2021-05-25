@@ -329,6 +329,8 @@ subjDlg.addField('Enter Subject ID: ')
 subjDlg.show()
 subj_id=subjDlg.data[0]
 os.makedirs("../data/sub-%s"%(subj_id),exist_ok=True)
+import shutil
+shutil.copy("../R-A_ManipulationCheck.pdf","../data/sub-%s/%s_ManipulationCheck.pdf"%(subj_id,subj_id))
 win=visual.Window([1800,900])
 
 
