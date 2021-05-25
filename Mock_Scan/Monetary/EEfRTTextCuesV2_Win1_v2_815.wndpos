@@ -1,11 +1,14 @@
 [Object0]
+Name=WinScript
+WindowState=1
+[Object1]
 Name=StartPractice
 WindowState=0
 Left=156
 Top=156
 Width=535
 Height=324
-[Object1]
+[Object2]
 Name=EasyTask
 WindowState=0
 Left=130
