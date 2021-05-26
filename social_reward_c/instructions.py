@@ -1,6 +1,6 @@
 #Instruction configuration for Social Doors Task
 
-#Caleb Haynes 5-20-2021
+#Caleb Haynes 5-26-2021
 
 instruction_hello = '''
 Hello! This is the picture task.\n\nPress the index finger button to continue.
@@ -12,14 +12,14 @@ Hello! This is a practice for the picture task.
 '''
 
 instruction1_door = '''
-In this task, you will see two pictures on the computer screen, only one of them will have a prize behind it. 
-\n \nWe want you to tell us which picture you think contains a prize. 
+In this task, you will see two doors on the computer screen, only one of them will have a prize behind it. 
+\n \nWe want you to tell us which door you think contains a prize. 
 \n \nPress the index finger (or the number 2 on your keyboard) button to continue.
 '''
 
 instruction1_face = '''
-In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. 
-\n \nWe want you to tell us which person you think liked you based on your photo. 
+In this task, you will see two peers on the computer screen, one on the left and one on the right. 
+\n \nWe want you to tell us which peer you think liked you based on your photo. 
 \n \nPress the index finger (or 2 on your keyboard) button to continue.
 '''
 
@@ -44,17 +44,17 @@ If you choose correctly, you will see a green arrow pointing up, meaning that yo
 '''
 
 instruction3_face = '''
-If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you;
-that person actually disliked you.
+If you choose correctly, you will see a green arrow pointing up, meaning that you chose the peer who said they liked you.
+\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the peer who said they liked you;
+that peer actually disliked you.
 \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
 \nOnce you see the arrow, that round is over.
 '''
 
 instruction3_face_practice = '''
 If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you;
-that person actually disliked you.
+\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the peer who said they liked you;
+that peer actually disliked you.
 \nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
 \nRemember that this is just a practice, these outcomes are based on another participant's ratings and not those based on your photo.   
 \nOnce you see the arrow, that round is over.
