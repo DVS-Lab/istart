@@ -1,4 +1,4 @@
-###social_reward - Caleb Haynes 11/29/2019
+###socialDoors - Caleb Haynes 5/28/2021
 from psychopy import visual, core, event, gui, data
 from psychopy.visual import ShapeStim
 from instructions import *
@@ -58,10 +58,10 @@ ready_screen_practice = visual.TextStim(win, text=ready_screen_practice, height=
 
 def do_run(stimset):
     #instructions
-    if version == ('A' or 'B'):
-        instruct_screen.draw()
-    else: 
+    if version == 'practice':
         instruct_screen_practice.draw()
+    else: 
+        instruct_screen.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
 
@@ -77,23 +77,23 @@ def do_run(stimset):
     event.waitKeys(keyList=('space','2'))
     
     if stimset == 'faces':
-        if version == ('A' or 'B'):
-            instruct_screen3_face.draw()
-        else:
+        if version == 'practice':
             instruct_screen3_face_practice.draw()
-    else:
-        if version == ('A' or 'B'):
-            instruct_screen3_image.draw()
         else:
+            instruct_screen3_face.draw()
+    else:
+        if version == 'practice':
             instruct_screen3_image_practice.draw()
+        else:
+            instruct_screen3_image.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
     
     #wait for scan trigger 
-    if version == 'A' or 'B':
-        ready_screen.draw()
-    else:
+    if version == 'practice':
         ready_screen_practice.draw()
+    else:
+        ready_screen.draw()
     win.flip()
     event.waitKeys(keyList=('equal'))
     run_start = time.time()
