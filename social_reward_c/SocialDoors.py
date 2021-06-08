@@ -1,10 +1,12 @@
-###social_reward - Caleb Haynes 11/29/2019
+###socialDoors - Caleb Haynes 5/28/2021
 from psychopy import visual, core, event, gui, data
 from psychopy.visual import ShapeStim
+from instructions import *
 import pandas as pd
 import os
 import datetime
 import time
+
 
 #gui set up for subject id and picture order
 subjDlg = gui.Dlg(title="Picture Task")
@@ -21,7 +23,7 @@ task_order = subjDlg.data[1]
 version = subjDlg.data[2]
 
 #parameter file for Trial, ITI, win or lose, and image and face ordering, set window, response keys
-reference = pd.read_csv(('reference2.csv'), header = 0)
+reference = pd.read_csv(('reference.csv'), header = 0)
 win = visual.Window([1000,750], monitor="testMonitor", units="deg", 
                     fullscr=True, allowGUI=False, screen=1)
 responseKeys=('2','3','z')
@@ -37,61 +39,33 @@ fixation_time = 0.54
 decision_time = 3.0
 fb_dur = 1.0
 
-instruct_screen = visual.TextStim(win, text='''Hello! This is the picture task.
-\n\nPress the index finger button to continue.''', pos = (.5,0), wrapWidth=45, height = 1.2)
+#instruction display settings, variables are from imported instructions file
+instruct_screen = visual.TextStim(win, text=instruction_hello, pos = (.5,0), wrapWidth=45, height = 1.2)
+instruct_screen_practice = visual.TextStim(win, text=instruction_hello_practice, pos = (.5,0), wrapWidth=45, height = 1.2)
 
-instruct_screen_practice = visual.TextStim(win, text='''Hello! This is a practice for the picture task.
-\n\nPress the index finger (or the number 2 on your keyboard) button to continue.''', pos = (.5,0), wrapWidth=45, height = 1.2)
+instruct_screen1_image = visual.TextStim(win, text=instruction1_door, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen1_face = visual.TextStim(win, text=instruction1_face, pos = (0,0), wrapWidth=25, height = 1.2)
 
-instruct_screen1_image = visual.TextStim(win, text='''In this task, you will see two pictures on the computer screen, only one of them will have a prize behind it. 
-\n \nWe want you to tell us which picture you think contains a prize. 
-\n \nPress the index finger (or the number 2 on your keyboard) button to continue.''', pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen2 = visual.TextStim(win, text=instruction2, pos = (.5,0), wrapWidth=45, height = 1.2)
 
-instruct_screen1_face = visual.TextStim(win, text='''In this task, you will see two pictures of individuals on the computer screen, one on the left and one on the right. 
-\n \nWe want you to tell us which person you think liked you based on your photo. 
-\n \nPress the index finger (or 2 on your keyboard) button to continue.''', pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_image = visual.TextStim(win, text=instruction3_door, pos = (0,0), wrapWidth=45, height = 1.2)
+instruct_screen3_image_practice = visual.TextStim(win, text=instruction3_door_practice, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_face = visual.TextStim(win, text=instruction3_face, pos = (0,0), wrapWidth=25, height = 1.2)
+instruct_screen3_face_practice = visual.TextStim(win, text=instruction3_face_practice, pos = (0,0), wrapWidth=25, height = 1.2)
 
-instruct_screen2 = visual.TextStim(win, text='''Press Button 2 (index finger) for the LEFT picture. 
-\n \nPress Button 3 (middle finger) for the RIGHT picture.''', pos = (.5,0), wrapWidth=45, height = 1.2)
-
-instruct_screen3_image = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
-\n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
-\n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\n Once you see the arrow, that round is over.''', pos = (0,0), wrapWidth=45, height = 1.2)
-
-instruct_screen3_image_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you won 50 cents.
-\n If you choose incorrectly, you will see a red arrow pointing down, meaning that you lost 25 cents.
-\n If you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nRemember that this is just a practice, these outcomes are based on another participant's choices and will not affect your earnings.  
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen3_face = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
-\nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-instruct_screen3_face_practice = visual.TextStim(win, text='''If you choose correctly, you will see a green arrow pointing up, meaning that you chose the person who said they liked you.
-\nIf you choose incorrectly, you will see a red arrow pointing down, meaning that you did not choose the person who said they liked you; that person actually disliked you.
-\nIf you are not fast enough, the computer will make a decision for you at random, so make sure you are responding quickly. 
-\nRemember that this is just a practice, these outcomes are based on another participant's ratings and not those based on your photo.   
-\nOnce you see the arrow, that round is over.''', pos = (0,0), wrapWidth=25, height = 1.2)
-
-ready_screen = visual.TextStim(win, text='''Please wait for the game to begin! 
-\n\nRemember to keep your head still!''', height=1.5, wrapWidth=30)
-
-ready_screen_practice = visual.TextStim(win, text='''Please wait for the practice game to begin! 
-\n\nRemember to keep your head still!''', height=1.5, wrapWidth=30)
+ready_screen = visual.TextStim(win, text=ready_screen, height=1.5, wrapWidth=30)
+ready_screen_practice = visual.TextStim(win, text=ready_screen_practice, height=1.5, wrapWidth=30)
 
 def do_run(stimset):
     #instructions
-    if version == ('A' or 'B'):
-        instruct_screen.draw()
-    else: 
+    if version == 'practice':
         instruct_screen_practice.draw()
+    else: 
+        instruct_screen.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
 
-    if stimset == 'face':
+    if stimset == 'faces':
         instruct_screen1_face.draw()
     else:
         instruct_screen1_image.draw()
@@ -102,24 +76,24 @@ def do_run(stimset):
     win.flip()
     event.waitKeys(keyList=('space','2'))
     
-    if stimset == 'face':
-        if version == ('A' or 'B'):
-            instruct_screen3_face.draw()
-        else:
+    if stimset == 'faces':
+        if version == 'practice':
             instruct_screen3_face_practice.draw()
-    else:
-        if version == ('A' or 'B'):
-            instruct_screen3_image.draw()
         else:
+            instruct_screen3_face.draw()
+    else:
+        if version == 'practice':
             instruct_screen3_image_practice.draw()
+        else:
+            instruct_screen3_image.draw()
     win.flip()
     event.waitKeys(keyList=('space','2'))
     
     #wait for scan trigger 
-    if version == 'A' or 'B':
-        ready_screen.draw()
-    else:
+    if version == 'practice':
         ready_screen_practice.draw()
+    else:
+        ready_screen.draw()
     win.flip()
     event.waitKeys(keyList=('equal'))
     run_start = time.time()
@@ -145,16 +119,16 @@ def do_run(stimset):
     for trial in reference.iterrows():
         trial_start = clock.getTime()
         row_counter = trial[0]
+        if version == 'practice' and row_counter == 3:
+            print('Practice Complete')
+            core.quit()
+        
         pic_L = visual.ImageStim(win,os.path.join(pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_L']), pos =(-7,0),size=(11.2,17.14))
         pic_R = visual.ImageStim(win,os.path.join(pic_path, reference.loc[reference.index[row_counter], f'{version}_{stimset}_R']), pos =(7,0),size=(11.2,17.14))
         border = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', fillColor = 'grey', lineColor = 'grey')
         border2 = visual.ShapeStim(win, vertices=pic_R.verticesPix, units='pix', fillColor = 'grey', lineColor = 'grey')
         select_2 = visual.ShapeStim(win, vertices=pic_L.verticesPix, units='pix', lineColor = 'white')
         select_3 = visual.ShapeStim(win, vertices=pic_R.verticesPix, units='pix', lineColor = 'white')
-        
-        
-        print(pic_L)
-        
         
         trial_timer = core.CountdownTimer(5.2)   
         while trial_timer.getTime() > 0:
@@ -334,7 +308,6 @@ def all_run():
         os.mkdir(f'data/{subj_id}')
     except:
         print("Subject File Exists, Overwrite Warning")
-        print("Subject File Exists, Overwrite Warning")
     if task_order == 'doors' or 'faces':
         do_run(task_order)
     else:
@@ -343,6 +316,7 @@ def all_run():
     return;
 
 all_run()
+print('Task Completed')
 core.quit()
 
 ###beta###
