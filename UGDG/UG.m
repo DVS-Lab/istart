@@ -28,7 +28,7 @@ clc
 % 15-25, only odd values.
 
 trials = 36; % number of trials
-subjects = 200; % number of total possible subjects
+subjects = 340; % number of total possible subjects
 runs = 2;
 
 %% Endowment Distribution
