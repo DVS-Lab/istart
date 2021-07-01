@@ -1,4 +1,4 @@
-###i/start
+
 ###UGDG practice
 
 from psychopy import visual, core, event, gui, data, sound, logging

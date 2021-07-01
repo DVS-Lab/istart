@@ -1,4 +1,4 @@
-%function MID2(isscan, subnum)
+4%function MID2(isscan, subnum)
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
@@ -18,9 +18,12 @@ thePath.start = pwd;                                % starting directory
 thePath.data = fullfile(thePath.start, 'data');     % path to Data directory
 thePath.scripts = fullfile(thePath.start, 'scripts');
 thePath.stims = fullfile(thePath.start, 'stimuli');
+thePath.timing = fullfile(thePath.start, 'timing');
 
 addpath(thePath.scripts)
 addpath(thePath.stims)
+addpath(genpath(thePath.data))
+addpath(thePath.timing)
 
 % set up device number
 if IsOSX
@@ -41,7 +44,7 @@ load([ thePath.start '/timing/run' num2str(whichrun) '.mat'])
 
 %define intertrial fixation
 fix_isi = run.isi2;
-fix_iti = run.isi1;
+fix_iti = run.isi1;=======
 trial_cond = run.cond;
 
 backtick = '=';

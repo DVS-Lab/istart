@@ -29,14 +29,15 @@ responseKeys=('2','3','z')
 subjDlg=gui.Dlg(title="Shared Reward Task")
 subjDlg.addField('Enter Subject ID: ')
 subjDlg.addField('Enter Friend Name: ') #1
-subjDlg.addField('Enter Partner Name: ') #NOTE: PARTNER IS THE CONFEDERATE/STRANGER #2
+subjDlg.addField('Enter Partner Name: ')#NOTE: PARTNER IS THE CONFEDERATE/STRANGER #2
+subjDlg.addField('Run:', choices=['1', '2'])
 subjDlg.show()
 
 if gui.OK:
     subj_id=subjDlg.data[0]
     friend_id=subjDlg.data[1]
     stranger_id=subjDlg.data[2]
-    run = range(0,1)
+    run = subjDlg.data[3]
 
 else:
     sys.exit()
@@ -82,7 +83,7 @@ expdir = os.getcwd()
 subjdir = '%s/logs/%s' % (expdir, subj_id)
 if not os.path.exists(subjdir):
     os.makedirs(subjdir)
-log_file = os.path.join(subjdir,'sub-{}_task-sharedreward_run-{}_raw.csv')
+log_file = os.path.join(f'sub-{subj_id}_task-sharedreward_run-0{run}_raw.csv')
 
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
@@ -335,7 +336,7 @@ def do_run(run, trials):
     #core.wait(endTime)
     print(globalClock.getTime())
 
-for run, trials in enumerate([trials_run1, trials_run2]):
+for run, trials in enumerate([trials_run1]):
     do_run(run, trials)
 
 # Exit
