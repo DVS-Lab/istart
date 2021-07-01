@@ -44,7 +44,7 @@ load([ thePath.start '/timing/run' num2str(whichrun) '.mat'])
 
 %define intertrial fixation
 fix_isi = run.isi2;
-fix_iti = run.isi1;
+fix_iti = run.isi1;=======
 trial_cond = run.cond;
 
 backtick = '=';
