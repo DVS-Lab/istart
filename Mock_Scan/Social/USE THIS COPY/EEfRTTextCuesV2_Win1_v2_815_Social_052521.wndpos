@@ -1,11 +1,11 @@
 [Object0]
-Name=CompleteFeedback
+Name=MarkDecisionandOutcome
 WindowState=1
 [Object1]
 Name=Practice
 WindowState=1
 [Object2]
-Name=MarkDecisionandOutcome
+Name=CompleteFeedback
 WindowState=1
 [Object3]
 Name=HardScriptLosePrac
@@ -115,7 +115,7 @@ Height=285
 [Object18]
 Name=Decision
 WindowState=0
-Left=-22
-Top=-5
-Width=1269
-Height=747
+Left=10
+Top=10
+Width=250
+Height=250
