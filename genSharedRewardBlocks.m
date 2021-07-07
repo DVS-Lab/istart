@@ -33,7 +33,7 @@ maindir = pwd;
 outfiles = fullfile(maindir,'Shared_Reward','params','SR_blocks');
 mkdir(outfiles);
 
-for s = 1250:1999
+for s = 2000:4000
     subout = fullfile(outfiles,sprintf('sub-%04d',s));
     mkdir(subout);
 
