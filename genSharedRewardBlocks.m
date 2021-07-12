@@ -29,10 +29,11 @@ feedback_dur = 1;
 
 
 maindir = pwd;
-outfiles = fullfile(maindir,'psychopy','params','SR_blocks_NEW');
+%Shared_Reward/params/SR_blocks/
+outfiles = fullfile(maindir,'Shared_Reward','params','SR_blocks');
 mkdir(outfiles);
 
-for s = [1001:1201 9999]
+for s = 2000:4000
     subout = fullfile(outfiles,sprintf('sub-%04d',s));
     mkdir(subout);
 
