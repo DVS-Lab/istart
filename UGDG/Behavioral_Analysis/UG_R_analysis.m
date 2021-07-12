@@ -679,6 +679,37 @@ set(gcf,'color','w');
 
 saveas(gcf,'UG and dg.png')
 
+figure
+
+
+B2Er = std(Cope7') / sqrt(length(Cope7'));
+B3Er = std(Cope8') / sqrt(length(Cope8'));
+
+err = [B2Er,B3Er] * 2;
+
+data = [mean(Cope7);  mean(Cope8)];
+x = linspace(1,2,2);
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Phases', 'FontSize', 16);
+ylabel  ('Activation', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:2, 'XTickLabels', {'Endowment','Decision',})
+title('Mean UG and DG Contrast during Decision and Endowment Phases')
+
+hold on
+
+% Standard Error
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+
 %% Cope 8
 
 Cope8 = [-1.238865074, -28.61567736,  -15.02178652,  -15.54505961,  -9.324916225,  42.9214861,  44.3428182,  -36.82699058,  -10.59545914, -18.05904204,  53.6336315,  -26.17917893,  83.02145275, 22.16178178];  

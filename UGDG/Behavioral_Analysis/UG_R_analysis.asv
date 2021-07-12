@@ -679,6 +679,18 @@ set(gcf,'color','w');
 
 saveas(gcf,'UG and dg.png')
 
+figure
+h = histogram(total_simulated_earnings(:));
+counts = h.Values;
+h.NumBins = 11;
+ax = gca;
+ax.FontSize = 9;
+xlabel ('total simulated earnings ($) (random)','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+
 %% Cope 8
 
 Cope8 = [-1.238865074, -28.61567736,  -15.02178652,  -15.54505961,  -9.324916225,  42.9214861,  44.3428182,  -36.82699058,  -10.59545914, -18.05904204,  53.6336315,  -26.17917893,  83.02145275, 22.16178178];  
@@ -769,19 +781,19 @@ figure
 
 x = [.05,.15,.25,.35,.45];
 
-bin51 = size(bin5);
-bin51 = bin51(1);
-bin41 = size(bin4);
-bin41 = bin41(1);
-bin31 = size(bin3);
-bin31 = bin31(1);
-bin21 = size(bin2);
-bin21 = bin21(1);
-bin11 = size(bin1);
-bin11 = bin51(1);
+bin511 = size(bin5);
+bin511 = bin511(2);
+bin411 = size(bin4);
+bin411 = bin411(2);
+bin311 = size(bin3);
+bin311 = bin311(2);
+bin211 = size(bin2);
+bin211 = bin211(2);
+bin111 = size(bin1);
+bin111 = bin111(2);
 
-total = bin51 + bin41+ bin31 + bin21 + bin11;
-Binsuse = [(bin11/total), (bin21/total), (bin31/total), (bin41/total), (bin51/total)];
+total = bin511 + bin411+ bin311 + bin211 + bin111;
+Binsuse = [(bin111/total), (bin211/total), (bin311/total), (bin411/total), (bin511/total)];
 
 figure
 bar(x,Binsuse)
@@ -879,14 +891,19 @@ figure
 
 x = [.05,.15,.25,.35,.45];
 
-bin5 = sum(bin5);
-bin4 = sum(bin4);
-bin3 = sum(bin3);
-bin2 = sum(bin2);
-bin1 = sum(bin1);
+bin51 = size(bin5);
+bin51 = bin51(2);
+bin41 = size(bin4);
+bin41 = bin41(2);
+bin31 = size(bin3);
+bin31 = bin31(2);
+bin21 = size(bin2);
+bin21 = bin21(2);
+bin11 = size(bin1);
+bin11 = bin11(2);
 
-total2 = bin5 + bin4+ bin3 + bin2 + bin1;
-Binsuse2 = [(bin1/total2), (bin2/total2), (bin3/total2), (bin4/total2), (bin5/total2)];
+total2 = bin51 + bin41+ bin31 + bin21 + bin11;
+Binsuse2 = [(bin11/total2), (bin21/total2), (bin31/total2), (bin41/total2), (bin51/total2)];
 
 
 bar(x,Binsuse2)
