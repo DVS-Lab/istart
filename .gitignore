@@ -8,3 +8,6 @@ Shared_Reward/Images/*
 Shared_Reward\Images\*
 Shared_Reward/Images/friend.png
 bids/*
+social_reward_c/__pycache__/instructions.cpython-36.pyc
+*.pyc
+*.pyc
