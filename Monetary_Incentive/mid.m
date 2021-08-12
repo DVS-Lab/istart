@@ -231,7 +231,7 @@ for t = 1:length(trial_cond)
         Screen('Flip', Window);
         WaitSecs(fix_iti(t))   
 end
-
+WaitSecs(6)
 if isscan == 0
     save([thePath.data '/sub-' num2str(subnum) '/practice_array.mat'], 'RTs')
 elseif isscan == 1
