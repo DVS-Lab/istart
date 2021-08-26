@@ -59,7 +59,7 @@ catch
 end
 
 if ~isempty(practice_files)                             % checks to see whether there is practice data or not. Overwrite if there is
-    load(practice_files(end,1:end-1),'RTs'); % practice_files has an extra space character added to the string name, hence the 1:end-1 in the code
+    load(practice_files(end,1:end),'RTs'); % practice_files has an extra space character added to the string name, hence the 1:end-1 in the code
 end
 
 for i=1:length(unique(trial_cond))                     % sets starting RT_thresh for each condition
