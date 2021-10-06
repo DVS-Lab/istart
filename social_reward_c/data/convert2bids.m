@@ -17,22 +17,11 @@ for s = 1:length(subs)
         rawtask = tasks{t};
     
         % rename task
-        if strcmp(rawtask,'faceA')
+        if strcmp(rawtask,'faceA') || strcmp(rawtask,'faceB') || strcmp(rawtask,'facesA') || strcmp(rawtask,'facesB')
             bidstask = 'socialdoors';
-        elseif strcmp (rawtask,'faceB')
-            bidstask = 'socialdoors';
-        elseif strcmp(rawtask,'facesA')
-            bidstask = 'socialdoors';
-        elseif strcmp (rawtask,'facesB')
-            bidstask = 'socialdoors';
-        elseif strcmp (rawtask,'doorsA')
-            bidstask = 'doors';
-        elseif strcmp (rawtask,'doorsB')
-            bidstask = 'doors';
-        elseif strcmp (rawtask,'imageA')
+        elseif strcmp(rawtask,'doorsA') || strcmp(rawtask,'doorsB') || strcmp(rawtask,'imageA') || strcmp(rawtask,'imageB')
             bidstask = 'doors';
         else
-            bidstask = 'doors';
         end
     
         % set file names and load in source data
