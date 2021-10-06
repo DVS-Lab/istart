@@ -1,6 +1,10 @@
 
+clear; close all;
+maindir = pwd;
+warning off all
+
 sub = 1006;
-tasks = {'faceA', 'imageA'};
+tasks = {'faceA', 'faceB', 'facesA', 'facesB', 'doorsA', 'doorsB', 'imageA', 'imageB'};
 
 for t = 1:length(tasks)
     rawtask = tasks{t};
@@ -8,6 +12,18 @@ for t = 1:length(tasks)
     % rename task
     if strcmp(rawtask,'faceA')
         bidstask = 'socialdoors';
+    elseif strcmp (rawtask,'faceB')
+        bidstask = 'socialdoors';
+    elseif strcmp(rawtask,'facesA')
+        bidstask = 'socialdoors';
+    elseif strcmp (rawtask,'facesB')
+        bidstask = 'socialdoors';
+    elseif strcmp (rawtask,'doorsA')
+        bidstask = 'doors';
+    elseif strcmp (rawtask,'doorsB')
+        bidstask = 'doors';
+    elseif strcmp (rawtask,'imageA')
+        bidstask = 'doors';
     else
         bidstask = 'doors';
     end
