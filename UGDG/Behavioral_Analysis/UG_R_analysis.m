@@ -4,7 +4,7 @@ clc
 
 %% Rejection analysis
 
-values = 1002:1021;
+values = 1002:4000;
 UG_Reject = [];
 
 for ii = 1:length(values);
@@ -72,7 +72,7 @@ Bin5 = size(Bin5);
 
 %% Accept analysis
 
-values = 1002:1021;
+values = 1002:4000;
 UG_Accept = [];
 
 for ii = 1:length(values);
@@ -158,7 +158,7 @@ axis([-.0 .5 0 1])
 
 %% DG_P
 
-values = 1002:1021;
+values = 1002:4000;
 Earnings = [];
 
 for ii = 1:length(values);
@@ -185,7 +185,7 @@ ylabel 'Frequency'
 %% UG R1 and R2
 
 Final_save_2 = [];
-values = 1002:1021;
+values = 1002:4000;
 UG_P_2 = [];
 
 Final_save = [];
@@ -310,7 +310,7 @@ end
  %% Subjects
  
 
- values = 1002:1021;
+ values = 1002:4000;
  
  Subjects = [];
  Subjects_2 = [];
@@ -731,7 +731,7 @@ saveas(gcf,'UG and dg.png')
 %% DG/UG proportions
 
 
-values = 1002:1021;
+values = 1002:4000;
 DG_P_Proportions = [];
 
 for ii = 1:length(values);
@@ -824,7 +824,7 @@ axis([-.0 .5 0 .6])
 %% DG/UG proportions
 
 
-values = 1002:1021;
+values = 1002:4000;
 UG_P_Proportions_1 = [];
 UG_P_Proportions_2 = [];
 for ii = 1:length(values);
