@@ -1,4 +1,4 @@
-%function MID2(isscan, subnum)
+function MID2(isscan, subnum)
 Screen('Preference', 'SkipSyncTests', 1);
 global thePath; rand('state',sum(100*clock));
 
@@ -7,7 +7,7 @@ global thePath; rand('state',sum(100*clock));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 subnum = input('subnumber: ');
 isscan = input('is scan(practice = 0 scan = 1): ');
-whichrun = input('which run (1 or 2):'); 
+whichrun = input('which run (just enter 1):'); 
 
 
 % Add this at top of new scripts for maximum portability due to unified names on all systems:
@@ -18,9 +18,12 @@ thePath.start = pwd;                                % starting directory
 thePath.data = fullfile(thePath.start, 'data');     % path to Data directory
 thePath.scripts = fullfile(thePath.start, 'scripts');
 thePath.stims = fullfile(thePath.start, 'stimuli');
+thePath.timing = fullfile(thePath.start, 'timing');
 
 addpath(thePath.scripts)
 addpath(thePath.stims)
+addpath(genpath(thePath.data))
+addpath(thePath.timing)
 
 % set up device number
 if IsOSX
@@ -50,7 +53,7 @@ mkdir([thePath.data '/sub-' num2str(subnum)]);
 RTs  =[];
 
 try
-    practice_files = ls([fullfile(thePath.data ,num2str(subnum)), '/practice_array.mat']);
+    practice_files = ls([fullfile(thePath.data ,num2str(subnum)),'/practice_array.mat']);
 catch
     practice_files = [];
 end
@@ -75,7 +78,7 @@ Screen('CloseAll')
 
 
 screens = Screen('Screens');
-screenNumber = max(screens); 
+screenNumber = max(screens);
 HideCursor;
 [Screen_X, Screen_Y]=Screen('WindowSize',screenNumber);
 
@@ -141,7 +144,7 @@ WaitSecs(4);
 
 
 for t = 1:length(trial_cond)
-    
+
     if trial_cond(t) == 1
         Screen('DrawTexture', Window, high_cue_gain);
     elseif trial_cond(t) == 2
@@ -153,19 +156,19 @@ for t = 1:length(trial_cond)
     elseif trial_cond(t) == 5
         Screen('DrawTexture', Window, neutral_cue);
     end
-   
+
     stimST = Screen('Flip', Window);
     WaitSecs(cue_time)
-    
+
     Screen('DrawTexture', Window, fix2);
     Screen('Flip', Window);
     WaitSecs(fix_isi(t))
-    
+
     Screen('DrawTexture', Window, target);
     targetST = Screen('Flip', Window);
     RT =[999];
-    [keys, RT] = recordKeysNoBT(GetSecs, target_time, k, backtick);    
-    
+    [keys, RT] = recordKeysNoBT(GetSecs, target_time, k, backtick);
+
     %Present Feedback
     if RT(1) == 0;
          if trial_cond(t)==1
@@ -179,12 +182,12 @@ for t = 1:length(trial_cond)
             elseif trial_cond(t)==5
                 text_feedback = 'Your bank is the same.';
             end
-    
-    
+
+
     elseif RT(1) < RT_thresh(trial_cond(t))
-            
+
             output.outcome(t) = 1;
-            
+
             if trial_cond(t)==1
                 text_feedback = 'You EARNED a triangle!';
             elseif trial_cond(t)==2
@@ -196,9 +199,9 @@ for t = 1:length(trial_cond)
             elseif trial_cond(t)==5
                 text_feedback= 'Your bank is the same';
             end
-       else           
+       else
             output.outcome(t) = 0;
-            
+
             if trial_cond(t)==1
                 text_feedback = 'You DID NOT EARN a triangle.';
             elseif trial_cond(t)==2
@@ -215,20 +218,20 @@ for t = 1:length(trial_cond)
         Screen('DrawText',Window, text_feedback, Hcenter-normBoundsRect(3)/2,Vcenter-normBoundsRect(4)/2,[255 255 255]);
         Screen('Flip', Window);
         WaitSecs(feedback_time)
-        
+
         %Update Thresholds
         RTs(end+1, trial_cond(t)) = RT(1);
         [RT_thresh(trial_cond(t))] = set_MID_threshold(RTs(:,trial_cond(t)));
         output.trial_starts(t) = stimST-runST;
         output.target_starts(t) = targetST-runST;
         output.RT(t) = RT(1);
-        output.thresh(t) = RT_thresh(trial_cond(t));  
-        
+        output.thresh(t) = RT_thresh(trial_cond(t));
+
         Screen('DrawTexture', Window, fix1);
         Screen('Flip', Window);
-        WaitSecs(fix_iti(t))   
+        WaitSecs(fix_iti(t))
 end
-
+WaitSecs(6)
 if isscan == 0
     save([thePath.data '/sub-' num2str(subnum) '/practice_array.mat'], 'RTs')
 elseif isscan == 1
