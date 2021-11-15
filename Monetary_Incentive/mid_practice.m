@@ -5,7 +5,7 @@ global thePath; rand('state',sum(100*clock));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %subnum - subject number is 0 for practice, real number if it is a run
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-subnum = input('subnumber: ');
+subnum = input('subnumber: ');12345554321123452135
 isscan = input('is scan(practice = 0 scan = 1): ');
 whichrun = input('which run (1 or 2):'); 
 
