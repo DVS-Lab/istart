@@ -1,10 +1,14 @@
 function convertUG_BIDS_use(subj)
 maindir = pwd;
-%usedir = '/data/projects/istart-data/';
+usedir = '/data/projects/istart-data/';
 
 %try
 
 % 11-18-21 | This is the code I am using  for the bids converter.
+
+% Plan now is to use the BIDs converter for only the simple regressors. Ie:
+% Export the endowments (cue onsets) and the decision phases
+% (accept/reject), choices, and missed trials.
 
 
 for r = 0:1
@@ -45,33 +49,33 @@ for r = 0:1
     fid = fopen(myfile,'w');
     fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
     
-    % We need to split up the endowments per the blocks. Then take the
-        % mean of those blocks. We do this to generate the parametric
-        % regressors, which require the demeaned endowment.
-
-        
-        Block1Mean = [];
-        Block2Mean = [];
-        Block3Mean = [];
-        
-        for ii = 1:length(Block)
-            
-        if (Block(ii) == 1)
-            Block1Mean = [Block1Mean;Endowment(ii)];
-           
-        elseif (Block(ii) == 2)
-            Block2Mean = [Block2Mean;Endowment(ii)];
-            
-        elseif (Block(ii) == 3)
-            Block3Mean = [Block3Mean;Endowment(ii)];
-            
-        end   
-            
-        end
-        
-        Block1Mean = mean(Block1Mean);
-        Block2Mean = mean(Block2Mean);
-        Block3Mean = mean(Block3Mean);
+%     % We need to split up the endowments per the blocks. Then take the
+%         % mean of those blocks. We do this to generate the parametric
+%         % regressors, which require the demeaned endowment.
+% 
+%         
+%         Block1Mean = [];
+%         Block2Mean = [];
+%         Block3Mean = [];
+%         
+%         for ii = 1:length(Block)
+%             
+%         if (Block(ii) == 1)
+%             Block1Mean = [Block1Mean;Endowment(ii)];
+%            
+%         elseif (Block(ii) == 2)
+%             Block2Mean = [Block2Mean;Endowment(ii)];
+%             
+%         elseif (Block(ii) == 3)
+%             Block3Mean = [Block3Mean;Endowment(ii)];
+%             
+%         end   
+%             
+%         end
+%         
+%         Block1Mean = mean(Block1Mean);
+%         Block2Mean = mean(Block2Mean);
+%         Block3Mean = mean(Block3Mean);
         
         %% Populate the regressors.
     
@@ -242,20 +246,20 @@ for r = 0:1
 %             keyboard
 %         end
 
-Endowment_Mean = mean(Endowment);
-       
-       if (Block(t) == 1)
-            trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
-        elseif (Block(t) == 2)
-            trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
-        elseif (Block(t) == 3)
-            trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
-        else
-            keyboard
-       end
+% Endowment_Mean = mean(Endowment);
+%        
+%        if (Block(t) == 1)
+%             trial_type = 'cue_dict_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
+%         elseif (Block(t) == 2)
+%             trial_type = 'cue_ug-resp_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
+%         elseif (Block(t) == 3)
+%             trial_type = 'cue_ug-prop_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
+%         else
+%             keyboard
+%        end
 
        
        % I took this code from the choice only parametric. This
