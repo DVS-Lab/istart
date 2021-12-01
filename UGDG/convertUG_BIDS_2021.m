@@ -1,4 +1,4 @@
-function convertUG_BIDS_use(subj)
+function convertUG_BIDS_2021(subj)
 maindir = pwd;
 usedir = '/data/projects/istart-data/';
 
@@ -41,7 +41,7 @@ for r = 0:1
     R_Option = C{8};
     
     fname = sprintf('sub-%03d_task-ugdg_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
-    output = fullfile(maindir,'bids',['sub-' num2str(subj)],'func');
+    output = fullfile(usedir,'bids',['sub-' num2str(subj)],'func');
     if ~exist(output,'dir')
         mkdir(output)
     end
