@@ -1,6 +1,6 @@
 function convertUG_BIDS_2021_debug(subj)
 maindir = pwd;
-%usedir = '/data/projects/istart-data/';
+usedir = '/data/projects/istart-data/';
 
 %try
 
