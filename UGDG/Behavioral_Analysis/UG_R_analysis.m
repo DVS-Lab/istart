@@ -438,7 +438,7 @@ Strategic_Behavior = DG_P + UG_P_Total;
 %% EQ Scale
 
 % Find the columns you will need.
-t = readtable('TEIQUE.xlsx');
+t = readtable('ISTART_EI_Data_120921.xlsx');
 start = 2;
 finish = 31;
 
@@ -567,7 +567,7 @@ subplot(2,4,3)
 scatter(Strategic_Behavior, PNRScore)
 title 'Proportion and PNR'
 
-%% Histogram of EQ scires
+%% Histogram of EQ scores
 
 figure
 h = histogram(TotalEQScore);

@@ -10,20 +10,27 @@ clc
 % This script takes a participant's responses and collapses them into a
 % dollar amount for analysis.
 
-UG_R_accept_2 = [];
-UG_R_reject_2 = [];
-DG_P_2 = [];
-UG_P_2 = [];
-UG_R_accept = [];UG_R_reject = [];
-DG_P = [];
-UG_P = [];
+% Update the subjects list with up-to-date subjects
+
+maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
+
+subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
 %% Extract data
 
 % I need to parse the data into the separate games.
 
+for ii= 1:length(subjects)
+    subj = subjects(ii);
+    
+    UG_R_accept_2 = [];
+    UG_R_reject_2 = [];
+    DG_P_2 = [];
+    UG_P_2 = [];
+    UG_R_accept = [];UG_R_reject = [];
+    DG_P = [];
+    UG_P = [];
 
-maindir = 'C:\Users\tul03789\Documents\GitHub\istart\UGDG';
-subj = 1002;
+    try
 
 r1 = 1; % Run 1
 r2 = 1; % Run 2
@@ -67,11 +74,11 @@ if r1 > 0
     % Block 2 = DG prop
     % Block 3 = UG Resp
     
-    for t = 1:length(Endowment);
+    for t = 1:length(Endowment)
         
         if Block(t) == 3
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     update = [Trial(t), Endowment(t), L_Option(t)];
                     UG_R_accept = [UG_R_accept; update];
                 else
@@ -83,7 +90,7 @@ if r1 > 0
         
         if Block(t) == 3
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     update = [Trial(t), Endowment(t), R_Option(t)];
                     UG_R_accept = [UG_R_accept; update];
                 else
@@ -96,11 +103,11 @@ if r1 > 0
         % Block 2 = DG prop
         
         if Block(t) == 2
-            if response(t) == 2;
+            if response(t) == 2
                 update = [Trial(t), Endowment(t), R_Option(t)];
                 DG_P = [DG_P; update];
             end
-            if response(t) == 3;
+            if response(t) == 3
                 update = [Trial(t), Endowment(t), L_Option(t)];
                 DG_P = [DG_P; update];
             end
@@ -109,11 +116,11 @@ if r1 > 0
         % Block 1 = UG prop
         
         if Block(t) == 1
-            if response(t) == 2;
+            if response(t) == 2
                 update = [Trial(t), Endowment(t), R_Option(t)];
                 UG_P = [UG_P; update];
             end
-            if response(t) == 3;
+            if response(t) == 3
                 update = [Trial(t), Endowment(t), L_Option(t)];
                 UG_P = [UG_P; update];
             end
@@ -126,7 +133,7 @@ end
 %% Run 2
 
 if r2 > 0
-    for r = 1;
+    for r = 1
         
         % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
         fname = fullfile(maindir,'logs',num2str(subj),sprintf('sub-%04d_task-ultimatum_run-%d_raw.csv',subj,r)); % Psychopy taken out from Logs to make work for now.
@@ -158,11 +165,11 @@ if r2 > 0
     % Block 2 = DG prop
     % Block 3 = UG Resp
     
-    for t = 1:length(Endowment);
+    for t = 1:length(Endowment)
         
         if Block(t) == 3
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     update = [Trial(t), Endowment(t), L_Option(t)];
                     UG_R_accept_2 = [UG_R_accept_2; update];
                 else
@@ -174,7 +181,7 @@ if r2 > 0
         
         if Block(t) == 3
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     update = [Trial(t), Endowment(t), R_Option(t)];
                     UG_R_accept_2 = [UG_R_accept_2; update];
                 else
@@ -187,11 +194,11 @@ if r2 > 0
         % Block 2 = DG prop
         
         if Block(t) == 2
-            if response(t) == 2;
+            if response(t) == 2
                 update = [Trial(t), Endowment(t), L_Option(t)];
                 DG_P_2 = [DG_P_2; update];
             end
-            if response(t) == 3;
+            if response(t) == 3
                 update = [Trial(t), Endowment(t), R_Option(t)];
                 DG_P_2 = [DG_P_2; update];
             end
@@ -200,11 +207,11 @@ if r2 > 0
         % Block 1 = UG prop
         
         if Block(t) == 1
-            if response(t) == 2;
+            if response(t) == 2
                 update = [Trial(t), Endowment(t), L_Option(t)];
                 UG_P_2 = [UG_P_2; update];
             end
-            if response(t) == 3;
+            if response(t) == 3
                 update = [Trial(t), Endowment(t), R_Option(t)];
                 UG_P_2 = [UG_P_2; update];
             end
@@ -213,6 +220,7 @@ if r2 > 0
     end
     
 end
+
 
 %% DG Earnings
 
@@ -228,18 +236,18 @@ for ii = 1
         b = b(1);
           
  
-    if a>0 || b==0;
+    if a>0 || b==0
         
         DG_P_Earnings = sum(DG_P(:,2) - DG_P(:,3));
     end
     
-    if b>0 || a==0;
+    if b>0 || a==0
         
         DG_P_Earnings = sum(DG_P_2(:,2) - DG_P_2(:,3));
         
     end
     
-    if a>0 || b>0;
+    if a>0 || b>0
         
         DG_P_Earnings = (sum(DG_P(:,2) - DG_P(:,3)) + sum(DG_P_2(:,2) - DG_P_2(:,3)))/2;
          
@@ -267,18 +275,18 @@ for ii = 1
         b = b(1);
           
  
-    if a>0 || b==0;
+    if a>0 || b==0
         
         UG_R_Earnings = sum(UG_R_accept(:,3));
     end
     
-    if b>0 || a==0;
+    if b>0 || a==0
         
         UG_R_Earnings = sum(UG_R_accept_2(:,3));
         
     end
     
-    if a>0 || b>0;
+    if a>0 || b>0
         
         UG_R_Earnings = (sum(UG_R_accept_2(:,3)) + sum(UG_R_accept(:,3)))/2 ;
          
@@ -350,3 +358,6 @@ name = ['Subject_' num2str(subj) '_DGP.csv'];
 writetable(DG_P_Raw, name); % Save as csv file
 end
 
+end
+
+end
