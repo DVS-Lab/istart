@@ -16,9 +16,9 @@ clc
 % Warning, this creates extra data in the output file. Check for
 % duplicates!
 
-% Exclude 1244, 1253, 1255, 1286, 3101, 3125, 3152, 3166, 3212
+% Exclude 1010, 1244, 1253, 1255, 1286, 3101, 3125, 3152, 3166, 3167, 3212
 
-subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
 %% EQ Scale
 
 % Find the columns you will need.
@@ -210,9 +210,13 @@ demeaned_PNRscores = [subjPNRScore(:,1), B, subjPNRScore(:,2) - C];
 subjPNRScore_output = [subjPNRScore(:,1), B, subjPNRScore(:,2)];
 
 demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
-name = ['demeaned_ subjPNRScores.xls'];
+name = ['demeaned_subjPNRScores.xls'];
 writetable(demeaned_PNRscores, name); % Save as csv file
 
-subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','EI Score'});
+subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','PNR Score'});
 name = ['subjPNRScores.xls'];
+writetable(subjPNRScore_output, name); % Save as csv file
+
+subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','PNR Score'});
+name = ['demeansubjPNRScores.xls'];
 writetable(subjPNRScore_output, name); % Save as csv file

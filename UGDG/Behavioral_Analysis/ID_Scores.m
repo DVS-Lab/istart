@@ -132,7 +132,7 @@ demeaned_EQscores = [subjEQScore(:,1), B, subjEQScore(:,2) - C];
 subjEQScore_output = [subjEQScore(:,1), B, subjEQScore(:,2)];
 
 demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
-name = ['demeaned_ subjEQScores.xls'];
+name = ['demeaned_subjEQScores.xls'];
 writetable(demeaned_EQscores, name); % Save as csv file
 
 subjEQScore_output = array2table(subjEQScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','EI Score'});
@@ -210,9 +210,10 @@ demeaned_PNRscores = [subjPNRScore(:,1), B, subjPNRScore(:,2) - C];
 subjPNRScore_output = [subjPNRScore(:,1), B, subjPNRScore(:,2)];
 
 demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
-name = ['demeaned_ subjPNRScores.xls'];
+name = ['demeaned_subjPNRScores.xls'];
 writetable(demeaned_PNRscores, name); % Save as csv file
 
 subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','PNR Score'});
 name = ['subjPNRScores.xls'];
 writetable(subjPNRScore_output, name); % Save as csv file
+
