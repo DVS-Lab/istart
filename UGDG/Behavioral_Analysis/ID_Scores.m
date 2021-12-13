@@ -210,9 +210,9 @@ demeaned_PNRscores = [subjPNRScore(:,1), B, subjPNRScore(:,2) - C];
 subjPNRScore_output = [subjPNRScore(:,1), B, subjPNRScore(:,2)];
 
 demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
-name = ['demeaned_ subjPNRScores.csv'];
+name = ['demeaned_ subjPNRScores.xls'];
 writetable(demeaned_PNRscores, name); % Save as csv file
 
 subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','PNR Score'});
-name = ['subjPNRScores.csv'];
+name = ['subjPNRScores.xls'];
 writetable(subjPNRScore_output, name); % Save as csv file
