@@ -16,9 +16,9 @@ clc
 % Warning, this creates extra data in the output file. Check for
 % duplicates!
 
-% Exclude 1244, 1253, 1255, 1286, 3101, 3125, 3152, 3166
+% Exclude 1010, 1244, 1253, 1255, 1286, 3101, 3125, 3152, 3166, 3167, 3212
 
-subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
 %% EQ Scale
 
 % Find the columns you will need.
@@ -129,48 +129,91 @@ C(1:N,1) = EQaverage;
 
 
 demeaned_EQscores = [subjEQScore(:,1), B, subjEQScore(:,2) - C];
+subjEQScore_output = [subjEQScore(:,1), B, subjEQScore(:,2)];
 
 demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
-name = ['demeaned_ subjEQScores.xls'];
+name = ['demeaned_subjEQScores.xls'];
 writetable(demeaned_EQscores, name); % Save as csv file
+
+subjEQScore_output = array2table(subjEQScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','EI Score'});
+name = ['subjEQScores.xls'];
+writetable(subjEQScore_output, name); % Save as csv file
 
 
 %% Personal Norm Scale
 
 % Find the columns you will need.
-
-% Find the columns you will need.
-data = readtable('PNR.xlsx');
+data = readtable('ISTART_PNR_Data_121321.xlsx');
 start = 2;
 finish = 11;
 Total_Subjects = [];
 
-N = 9; % Number of questions
-IndexedColumns = round(linspace(start,finish, N));
+
+% Extract data
 data = table2array(t);
-PNR_data = data(:,IndexedColumns);
-PNR_data = PNR_data(2:end,:); % Eliminating 1001 which had bad data.
-Total_Subjects = size(PNR_data);
-Total_Subjects = Total_Subjects(1);
+PNR_data = round(data(:,IndexedColumns));
 
-% PNR Scale
+subjPNRScore = [];
 
-PNRScore = [];
-Total_Subjects = Total_Subjects;
-max_pnr = 7;
-min_pnr = 1;
-add_pnr = max_pnr + min_pnr;
-
-for ii = 1:Total_Subjects % ii is the subject
-    a = PNR_data(ii,1);
-    b = PNR_data(ii,2);
-    c = PNR_data(ii,3);
-    d = PNR_data(ii,4);
-    e = PNR_data(ii,5);
-    f = PNR_data(ii,6);
-    g = PNR_data(ii,7);
-    h = PNR_data(ii,8);
-    i = PNR_data(ii,9);
-    total = a+b+c+d+e+f+g+h+i;
-    PNRScore = [PNRScore, total];
+for ii = 1:length(subjects)
+    subject_num = subjects(ii);
+    subj_row = find(data==subject_num);
+    subj= PNR_data((subj_row),:);
+    Save_values = [];
+    
+    
+    N = 9; % Number of questions
+    IndexedColumns = round(linspace(start,finish, N));
+    Total_Subjects = size(PNR_data);
+    Total_Subjects = Total_Subjects(1);
+    
+    % PNR Scale
+    
+    
+    Total_Subjects = Total_Subjects;
+    max_pnr = 7;
+    min_pnr = 1;
+    add_pnr = max_pnr + min_pnr;
+    
+    for jj = 1:subj % ii is the subject
+        PNRScore = [];
+        a = PNR_data(ii,1);
+        b = PNR_data(ii,2);
+        c = PNR_data(ii,3);
+        d = PNR_data(ii,4);
+        e = PNR_data(ii,5);
+        f = PNR_data(ii,6);
+        g = PNR_data(ii,7);
+        h = PNR_data(ii,8);
+        i = PNR_data(ii,9);
+        total = a+b+c+d+e+f+g+h+i;
+        PNRScore = [PNRScore, total];
+        
+        Save_values = [subject_num, PNRScore];
+    end
+    
+    subjPNRScore = [subjPNRScore; Save_values];
+    
 end
+
+%% Demean PNR scale
+
+PNRaverage = mean(subjPNRScore(:,2));
+
+[N,M] = size(subjPNRScore);
+
+A(1:N,1) = zeros; % subject number
+B(1:N,1) = ones; % subject number
+C(1:N,1) = PNRaverage;
+
+demeaned_PNRscores = [subjPNRScore(:,1), B, subjPNRScore(:,2) - C];
+subjPNRScore_output = [subjPNRScore(:,1), B, subjPNRScore(:,2)];
+
+demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
+name = ['demeaned_subjPNRScores.xls'];
+writetable(demeaned_PNRscores, name); % Save as csv file
+
+subjPNRScore_output = array2table(subjPNRScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','PNR Score'});
+name = ['subjPNRScores.xls'];
+writetable(subjPNRScore_output, name); % Save as csv file
+
