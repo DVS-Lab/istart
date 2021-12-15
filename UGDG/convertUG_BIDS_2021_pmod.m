@@ -33,6 +33,7 @@ for r = 0:1
     onset = C{11};
     RT = C{18};
     duration = C{21};
+    % test
     Block = C{3};
     Block = round(Block);
     Endowment = C{4};
