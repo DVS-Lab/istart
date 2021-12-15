@@ -48,7 +48,7 @@ for r = 0:1
     end
     myfile = fullfile(output,fname);
     fid = fopen(myfile,'w');
-    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
+    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\tEndowment_pmod\Decision_pmod\n');
     
     % We need to split up the endowments per the blocks. Then take the
     % mean of those blocks. We do this to generate the parametric

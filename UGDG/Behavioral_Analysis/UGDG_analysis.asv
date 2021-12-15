@@ -376,7 +376,7 @@ end
 %% UG_P earnings
 
 figure
-histogram(UG_P_Total, 10)
+histogram(DG_P, 10)
 ylim([0 7])
 title 'UG Proposer Earnings'
 xlabel 'Earnings'
@@ -392,7 +392,7 @@ histogram(UG_R_Earnings, 5)
 ylim([0, 7]);
 ax = gca;
 ax.FontSize = 9;
-xlabel ('Ultimatum Game EI as Recipient','FontSize', 16)
+xlabel ('Ultimatum Game Offers as Recipient','FontSize', 16)
 ylabel ('Frequency','FontSize', 16)
 set(gca,'box','off')
 set(gcf,'color','w');

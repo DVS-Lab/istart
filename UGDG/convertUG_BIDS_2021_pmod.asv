@@ -1,4 +1,4 @@
-function convertUG_BIDS_2021(subj)
+function convertUG_BIDS_2021_pmod(subj)
 maindir = pwd;
 %usedir = '/data/projects/istart-data/';
 
@@ -48,7 +48,7 @@ for r = 0:1
     end
     myfile = fullfile(output,fname);
     fid = fopen(myfile,'w');
-    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
+    fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\tEndowment_pmod\tDecision_pmod\n');
     
     % We need to split up the endowments per the blocks. Then take the
     % mean of those blocks. We do this to generate the parametric
@@ -77,20 +77,46 @@ for r = 0:1
     Block1Mean = mean(Block1Mean);
     Block2Mean = mean(Block2Mean);
     Block3Mean = mean(Block3Mean);
+
+    %%  Generate means for the decision phases
     
-    %% Populate the regressors.
+    
+    
+        
+        %% Adding in the cue onsets for parametric model
+      
+        
+        if (Block(t) == 1)
+            trial_type = 'cue_dict_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),round(Endowment(t)-Block1Mean),'n/a');
+        elseif (Block(t) == 2)
+            trial_type = 'cue_ug-resp_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),round(Endowment(t)-Block2Mean),'n/a');
+        elseif (Block(t) == 3)
+            trial_type = 'cue_ug-prop_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\t%d\t%s\n',onset(t),2,[trial_type],'n/a',Endowment(t),round(Endowment(t)-Block3Mean),'n/a');
+        else
+            keyboard
+        end
+        
+        
+    end
+    
+     %% Populate the parametric regressors.
+     
+     % Block 1 = DG-P
+     % Block 2 = UG-P
+     % Block 3 = UG-R
     
     for t = 1:length(onset);
         
         
-        
-        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
         if (Block(t) == 1)
-            trial_type = 'dec_ug-prop';
+            trial_type = 'dec_ug-prop_pmod';
         elseif (Block(t) == 2)
-            trial_type = 'dec_dg-prop';
+            trial_type = 'dec_dg-prop_pmod';
         elseif (Block(t) == 3)
-            trial_type = 'dec_ug-resp';
+            trial_type = 'dec_ug-resp_pmod';
         else
             keyboard
         end
@@ -103,23 +129,23 @@ for r = 0:1
         % R_Option
         
         if response(t) == 999
-            fprintf(fid,'%f\t%f\t%s\t%s\t%d\n',decision_onset(t),4,'missed_trial','n/a',Endowment(t));
+            fprintf(fid,'%f\t%f\t%s\t%s\t%d\t%s\t%s\n',decision_onset(t),4,'missed_trial','n/a',Endowment(t),'n/a','n/a');
         end
         
         if Block(t) == 3
             if response(t) == 2
                 if round(L_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0);
                 end
             end
             
             if response(t) == 3
                 if round(R_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0);
                 end
             end
         end
@@ -127,18 +153,18 @@ for r = 0:1
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t));
                 end
             end
             
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t));
                 end
             end
         end
@@ -146,17 +172,17 @@ for r = 0:1
         if Block(t) == 1
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t));
                 end
             end
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t));
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t));
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t));
                 end
             end
         end
@@ -171,12 +197,12 @@ for r = 0:1
         
         if Block(t) == 3
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a','n/a');
                 
             end
             
             if response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a','n/a');
             end
         end
         
@@ -184,65 +210,26 @@ for r = 0:1
         if Block(t) == 2
             
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a','n/a');
             end
             
             
             if response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a','n/a');
             end
         end
         
         if Block(t) == 1
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a','n/a');
             end
             
             if response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%s\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a','n/a');
             end
             
         end
         
-        
-        %% Adding in the cue onsets
-        
-        %cue_dict
-        %cue_ug-resp
-        %cue_ug-prop
-        
-        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
-        if (Block(t) == 1)
-            trial_type = 'cue_dict';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-        elseif (Block(t) == 2)
-            trial_type = 'cue_ug-resp';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-        elseif (Block(t) == 3)
-            trial_type = 'cue_ug-prop';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-        else
-            keyboard
-        end
-        
-        %% Adding in the cue onsets for parametric model
-      
-        
-        if (Block(t) == 1)
-            trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
-        elseif (Block(t) == 2)
-            trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
-        elseif (Block(t) == 3)
-            trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
-        else
-            keyboard
-        end
-        
-        
-    end
     
 end
 
