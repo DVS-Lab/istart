@@ -12,7 +12,8 @@ clc
 
 %% Rejection analysis
 
-values = 1002:4000;
+%values = 1002:4000;
+values = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
 UG_Reject = [];
 
 for ii = 1:length(values)
@@ -374,6 +375,7 @@ end
  end
 %% UG_P earnings
 
+figure
 histogram(UG_P_Total, 10)
 ylim([0 7])
 title 'UG Proposer Earnings'
@@ -390,7 +392,7 @@ histogram(UG_R_Earnings, 5)
 ylim([0, 7]);
 ax = gca;
 ax.FontSize = 9;
-xlabel ('Ultimatum Game Offers as Recipient','FontSize', 16)
+xlabel ('Ultimatum Game EI as Recipient','FontSize', 16)
 ylabel ('Frequency','FontSize', 16)
 set(gca,'box','off')
 set(gcf,'color','w');
@@ -589,6 +591,21 @@ set(gca,'box','off')
 set(gcf,'color','w');
 
 saveas(gcf,'EQ_Scores.png')
+
+%% Histogram of EQ scores
+
+figure
+h = histogram(PNRScore);
+counts = h.Values;
+h.NumBins = 12
+ax = gca
+ax.FontSize = 12
+xlabel ('Negative Personal Norms of Reciprocity','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'PNR_Scores.png')
 
 %% Figure 2
 

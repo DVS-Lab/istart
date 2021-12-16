@@ -34,7 +34,7 @@ for r = 0:1
     RT = C{18};
     duration = C{21};
     Block = C{3};
-    Block = round(Block)
+    Block = round(Block);
     Endowment = C{4};
     response = C{17};
     response = round(response);
@@ -50,35 +50,35 @@ for r = 0:1
     fid = fopen(myfile,'w');
     fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
     
-%     % We need to split up the endowments per the blocks. Then take the
-%         % mean of those blocks. We do this to generate the parametric
-%         % regressors, which require the demeaned endowment.
-% 
-%         
-%         Block1Mean = [];
-%         Block2Mean = [];
-%         Block3Mean = [];
-%         
-%         for ii = 1:length(Block)
-%             
-%         if (Block(ii) == 1)
-%             Block1Mean = [Block1Mean;Endowment(ii)];
-%            
-%         elseif (Block(ii) == 2)
-%             Block2Mean = [Block2Mean;Endowment(ii)];
-%             
-%         elseif (Block(ii) == 3)
-%             Block3Mean = [Block3Mean;Endowment(ii)];
-%             
-%         end   
-%             
-%         end
-%         
-%         Block1Mean = mean(Block1Mean);
-%         Block2Mean = mean(Block2Mean);
-%         Block3Mean = mean(Block3Mean);
+    % We need to split up the endowments per the blocks. Then take the
+    % mean of those blocks. We do this to generate the parametric
+    % regressors, which require the demeaned endowment.
+    
+    
+    Block1Mean = [];
+    Block2Mean = [];
+    Block3Mean = [];
+    
+    for ii = 1:length(Block)
         
-        %% Populate the regressors.
+        if (Block(ii) == 1)
+            Block1Mean = [Block1Mean;Endowment(ii)];
+            
+        elseif (Block(ii) == 2)
+            Block2Mean = [Block2Mean;Endowment(ii)];
+            
+        elseif (Block(ii) == 3)
+            Block3Mean = [Block3Mean;Endowment(ii)];
+            
+        end
+        
+    end
+    
+    Block1Mean = mean(Block1Mean);
+    Block2Mean = mean(Block2Mean);
+    Block3Mean = mean(Block3Mean);
+    
+    %% Populate the regressors.
     
     for t = 1:length(onset);
         
@@ -123,7 +123,7 @@ for r = 0:1
                 end
             end
         end
-               
+        
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
@@ -162,21 +162,21 @@ for r = 0:1
         end
         
         %% Add choice only regessors
-
-% These regressors collapse the decision phase into simply "choice". It
-% eliminates More/Less or Accept/Reject. This is to deal with the ceiling
-% effect associated with "perfectly rational" behavior, if subjects always
-% choose a given option.
+        
+        % These regressors collapse the decision phase into simply "choice". It
+        % eliminates More/Less or Accept/Reject. This is to deal with the ceiling
+        % effect associated with "perfectly rational" behavior, if subjects always
+        % choose a given option.
         
         
         if Block(t) == 3
             if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
-               
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                
             end
             
             if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
             end
         end
         
@@ -184,26 +184,26 @@ for r = 0:1
         if Block(t) == 2
             
             if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));  
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
             end
             
             
             if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));   
-           end
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+            end
         end
         
         if Block(t) == 1
             if response(t) == 2
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t));
             end
             
             if response(t) == 3
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t));
             end
-        
+            
         end
-    
+        
         
         %% Adding in the cue onsets
         
@@ -226,63 +226,37 @@ for r = 0:1
         end
         
         %% Adding in the cue onsets for parametric model
+      
         
-        %cue_dict
-        %cue_ug-resp
-        %cue_ug-prop
+        if (Block(t) == 1)
+            trial_type = 'cue_dict_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
+        elseif (Block(t) == 2)
+            trial_type = 'cue_ug-resp_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
+        elseif (Block(t) == 3)
+            trial_type = 'cue_ug-prop_parametric';
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
+        else
+            keyboard
+        end
         
-        
-        
-%         %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
-%         if (Block(t) == 1)
-%             trial_type = 'cue_dict_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-%         elseif (Block(t) == 2)
-%             trial_type = 'cue_ug-resp_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-%         elseif (Block(t) == 3)
-%             trial_type = 'cue_ug-prop_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
-%         else
-%             keyboard
-%         end
-
-% Endowment_Mean = mean(Endowment);
-%        
-%        if (Block(t) == 1)
-%             trial_type = 'cue_dict_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
-%         elseif (Block(t) == 2)
-%             trial_type = 'cue_ug-resp_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
-%         elseif (Block(t) == 3)
-%             trial_type = 'cue_ug-prop_parametric';
-%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
-%         else
-%             keyboard
-%        end
-
-       
-       % I took this code from the choice only parametric. This
-       % demeaning process only demeans the endowment parametric
-       % regressor.
-
-        
-        end 
         
     end
     
-    
-    % for t = 1:length(onset);
-    %
-    %     if Block(t) == 1
-    
-    % catch ME
-    %     disp(ME.message)
-    %     msg = sprintf('check line %d', ME.stack.line);
-    %     disp(msg);
-    %     keyboard
-    
-    fopen(fid); % Changed from fclose
-    
+end
+
+
+% for t = 1:length(onset);
+%
+%     if Block(t) == 1
+
+% catch ME
+%     disp(ME.message)
+%     msg = sprintf('check line %d', ME.stack.line);
+%     disp(msg);
+%     keyboard
+
+fopen(fid); % Changed from fclose
+
 end
