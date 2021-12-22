@@ -16,13 +16,13 @@ clc
 % Warning, this creates extra data in the output file. Check for
 % duplicates!
 
-% Exclude 1010, 1244, 1253, 1255, 1286, 3101, 3125, 3152, 3166, 3167,
+% Exclude 1010 (?), 1244 (no IDs), 1253 (No IDs), 1255 (no IDS), 1286 (no IDs), 3101 (no IDs), 3125 (no IDs), 3152 (no IDs), 3166 (?), 3167 (no IDs),
 
-subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3166, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212, 3218, 3220, 3223];
 %% EQ Scale
 
 % Find the columns you will need.
-t = readtable('ISTART_EI_Data_120921.xlsx');
+t = readtable('ISTART_EI_Data_122221.csv');
 start = 2;
 finish = 31;
 N = 30; % Number of questions
@@ -143,7 +143,7 @@ writetable(subjEQScore_output, name); % Save as csv file
 %% Personal Norm Scale
 
 % Find the columns you will need.
-data = readtable('ISTART_PNR_Data_121321.xlsx');
+data = readtable('ISTART_PNR_Data_122121.xlsx');
 start = 2;
 finish = 11;
 Total_Subjects = [];
@@ -209,7 +209,7 @@ C(1:N,1) = PNRaverage;
 demeaned_PNRscores = [subjPNRScore(:,1), B, subjPNRScore(:,2) - C];
 subjPNRScore_output = [subjPNRScore(:,1), B, subjPNRScore(:,2)];
 
-demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
+demeaned_PNRscores = array2table(demeaned_PNRscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned PNR Score'});
 name = ['demeaned_subjPNRScores.xls'];
 writetable(demeaned_PNRscores, name); % Save as csv file
 
