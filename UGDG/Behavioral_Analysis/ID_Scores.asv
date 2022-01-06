@@ -131,7 +131,7 @@ C(1:N,1) = EQaverage;
 demeaned_EQscores = [subjEQScore(:,1), B, subjEQScore(:,2) - C];
 subjEQScore_output = [subjEQScore(:,1), B, subjEQScore(:,2)];
 
-demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned_EI_Score'});
+demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
 name = ['demeaned_subjEQScores.xls'];
 writetable(demeaned_EQscores, name); % Save as csv file
 
@@ -235,7 +235,7 @@ for ii = 1:length(subjects)
 end
 
 
-motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'tsnr','fd_mean'});
+motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'TSR','Motion'});
 name = ['Motionoutput.xls'];
 writetable(motion_data_output, name); % Save as csv file
     
@@ -244,10 +244,11 @@ writetable(motion_data_output, name); % Save as csv file
 
 % combine EI, PNR, and motion.
 
-final_output = [demeaned_EQscores, demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')]
+final_output = [subjEQScore_output, subjPNRScore_output(:,'Subject'), motion_data_output(:,'TSR')]
 
-% final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
-name = ['final_IDs.xls'];
-writetable(final_output, name); % Save as csv file
+
+array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'PNR_Deameaned','EI_Demeaned','TRS','Motion'});
+name = ['Motionoutput.xls'];
+writetable(motion_data_output, name); % Save as csv file
     
 
