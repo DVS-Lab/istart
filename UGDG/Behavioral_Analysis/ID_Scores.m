@@ -234,6 +234,7 @@ for ii = 1:length(subjects)
     motion_data = [motion_data;save];
 end
 
+% test
 
 motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'tsnr','fd_mean'});
 name = ['Motionoutput.xls'];
