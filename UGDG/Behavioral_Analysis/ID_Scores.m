@@ -22,7 +22,7 @@ subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 10
 %% EQ Scale
 
 % Find the columns you will need.
-t = readtable('ISTART_EI_Data_122221.csv');
+t = readtable('ISTART_EI_Data_122121.csv');
 start = 2;
 finish = 31;
 N = 30; % Number of questions
