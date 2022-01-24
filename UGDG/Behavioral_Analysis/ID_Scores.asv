@@ -16,9 +16,9 @@ clc
 % Warning, this creates extra data in the output file. Check for
 % duplicates!
 
-% Exclude 1002, 1010 (?), 1244 (no IDs), 1253 (No IDs), 1255 (no IDS), 1286 (no IDs), 3101 (no IDs), 3125 (no IDs), 3152 (no IDs), 3166 (?), 3167 (no IDs),
+% Exclude 1002, 1010 (?), 1243?, 1244 (no IDs), 1253 (No IDs), 1255 (no IDS), 1286 (no IDs), 3101 (no IDs), 3125 (no IDs), 3152 (no IDs), 3166 (?), 3167 (no IDs), 3218 (no IDs), 3220 (no motion),
 
-subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3166, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212, 3218, 3220];
+subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
 %% EQ Scale
 
 % Find the columns you will need.
@@ -115,8 +115,7 @@ for ii = 1:length(subjects)
     subjEQScore = [subjEQScore; Save_values];
 end
 
-%%
-% Demean the EQscores
+%% Demean the EQscores
 
 EQaverage = mean(subjEQScore(:,2));
 
@@ -131,7 +130,7 @@ C(1:N,1) = EQaverage;
 demeaned_EQscores = [subjEQScore(:,1), B, subjEQScore(:,2) - C];
 subjEQScore_output = [subjEQScore(:,1), B, subjEQScore(:,2)];
 
-demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned EI Score'});
+demeaned_EQscores = array2table(demeaned_EQscores(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned_EI_Score'});
 name = ['demeaned_subjEQScores.xls'];
 writetable(demeaned_EQscores, name); % Save as csv file
 
@@ -234,21 +233,98 @@ for ii = 1:length(subjects)
     motion_data = [motion_data;save];
 end
 
+% test
 
-motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'TSR','Motion'});
+motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'tsnr','fd_mean'});
 name = ['Motionoutput.xls'];
 writetable(motion_data_output, name); % Save as csv file
     
+
+%% Strategic Behavior 
+
+% First figure out raw values, then combine into strategic behavior
+
+% Raw DG
+
+DG_P_Raw = [];
+save_value = [];
+
+for ii = 1:length(subjects)
+    
+        name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
+        O = readtable(name);
+        O = table2array(O);
+        save_value = sum(O(:,3));
+        DG_P_Raw = [DG_P_Raw; save_value]; 
+       
+end
+
+%% Raw results UG-P
+
+Final_save_2 = [];
+UG_P_2 = [];
+
+Final_save = [];
+UG_P = [];
+UG_P_Total = [];
+Subjects = [];
+Subjects_2 = [];
+
+UG_P_Raw = [];
+Final_Subjects =[];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
+    
+    T = readtable(name);
+    UG_P = table2array(T);
+    
+    total_save_2= [];
+    saveme_2 = [];
+    save_value = sum(UG_P(:,2) - UG_P(:,3));
+    UG_P_Raw = [UG_P_Raw; save_value];
+    UG_P_Raw = abs(UG_P_Raw);
+    
+end
+
+UG_P_2_Raw = [];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
+    
+    T = readtable(name);
+    UG_P_2 = table2array(T);
+    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
+    UG_P_2_Raw = [UG_P_2_Raw; save_value];
+    UG_P_2_Raw = abs(UG_P_2_Raw);
+    
+end
+
+UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
+
+Strategic_Behavior = UG_P_Raw - DG_P_Raw;
+
+% Demean strategic behavior
+
+deameaned_Strategic_Behavior = Strategic_Behavior - mean(Strategic_Behavior);
+
+deameaned_Strategic_Behavior = array2table(deameaned_Strategic_Behavior(1:end,:),'VariableNames', {'Subject', 'Ones','Demeaned_strategic_behavior'});
+name = ['demeaned_strategic_behavior.xls'];
+writetable(deameaned_Strategic_Behavior, name); % Save as csv file
+
 
 %% Combine outputs into single ID assessment
 
 % combine EI, PNR, and motion.
 
-final_output = [subjEQScore_output, subjPNRScore_output(:,'Subject'), motion_data_output(:,'TSR')]
+final_output = [demeaned_EQscores, deameaned_Strategic_Behavior, demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')]
 
-
-array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'PNR_Deameaned','EI_Demeaned','TRS','Motion'});
-name = ['Motionoutput.xls'];
-writetable(motion_data_output, name); % Save as csv file
+% final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
+name = ['final_IDs.xls'];
+writetable(final_output, name); % Save as csv file
     
 

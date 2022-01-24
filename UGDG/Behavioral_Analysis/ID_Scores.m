@@ -115,8 +115,7 @@ for ii = 1:length(subjects)
     subjEQScore = [subjEQScore; Save_values];
 end
 
-%%
-% Demean the EQscores
+%% Demean the EQscores
 
 EQaverage = mean(subjEQScore(:,2));
 
@@ -241,11 +240,88 @@ name = ['Motionoutput.xls'];
 writetable(motion_data_output, name); % Save as csv file
     
 
+%% Strategic Behavior 
+
+% First figure out raw values, then combine into strategic behavior
+
+% Raw DG
+
+DG_P_Raw = [];
+save_value = [];
+
+for ii = 1:length(subjects)
+    
+        name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
+        O = readtable(name);
+        O = table2array(O);
+        save_value = sum(O(:,3));
+        DG_P_Raw = [DG_P_Raw; save_value]; 
+       
+end
+
+%% Raw results UG-P
+
+Final_save_2 = [];
+UG_P_2 = [];
+
+Final_save = [];
+UG_P = [];
+UG_P_Total = [];
+Subjects = [];
+Subjects_2 = [];
+
+UG_P_Raw = [];
+Final_Subjects =[];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
+    
+    T = readtable(name);
+    UG_P = table2array(T);
+    
+    total_save_2= [];
+    saveme_2 = [];
+    save_value = sum(UG_P(:,2) - UG_P(:,3));
+    UG_P_Raw = [UG_P_Raw; save_value];
+    UG_P_Raw = abs(UG_P_Raw);
+    
+end
+
+UG_P_2_Raw = [];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
+    
+    T = readtable(name);
+    UG_P_2 = table2array(T);
+    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
+    UG_P_2_Raw = [UG_P_2_Raw; save_value];
+    UG_P_2_Raw = abs(UG_P_2_Raw);
+    
+end
+
+UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
+
+Strategic_Behavior = UG_P_Raw - DG_P_Raw;
+
+% Demean strategic behavior
+
+deameaned_Strategic_Behavior = Strategic_Behavior - mean(Strategic_Behavior);
+
+deameaned_Strategic_Behavior = array2table(deameaned_Strategic_Behavior(1:end,:),'VariableNames', {'Demeaned_strategic_behavior'});
+name = ['demeaned_strategic_behavior.xls'];
+writetable(deameaned_Strategic_Behavior, name); % Save as csv file
+
+
 %% Combine outputs into single ID assessment
 
-% combine EI, PNR, and motion.
+% combine EI, strategic behavior, PNR, and motion.
 
-final_output = [demeaned_EQscores, demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')]
+final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')]
 
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 name = ['final_IDs.xls'];
