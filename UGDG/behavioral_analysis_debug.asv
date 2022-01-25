@@ -10,12 +10,14 @@ clc
 % This script takes a participant's responses and collapses them into a
 % dollar amount for analysis.
 
+% This script is to deal with two subjects with different input folders.
+
 % Update the subjects list with up-to-date subjects
 
 maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
-subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
+%subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
 
 subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.
 
@@ -23,8 +25,8 @@ subjects_debug = [1240,1248]; % These have different column numbers, probably be
 
 % I need to parse the data into the separate games.
 
-for ii= 1:length(subjects)
-    subj = subjects(ii);
+for ii= 1:length(subjects_debug)
+    subj = subjects_debug(ii);
     
     UG_R_accept_2 = [];
     UG_R_reject_2 = [];
@@ -63,8 +65,8 @@ if r1 > 0
         % "Feedback" is the offer value (out of $20)
         
         Trial = C{1};
-        Block = C{3};
-        Endowment = C{4};
+        Block = C{8};
+        Endowment = C{12};
         response = C{17};
         response = round(response);
         L_Option = C{7};

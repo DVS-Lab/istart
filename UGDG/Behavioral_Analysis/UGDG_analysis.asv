@@ -328,7 +328,7 @@ Subjects_2 = [];
 
 UG_P_Raw = [];
 
-subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
 Final_Subjects =[];
 
 for jj = 1:length(subjects)
@@ -343,7 +343,13 @@ for jj = 1:length(subjects)
         
         total_save_2= [];
         saveme_2 = [];
+        
+        
+            
+            
         save_value = sum(UG_P(:,2) - UG_P(:,3));
+        
+       
         UG_P_Raw = [UG_P_Raw; save_value];
         UG_P_Raw = abs(UG_P_Raw);
     end
@@ -380,12 +386,72 @@ for ii = 1:length(subjects);
         name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
         O = readtable(name);
         O = table2array(O);
-        save_value = sum(O(:,3));
+        save_value = sum(O(:,3))
         DG_P_Raw = [DG_P_Raw; save_value]; 
        
 end
 
 
+
+
+
+ %% Subjects
+ 
+
+ values = 1002:4000;
+ 
+ Subjects = [];
+ Subjects_2 = [];
+ 
+ Final_Subjects =[];
+ 
+ for jj = 1:length(values)
+     try
+         Subjects = [];
+         name = ['Subject_' num2str(values(jj)) '_UGP2.csv'];
+         
+         T = readtable(name);
+         UG_P_2 = table2array(T);
+         Subjects = values(jj);
+         
+     end
+     
+     try
+         Subjects_2 = [];
+         name = ['Subject_' num2str(values(jj)) '_UGP.csv'];
+         
+         T = readtable(name);
+         UG_P = table2array(T);
+         
+         T = readtable(name);
+         UG_P = table2array(T);
+         Subjects = values(jj);
+     end
+     
+     
+     
+     c = size(Subjects_2);
+     d = size(Subjects);
+     c = c(1);
+     d = d(1);
+     
+     if c>0 && d == 0
+         
+         Final_Subjects = [Final_Subjects; Subjects_2];
+     end
+     
+     if d>0 && c == 0
+         
+         Final_Subjects = [Final_Subjects; Subjects];
+         
+     end
+     
+     if d>0 && c>0
+         
+         Final_Subjects = [Final_Subjects; Subjects_2];
+         
+     end
+ end
 %% UG_P earnings
 
 figure
@@ -416,9 +482,7 @@ saveas(gcf,'UG_P.png')
 %%
 
 
-%Total_Earnings = UG_P_Raw + UG_R_Raw + DG_P_Raw;
-
-Total_Earnings = UG_P_Raw + DG_P_Raw; % Similar to strategic behavior
+Total_Earnings = UG_P_Total + UG_R_Earnings + DG_P;
 
 figure
 histogram(Total_Earnings, 14)
@@ -455,7 +519,7 @@ name = ['Rejection_Behavior.csv'];
 writetable(Bins_save, name); % Save as csv file
 end
 
-%% Strategic Behavior 
+%%
 
 %Strategic_Behavior = DG_P + UG_P_Total;
 
@@ -463,7 +527,7 @@ end
 
 Strategic_Behavior = UG_P_Raw - DG_P_Raw;
 
-Strategic_Behavior_Percent = (Strategic_Behavior./abs(UG_P_Raw))*100; % percent change
+Strategic_Behavior_Percent = (Strategic_Behavior/abs(UG_P_Raw))*100; % percent change
 
 
 %% EQ Scale
@@ -474,7 +538,7 @@ start = 2;
 finish = 31;
 
 N = 30; % Number of questions
-%IndexedColumns = round(linspace(start,finish, N));
+IndexedColumns = round(linspace(start,finish, N));
 data = table2array(t);
 
 % define subjects
@@ -559,32 +623,25 @@ end
 %% Personal Norm Scale
 
 % Find the columns you will need.
-t = readtable('ISTART_PNR_Data_122321.xlsx');
+
+% Find the columns you will need.
+data = readtable('ISTART_PNR_Data_122321.xlsx');
 start = 2;
-finish = 10;
+finish = 11;
+Total_Subjects = [];
 
 N = 9; % Number of questions
-IndexedColumns = [1,round(linspace(start,finish, N))];
-data = t(:,IndexedColumns);
-data = table2array(data(2:end,:));
-
-% prune data
-
-PNR_data = [];
-
-for ii = 1:length(subjects_EQ) % same subj numbers as EQ scale
-    [row,col] = find(data==subjects_EQ(ii));
-    saverow = data(row,:);
-    saverow = saverow(2:end);
-    PNR_data = [PNR_data; saverow];
-end
-
+IndexedColumns = round(linspace(start,finish, N));
+data = table2array(t);
+PNR_data = data(:,IndexedColumns);
+PNR_data = PNR_data(2:end,:); % Eliminating 1001 which had bad data.
 Total_Subjects = size(PNR_data);
 Total_Subjects = Total_Subjects(1);
 
 % PNR Scale
 
 PNRScore = [];
+Total_Subjects = Total_Subjects;
 max_pnr = 7;
 min_pnr = 1;
 add_pnr = max_pnr + min_pnr;
@@ -605,6 +662,7 @@ end
 
 %% Correlation with EQ and Strategic Behavior
 
+Strategic_Behavior = Strategic_Behavior'
 [R,P] = corrcoef(Strategic_Behavior,TotalEQScore);
 
 figure
@@ -617,7 +675,6 @@ xlabel 'EQ'
 
 % Hypothesis 
 
-figure
 [R,P] = corrcoef(Strategic_Behavior,PNRScore);
 
 %subplot(2,4,3)
@@ -639,7 +696,7 @@ set(gcf,'color','w');
 
 saveas(gcf,'EQ_Scores.png')
 
-%% Histogram of PNR scores
+%% Histogram of EQ scores
 
 figure
 h = histogram(PNRScore);
