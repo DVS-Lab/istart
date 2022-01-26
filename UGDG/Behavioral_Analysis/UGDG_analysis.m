@@ -334,37 +334,28 @@ Final_Subjects =[];
 for jj = 1:length(subjects)
     save_value = [];
     
+    name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
+    T = readtable(name);
+    UG_P = table2array(T);
+    total_save_2= [];
+    saveme_2 = [];
+    save_value = sum(UG_P(:,2) - UG_P(:,3));
+    UG_P_Raw = [UG_P_Raw; save_value];
+    UG_P_Raw = abs(UG_P_Raw);
     
-    try
-        name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
-        
-        T = readtable(name);
-        UG_P = table2array(T);
-        
-        total_save_2= [];
-        saveme_2 = [];
-        save_value = sum(UG_P(:,2) - UG_P(:,3));
-        UG_P_Raw = [UG_P_Raw; save_value];
-        UG_P_Raw = abs(UG_P_Raw);
-    end
 end
 
 UG_P_2_Raw = [];
 
 for jj = 1:length(subjects)
     save_value = [];
+    name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
+    T = readtable(name);
+    UG_P_2 = table2array(T);
+    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
+    UG_P_2_Raw = [UG_P_2_Raw; save_value];
+    UG_P_2_Raw = abs(UG_P_2_Raw);
     
-    
-    try
-        name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
-        
-        T = readtable(name);
-        UG_P_2 = table2array(T); 
-        save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
-        
-        UG_P_2_Raw = [UG_P_2_Raw; save_value];
-        UG_P_2_Raw = abs(UG_P_2_Raw);
-    end
 end
 
 UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
@@ -377,12 +368,12 @@ save_value = [];
 
 for ii = 1:length(subjects);
     
-        name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
-        O = readtable(name);
-        O = table2array(O);
-        save_value = sum(O(:,3));
-        DG_P_Raw = [DG_P_Raw; save_value]; 
-       
+    name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
+    O = readtable(name);
+    O = table2array(O);
+    save_value = sum(O(:,3));
+    DG_P_Raw = [DG_P_Raw; save_value];
+    
 end
 
 
@@ -1003,7 +994,55 @@ xlabel 'Offers'
 ylabel 'Rate Offered'
 axis([-.0 .5 0 .6])
 
-%% Save EI values
 
+%% Figure out if there is a ceiling effect
 
+% Defined as always choosing max in DG and min in UG.
+% First, we will regenerate the participant pool
+
+trials = 36;
+A = combnk(0.06:0.13:0.48,2); % 6 possible combinations we will use for proposers
+B = fliplr(A); % To counterbalance.
+Proposer_Options = [A;B;A;B;A;B;]; % Now the options are counterbalanced
+% We now have a pool of 36 combinations to choose from.
+
+% ((((DVS: No, should be 36 or 24 rows? No choosing and nothing left to
+% chance. )))
+% (((DS: Fixed)))
+
+% We need to randomly select 48 of these rows.
+
+rows =[1:(trials)]; % Number of desired rows
+shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through 48.
+
+%shuffled_rows = shuffled_rows(1:2)'; % We need two items
+
+% Take those elements from Proposer_Options and add in six randomly chosen
+% combinations.
+
+Proposer_Pool = [];
+
+for ii = 1:length(rows)
+    % Index from shuffled_row
+    Take = Proposer_Options(shuffled_rows(ii),:); % Take a random number from 1 through 48 and use that as the row
+    Proposer_Pool = [Proposer_Pool; Take];
+end
+
+% The proposer pool randomly generates the proportions which are presented
+% to the participant. So, if we find the max values between the two
+% options, we can determine what are the most fair offers a participant can
+% make. Opposite for min.
+
+max_rows = [];
+min_rows = [];
+for ii = 1:length(Proposer_Pool)
+    max_row = max(Proposer_Pool(ii,:));
+    min_row = min(Proposer_Pool(ii,:)); 
+    max_rows = [max_rows; max_row];
+    min_rows = [min_rows; min_row];
+end
+
+% If a participant always chooses high, they would consistently split .3633
+% of the endowment. If they always choose low, they would split .1467 of
+% the endowment. 
 
