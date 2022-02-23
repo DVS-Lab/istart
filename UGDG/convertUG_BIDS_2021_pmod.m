@@ -44,8 +44,7 @@ for r = 0:1
     L_Option = round(L_Option);
     R_Option = round(R_Option);
     
-    fname = sprintf('sub-%03d_task-ugdg_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
-    output = fullfile(usedir,'bids',['sub-' num2str(subj)],'func');
+    fname = sprintf('sub-%03d_task-ugdg_run-%02d_events.tsv',subj,r+1); % making compatible with bids output = fullfile(usedir,'bids',['sub-' num2str(subj)],'func');
     if ~exist(output,'dir')
         mkdir(output)
     end
@@ -134,7 +133,7 @@ for r = 0:1
         if response(t) == 999
             fprintf(fid,'%f\t%f\t%s\t%s\t%d\t%s\t%s\n',decision_onset(t),4,'missed_trial','n/a',Endowment(t),'n/a','n/a');
         end
-        
+        cd .
         if Block(t) == 3
             if response(t) == 2
                 if round(L_Option(t)) > 0;

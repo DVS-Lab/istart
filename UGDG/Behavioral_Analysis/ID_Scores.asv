@@ -2,7 +2,7 @@ clear all
 close all
 clc
 
-% Calculate ID scores of interest for the ISTART project.
+% Calculate ID scores of interest for the ISTART project..
 
 % Daniel Sazhin
 % ISTART
@@ -333,19 +333,16 @@ for ii = 1:length(data_raw(:,1))
     substance_use = [substance_use;save];
 end
 
-% adjust for desired subjects for the final output. Substance_use is used
-% for preliminary analysis, substance_use_data is used in fmri analysis.
-
-substance_use_data = [];
+% adjust for desired subjects 
 
 for ii = 1:length(subjects)
     subj = subjects(ii);
     subj_row = find(substance_use==subj);
     save = substance_use(subj_row,:);
-    substance_use_data = [substance_use_data;save];
+    motion_data = [motion_data;save];
 end
 
-substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
+substance_use_output = array2table(substance_use(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
 name = ['Substanceuse.xls'];
 writetable(substance_use_output, name); % Save as csv file
 
