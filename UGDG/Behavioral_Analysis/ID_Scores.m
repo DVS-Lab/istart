@@ -703,6 +703,12 @@ writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 % full output for full Ns
 final_output = [motion_data_output(:,'Subject'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
+
+[L] = isfile('final_IDs_full.xls');
+if L == 1
+    delete('final_IDs_full.xls')
+end
+
 name = ['final_IDs_full.xls'];
 writetable(final_output, name); % Save as csv file
     
