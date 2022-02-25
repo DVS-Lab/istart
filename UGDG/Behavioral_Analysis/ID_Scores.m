@@ -25,7 +25,8 @@ clc
 % Subs for strat behavior, and motion for full N analysis.
 
 % 1002 and 1243 excluded for now. 
-subjects = [1003, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
+subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
+
 % %% EQ Scale
 % 
 % % Find the columns you will need.
@@ -144,18 +145,18 @@ subjects = [1003, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 10
 % subjEQScore_output = array2table(subjEQScore_output(1:end,:),'VariableNames', {'Subject', 'Ones','EI Score'});
 % name = ['subjEQScores.xls'];
 % writetable(subjEQScore_output, name); % Save as csv file
+
+
+% % Personal Norm Scale
 % 
-% 
-% %% Personal Norm Scale
-% 
-% % Find the columns you will need.
+% Find the columns you will need.
 % data = readtable('ISTART_PNR_Data_122321.xlsx');
 % start = 2;
 % finish = 11;
 % Total_Subjects = [];
 % 
 % 
-% % Extract data
+% Extract data
 % data = table2array(t);
 % PNR_data = round(data(:,IndexedColumns));
 % 
@@ -173,7 +174,7 @@ subjects = [1003, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 10
 %     Total_Subjects = size(PNR_data);
 %     Total_Subjects = Total_Subjects(1);
 %     
-%     % PNR Scale
+%     PNR Scale
 %     
 %     
 %     Total_Subjects = Total_Subjects;
@@ -202,7 +203,7 @@ subjects = [1003, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 10
 %     
 % end
 % 
-% %% Demean PNR scale
+% % Demean PNR scale
 % 
 % PNRaverage = mean(subjPNRScore(:,2));
 % 
@@ -692,7 +693,7 @@ writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 % set(gcf,'color','w');
 % 
 % saveas(gcf,'DUDIT.png')
-% 
+
 
     
 %% Combine outputs into single ID assessment
@@ -710,7 +711,6 @@ name = ['ones.xls'];
 writetable(ones_output, name); % Save as csv file
 
 final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
-% final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 
 [L] = isfile('final_IDs_full.xls');
 if L == 1
