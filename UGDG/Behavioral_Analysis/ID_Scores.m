@@ -24,7 +24,8 @@ clc
 
 % Subs for strat behavior, and motion for full N analysis.
 
-subjects = [1002, 1003, 1004, 1006, 1007, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
+% 1002 and 1243 excluded for now. 
+subjects = [1003, 1004, 1006, 1007, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
 % %% EQ Scale
 % 
 % % Find the columns you will need.
@@ -700,7 +701,7 @@ writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 %final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean'), substance_use_output(:,'audit'), substance_use_output(:,'dudit')];
 
 % full output for full Ns
-final_output = [deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output = [motion_data_output(:,'Subject'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 name = ['final_IDs_full.xls'];
 writetable(final_output, name); % Save as csv file
