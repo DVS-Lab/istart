@@ -2,7 +2,7 @@ clear all
 close all
 clc
 
-% Calculate ID scores of interest for the ISTART project..
+% Calculate ID scores of interest for the ISTART project.
 
 % Daniel Sazhin
 % ISTART
@@ -18,7 +18,13 @@ clc
 
 % Exclude 1002, 1010 (?), 1243?, 1244 (no IDs), 1253 (No IDs), 1255 (no IDS), 1286 (no IDs), 3101 (no IDs), 3125 (no IDs), 3152 (no IDs), 3166 (?), 3167 (no IDs), 3218 (no IDs), 3220 (no motion),
 
-subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+% Subs for SANS
+
+%subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+
+% Subs for strat behavior, and motion for full N analysis.
+
+subjects = [1002, 1003, 1004, 1006, 1007, 1010, 1011, 1012, 1013, 1015, 1016, 1018, 1019, 1021, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
 %% EQ Scale
 
 % Find the columns you will need.
@@ -333,16 +339,19 @@ for ii = 1:length(data_raw(:,1))
     substance_use = [substance_use;save];
 end
 
-% adjust for desired subjects 
+% adjust for desired subjects for the final output. Substance_use is used
+% for preliminary analysis, substance_use_data is used in fmri analysis.
+
+substance_use_data = [];
 
 for ii = 1:length(subjects)
     subj = subjects(ii);
     subj_row = find(substance_use==subj);
     save = substance_use(subj_row,:);
-    motion_data = [motion_data;save];
+    substance_use_data = [substance_use_data;save];
 end
 
-substance_use_output = array2table(substance_use(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
+substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
 name = ['Substanceuse.xls'];
 writetable(substance_use_output, name); % Save as csv file
 
@@ -689,8 +698,10 @@ saveas(gcf,'DUDIT.png')
 
 % combine EI, strategic behavior, PNR, and motion.
 
-final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+%final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean'), substance_use_output(:,'audit'), substance_use_output(:,'dudit')];
 
+% full output for full Ns
+final_output = 
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 name = ['final_IDs.xls'];
 writetable(final_output, name); % Save as csv file
