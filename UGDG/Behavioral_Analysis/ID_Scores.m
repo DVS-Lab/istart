@@ -25,6 +25,7 @@ clc
 % Subs for strat behavior, and motion for full N analysis.
 
 % 1002 and 1243 excluded for now. 
+
 subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
 
 % %% EQ Scale
@@ -227,7 +228,7 @@ subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 10
 %% Read in the tsr and means 
 
 % Find the columns you will need.
-data = readtable('ugdg_tsr_means.xlsx');
+data = readtable('Task-ugdg_Level-Group_Covariates_mriqc-0.16.1.xls');
 data = table2array(data);
 
 motion_data = [];
