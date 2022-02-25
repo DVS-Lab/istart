@@ -702,7 +702,14 @@ writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 %final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean'), substance_use_output(:,'audit'), substance_use_output(:,'dudit')];
 
 % full output for full Ns
-final_output = [motion_data_output(:,'Subject'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+[N,M] = size(motion_data_output);
+A(1:N,1) = ones; % subject number
+
+ones_output = array2table(A(1:end,:),'VariableNames', {'Ones'});
+name = ['ones.xls'];
+writetable(ones_output, name); % Save as csv file
+
+final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 
 [L] = isfile('final_IDs_full.xls');

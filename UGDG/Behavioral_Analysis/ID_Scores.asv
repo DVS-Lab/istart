@@ -25,7 +25,7 @@ clc
 % Subs for strat behavior, and motion for full N analysis.
 
 % 1002 and 1243 excluded for now. 
-subjects = [1003, 1004, 1006, 1007, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
+subjects = [1003, 1004, 1006, 1007, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3218, 3220, 3223]; 
 % %% EQ Scale
 % 
 % % Find the columns you will need.
@@ -249,7 +249,8 @@ writetable(motion_data_output, name); % Save as csv file
 
 % First figure out raw values, then combine into strategic behavior
 
-% Raw DG
+% Raw DG needs to be average to account for missed/irregular number of
+% trials. 
 
 DG_P_Raw = [];
 
@@ -258,7 +259,7 @@ for ii = 1:length(subjects)
         name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
         O = readtable(name);
         O = table2array(O);
-        save_value = sum(O(:,3));
+        save_value = mean(O(:,3));
         DG_P_Raw = [DG_P_Raw; save_value]; 
        
 end
@@ -287,7 +288,7 @@ for jj = 1:length(subjects)
     
     total_save_2= [];
     saveme_2 = [];
-    save_value = sum(UG_P(:,2) - UG_P(:,3));
+    save_value = mean(UG_P(:,3));
     UG_P_Raw = [UG_P_Raw; save_value];
     UG_P_Raw = abs(UG_P_Raw);
     
@@ -302,15 +303,15 @@ for jj = 1:length(subjects)
     
     T = readtable(name);
     UG_P_2 = table2array(T);
-    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
+    save_value = mean(UG_P_2(:,3));
     UG_P_2_Raw = [UG_P_2_Raw; save_value];
     UG_P_2_Raw = abs(UG_P_2_Raw);
     
 end
 
-UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
+UG_P_Raw_use = ((UG_P_2_Raw + UG_P_Raw)/2);
 
-Strategic_Behavior = UG_P_Raw - DG_P_Raw;
+Strategic_Behavior = UG_P_Raw_use - DG_P_Raw;
 
 % Demean strategic behavior
 
@@ -701,6 +702,11 @@ writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 %final_output = [demeaned_EQscores, deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_PNRscores(:,'Demeaned_PNR_Score'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean'), substance_use_output(:,'audit'), substance_use_output(:,'dudit')];
 
 % full output for full Ns
+[N,M] = size(motion_data_output);
+% 
+% A(1:N,1) = zeros; % subject number
+% B(1:N,1) = ones; % subject number
+
 final_output = [motion_data_output(:,'Subject'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 % final_output = final_output(1:end,:),'VariableNames', {'Subject', 'Ones', 'Demeaned_EI_Score', 'PNR_Deameaned','tsnr','fd_mean'});
 
