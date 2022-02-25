@@ -249,16 +249,17 @@ writetable(motion_data_output, name); % Save as csv file
 
 % First figure out raw values, then combine into strategic behavior
 
-% Raw DG
+% Raw DG needs to be average to account for missed/irregular number of
+% trials. 
 
 DG_P_Raw = [];
-save_value = [];
+
 for ii = 1:length(subjects)
-    
+        save_value = [];
         name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
         O = readtable(name);
         O = table2array(O);
-        save_value = sum(O(:,3));
+        save_value = mean(O(:,3));
         DG_P_Raw = [DG_P_Raw; save_value]; 
        
 end
@@ -287,7 +288,7 @@ for jj = 1:length(subjects)
     
     total_save_2= [];
     saveme_2 = [];
-    save_value = sum(UG_P(:,2) - UG_P(:,3));
+    save_value = mean(UG_P(:,3));
     UG_P_Raw = [UG_P_Raw; save_value];
     UG_P_Raw = abs(UG_P_Raw);
     
@@ -302,15 +303,15 @@ for jj = 1:length(subjects)
     
     T = readtable(name);
     UG_P_2 = table2array(T);
-    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
+    save_value = mean(UG_P_2(:,3));
     UG_P_2_Raw = [UG_P_2_Raw; save_value];
     UG_P_2_Raw = abs(UG_P_2_Raw);
     
 end
 
-UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
+UG_P_Raw_use = ((UG_P_2_Raw + UG_P_Raw)/2);
 
-Strategic_Behavior = UG_P_Raw - DG_P_Raw;
+Strategic_Behavior = UG_P_Raw_use - DG_P_Raw;
 
 % Demean strategic behavior
 
