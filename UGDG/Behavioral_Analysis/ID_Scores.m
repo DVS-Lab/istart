@@ -323,6 +323,16 @@ deameaned_Strategic_Behavior = array2table(deameaned_Strategic_Behavior(1:end,:)
 name = ['demeaned_strategic_behavior.xls'];
 writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 
+%% UG- Recipient 
+
+% Hypothesis: Activation associaqted with rejections of unfair offers. 
+
+% 1) Define offer amounts. 2) Define rejections. 
+
+
+
+
+
 % %% Read in AUDIT and DUDIT scores
 % 
 % % Find the columns you will need.

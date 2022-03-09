@@ -15,9 +15,9 @@ clc
 maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
-%subjects = [1002, 1003, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
-subjects = 3199
-%subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.
+subjects = [1002, 1003, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3206, 3210, 3218, 3220, 3223];
+%subjects = 3223
+subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.
 
 %% Extract data
 
@@ -353,6 +353,23 @@ name = ['Subject_' num2str(subj) '_UGP2.csv'];
 writetable(UG_P_Behavior_r2, name); % Save as csv file
 end
 
+%% Save recipient with all info
+
+UG_R_accept_save = [UG_R_accept;UG_R_accept_2];
+UG_R_reject_save = [UG_R_reject;UG_R_reject_2];
+
+
+try 
+UG_R_accept_save_table = (UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+writetable(UG_R_accept_save, name); % Save as csv file
+end
+
+try 
+UG_R_reject_save = UG_R_reject_save(UG_P_2(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+writetable(UG_R_accept_save, name); % Save as csv file
+end
 
 %% Save Proposer
 

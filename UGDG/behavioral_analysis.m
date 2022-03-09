@@ -353,6 +353,23 @@ name = ['Subject_' num2str(subj) '_UGP2.csv'];
 writetable(UG_P_Behavior_r2, name); % Save as csv file
 end
 
+%% Save recipient with all info
+
+UG_R_accept_save = [UG_R_accept;UG_R_accept_2];
+UG_R_reject_save = [UG_R_reject;UG_R_reject_2];
+
+
+try 
+UG_R_accept_save_table = array2table(UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+writetable(UG_R_accept_save_table, name); % Save as csv file
+end
+
+try 
+UG_R_reject_save_table = array2table(UG_R_reject_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_reject_analysis.csv'];
+writetable(UG_R_reject_save_table, name); % Save as csv file
+end
 
 %% Save Proposer
 

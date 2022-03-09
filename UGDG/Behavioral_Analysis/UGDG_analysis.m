@@ -162,8 +162,6 @@ axis([-.0 .5 0 1])
 % Bin4 = Bin4(1) / total(1);
 % Bin5 = Bin5(1) / total(1);
 
-%% UG_R
-
 
 %% DG_P
 
