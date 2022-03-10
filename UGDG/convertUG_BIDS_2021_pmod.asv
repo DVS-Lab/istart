@@ -243,7 +243,7 @@ UGR_mean = mean(UGR(:,2));
                 if round(R_Option(t)) > 0;
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0,L_Option(t)/Endowment(t)- UGR_mean);
                 end
             end
         end
@@ -251,18 +251,18 @@ UGR_mean = mean(UGR(:,2));
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t),'n/a');
                 end
             end
             
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t),'n/a');
                 end
             end
         end
@@ -270,17 +270,17 @@ UGR_mean = mean(UGR(:,2));
         if Block(t) == 1
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- DGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more' ],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- DGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - L_Option(t),'n/a');
                 end
             end
             
             if response(t) == 3
                 if L_Option(t) > R_Option(t);
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- DGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_less'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- DGP_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_more'],RT(t),Endowment(t),'n/a', Endowment(t) - R_Option(t),'n/a');
                 end
             end
         end
@@ -296,17 +296,17 @@ UGR_mean = mean(UGR(:,2));
         if Block(t) == 3
             if response(t) == 2
                 if round(L_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0, L_Option(t)/Endowment(t)- UGR_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0,'n/a');
                 end
             end
             
             if response(t) == 3
                 if round(R_Option(t)) > 0;
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t),'n/a');
                 else
-                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0,'n/a');
                 end
             end
         end
@@ -315,22 +315,22 @@ UGR_mean = mean(UGR(:,2));
         if Block(t) == 2
             
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGP_mean);
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t),'n/a');
             end
             
             
             if response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGP_mean);
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t),'n/a');
             end
         end
         
         if Block(t) == 1
             if response(t) == 2
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- DGP_mean);
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice' ],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t),'n/a');
             end
             
             if response(t) == 3
-                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- DGP_mean);
+                fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t),'n/a');
             end
             
         end

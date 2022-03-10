@@ -345,6 +345,7 @@ audit_data = [];
 % audit is tenth column. motion is eleventh column
 
 AUDIT = [data.Participant, data.audit];
+AUDIT_Total = [];
 
 
 for ii = 1:length(subjects)
@@ -414,11 +415,14 @@ saveas(gcf,'AUDIT_DUDIT.png')
 
 data = readtable('Substance_and_Mood_data.csv');
 AADIS = [data.('sub'),data.('aadis_q1'),data.('aadis_q2'),data.('aadis_q3'),data.('aadis_q4'),data.('aadis_q5'),data.('aadis_q6'),data.('aadis_q7'),data.('aadis_q8'),data.('aadis_q9'),data.('aadis_q10'),data.('aadis_q11'),data.('aadis_q12'),data.('aadis_q13')];
-AUDIT_Freq_raw = [data.('sub'), data.('audit_1') + data.('audit_2')];
+AUDIT_Freq_raw = [data.('sub'), data.('audit_1') + data.('audit_2') + data.('audit_3')];
+AUDIT_Problematic_raw = [data.('sub'), data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
 
 % Q1: How often do you drink, Q2:, how many drinks?
 
-DUDIT_Freq_raw = [data.('sub'), data.('dudit_1') + data.('dudit_3') + data.('dudit_4')];
+DUDIT_Freq_raw = [data.('sub'), data.('dudit_1') + data.('dudit_2') + data.('dudit_3') + data.('dudit_4')];
+DUDIT_Problematic_raw = [data.('sub'), data.('dudit_5') + data.('dudit_6') + data.('dudit_7') + data.('dudit_8') + data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
+
 
 % Q1: How often do you do drugs, Q3:, how many times do you take drugs per day, Q4: how often are you heavily influenced?
 
@@ -426,7 +430,6 @@ DUDIT_Freq_raw = [data.('sub'), data.('dudit_1') + data.('dudit_3') + data.('dud
 
 eliminate_rows = any(isnan(AADIS),2);
 AADIS_Good = [];
-
 
 for ii = 1:length(AADIS)
     keep = [];
@@ -461,6 +464,31 @@ for ii = 1:length(AUDIT_Freq_raw)
         keep = row;
     end
     AUDIT_Freq = [AUDIT_Freq; keep];
+end
+
+eliminate_rows = any(isnan(AUDIT_Problematic_raw),2);
+AUDIT_Problematic = [];
+
+for ii = 1:length(AUDIT_Problematic_raw)
+    keep = [];
+    row = AUDIT_Problematic_raw(ii,:);
+    if eliminate_rows(ii) == 0;
+        keep = row;
+    end
+    AUDIT_Problematic = [AUDIT_Problematic; keep];
+end
+ 
+eliminate_rows = any(isnan(DUDIT_Problematic_raw),2);
+
+DUDIT_Problematic = [];
+
+for ii = 1:length(DUDIT_Problematic_raw)
+    keep = [];
+    row = DUDIT_Problematic_raw(ii,:);
+    if eliminate_rows(ii) == 0;
+        keep = row;
+    end
+    DUDIT_Problematic = [DUDIT_Problematic; keep];
 end
  
 
@@ -687,6 +715,91 @@ i.Color = [0 0 0];
 set(gcf,'color','w');
 
 saveas(gcf,'DUDIT.png')
+
+%% Correlation between problematic substance use and frequency
+
+
+AUDIT_Problematic_test = [];
+AUDIT_Freq_test = [];
+
+% Save the rows from AADIS that mirror DUDIT subjects.
+
+for ii = 1:length(AUDIT_Freq)
+    save = [];
+    subj_row = [];
+    subj = AUDIT_Freq(ii,1);
+    subj_row = find(AUDIT_Problematic==subj);
+    save = AUDIT_Problematic(subj_row,:);
+    AUDIT_Problematic_test = [AUDIT_Problematic_test;save];
+end
+
+for ii = 1:length(AUDIT_Problematic_test)
+    save = [];
+    subj_row = [];
+    subj = AUDIT_Problematic_test(ii,1);
+    subj_row = find(AUDIT_Freq==subj);
+    save = AUDIT_Freq(subj_row,:);
+    AUDIT_Freq_test = [AUDIT_Freq_test;save];
+end
+
+[R,P] = corrcoef(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2));
+
+[RHO,PVAL] = corr(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'Type','Spearman');
+[R,P] = corr(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'Type','Pearson');
+
+figure
+scatter(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+ax = gca;
+ax.FontSize = 12;
+xlabel ('AUDIT Frequency', 'FontSize', 16);
+ylabel  ('AUDIT Problematic Use', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'AUDIT Frequency vs. Problem.png')
+
+DUDIT_Problematic_test = [];
+DUDIT_Freq_test = [];
+
+% Save the rows from DUDIT Freq that mirror DUDIT subjects.
+
+for ii = 1:length(DUDIT_Freq)
+    save = [];
+    subj_row = [];
+    subj = DUDIT_Freq(ii,1);
+    subj_row = find(DUDIT_Problematic==subj);
+    save = DUDIT_Problematic(subj_row,:);
+    DUDIT_Problematic_test = [DUDIT_Problematic_test;save];
+end
+
+for ii = 1:length(DUDIT_Problematic_test)
+    save = [];
+    subj_row = [];
+    subj = DUDIT_Problematic_test(ii,1);
+    subj_row = find(DUDIT_Freq==subj);
+    save = DUDIT_Freq(subj_row,:);
+    DUDIT_Freq_test = [DUDIT_Freq_test;save];
+end
+
+[R,P] = corrcoef(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2));
+
+[RHO,PVAL] = corr(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'Type','Spearman');
+[R,PVAL] = corr(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'Type','Pearson');
+
+figure
+scatter(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+ax = gca;
+ax.FontSize = 12;
+xlabel ('DUDIT Frequency', 'FontSize', 16);
+ylabel  ('DUDIT Problematic Use', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DUDIT Frequency vs. Problem.png')
 
 %% Alcohol AADIS vs Audit
 
