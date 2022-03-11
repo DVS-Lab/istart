@@ -2,7 +2,7 @@ function convertUG_BIDS_2021_pmod(subj)
 maindir = pwd;
 usedir = '/data/projects/istart-data/';
 
-%try
+try
 
 % 11-18-21 | This is the code I am using  for the bids converter.
 
@@ -15,6 +15,7 @@ usedir = '/data/projects/istart-data/';
 
 for r = 0:1
     
+    
     % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
     fname = fullfile(maindir,'logs',num2str(subj),sprintf('sub-%04d_task-ultimatum_run-%d_raw.csv',subj,r)); % Psychopy taken out from Logs to make work for now.
     if exist(fname,'file')
@@ -26,6 +27,7 @@ for r = 0:1
     C = textscan(fid,repmat('%f',1,23),'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
     fclose(fid);
     
+    subj
     
     % "Feedback" is the offer value (out of $20)
     
@@ -177,7 +179,7 @@ UGR_mean = mean(UGR(:,2));
        
     
     
-    %% Adding in the cue onsets for parametric model
+ %% Adding in the cue onsets for parametric model
     
     for t = 1:length(Block)
         if (Block(t) == 1)
@@ -230,23 +232,23 @@ UGR_mean = mean(UGR(:,2));
             fprintf(fid,'%f\t%f\t%s\t%s\t%d\t%s\t%s\t%s\n',decision_onset(t),4,'missed_trial','n/a',Endowment(t),'n/a','n/a','n/a');
         end
         
-%         if Block(t) == 3
-%             if response(t) == 2
-%                 if round(L_Option(t)) > 0;
-%                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean);
-%                 else
-%                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
-%                 end
-%             end
-%             
-%             if response(t) == 3
-%                 if round(R_Option(t)) > 0;
-%                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
-%                 else
-%                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
-%                 end
-%             end
-%         end
+        if Block(t) == 3
+            if response(t) == 2
+                if round(L_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean);
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
+                end
+            end
+            
+            if response(t) == 3
+                if round(R_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
+                end
+            end
+        end
 %         
 %         if Block(t) == 2
 %             if response(t) == 2
@@ -352,5 +354,9 @@ end
     %     keyboard
     
     fopen(fid); % Changed from fclose
+    
+    catch
+        ('Debug')
+end
     
 end
