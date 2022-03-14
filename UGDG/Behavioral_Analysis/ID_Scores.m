@@ -20,13 +20,13 @@ clc
 
 % Subs for SANS
 
-%subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
+subjects = [1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
 
 % Subs for strat behavior, and motion for full N analysis.
 
 % 1002 and 1243 excluded for now. 
 
-subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
+%subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
 
 % %% EQ Scale
 % 
@@ -323,17 +323,12 @@ deameaned_Strategic_Behavior = array2table(deameaned_Strategic_Behavior(1:end,:)
 name = ['demeaned_strategic_behavior.xls'];
 writetable(deameaned_Strategic_Behavior, name); % Save as csv file
 
-%% UG- Recipient 
-
-% Hypothesis: Activation associaqted with rejections of unfair offers. 
-
-% 1) Define offer amounts. 2) Define rejections. 
-
-
-
 
 
 %% Read in AUDIT and DUDIT scores
+
+% Find the columns you will need.
+data = readtable(%% Read in AUDIT and DUDIT scores
 
 % Find the columns you will need.
 data = readtable('AUDIT_DUDIT.xlsx');
@@ -391,7 +386,15 @@ substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', 
 name = ['Substanceuse.xls'];
 writetable(substance_use_output, name); % Save as csv file
 
-% Is there a correlation between AUDIT and DUDIT?
+audit_dudit_output = array2table([AUDIT_Total, DUDIT_Total(:,2)],'VariableNames', {'Subject', 'audit','dudit'});
+name = ['AUDIT_DUDIT.xls'];
+writetable(audit_dudit_output, name); % Save as csv file
+
+% demean audit and dudit
+
+demeaned_AUDIT_DUDIT = array2table([audit_dudit_output.Subject, audit_dudit_output.audit - mean(audit_dudit_output.audit), audit_dudit_output.dudit - mean(audit_dudit_output.dudit)],'VariableNames', {'Subject', 'demeaned_audit','demeaned_dudit'});;
+
+%% Is there a correlation between AUDIT and DUDIT?
 
 [R,P] = corrcoef(substance_use(:,2), substance_use(:,3));
 figure
@@ -575,7 +578,75 @@ h = histogram(AADIS_Good(:,8));
 counts = h.Values;
 h.NumBins = 6;
 h.BinEdges = [0,1,2,3,4,5,6,7];
+xlabel ('???','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+subplot(3,5,9)
+h = histogram(AADIS_Good(:,10));
+counts = h.Values;
+h.NumBins = 6;
+h.BinEdges = [0,1,2,3,4,5,6,7];
 ax = gca;
+ax.FontSize = 9;
+xlabel ('PCP Usage','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+subplot(3,5,10)
+h = histogram(AADIS_Good(:,11));
+counts = h.Values;
+h.NumBins = 6;
+h.BinEdges = [0,1,2,3,4,5,6,7];
+ax = gca;
+ax.FontSize = 9;
+xlabel ('Heroin Usage','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+subplot(3,5,11)
+h = histogram(AADIS_Good(:,12));
+counts = h.Values;
+h.NumBins = 6;
+h.BinEdges = [0,1,2,3,4,5,6,7];
+ax = gca;
+ax.FontSize = 9;
+xlabel ('Inhalants Usage','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+
+subplot(3,5,12)
+h = histogram(AADIS_Good(:,13));
+counts = h.Values;
+h.NumBins = 6;
+h.BinEdges = [0,1,2,3,4,5,6,7];
+ax = gca;
+ax.FontSize = 9;
+xlabel ('Tranquilizer Usage','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+
+
+subplot(3,5,13)
+h = histogram(AADIS_Good(:,14));
+counts = h.Values;
+h.NumBins = 6;
+h.BinEdges = [0,1,2,3,4,5,6,7];
+ax = gca;
+ax.FontSize = 9;
+xlabel ('Other Drugs','FontSize', 16)
+ylabel ('Frequency','FontSize', 16)
+set(gca,'box','off')
+set(gcf,'color','w');
+
+saveas(gcf,'AADIS.png')= gca;
 ax.FontSize = 9;
 xlabel ('Rock Cocaine Usage','FontSize', 16)
 ylabel ('Frequency','FontSize', 16)
@@ -659,187 +730,68 @@ set(gcf,'color','w');
 
 saveas(gcf,'AADIS.png')
 
-%% Marijuana and Tobacco usage vs. AADIS
 
-AADIS_smoking = [(AADIS_Good(:,1)),(AADIS_Good(:,2)) + (AADIS_Good(:,4))];
+data_raw = table2array(data);
 
-% Eliminate zeros? 
+substance_use = [];
+audit_data = [];
 
-eliminate_rows = any(AADIS_smoking(:,2),2);
-AADIS_Use = [];
+% audit is tenth column. motion is eleventh column
 
-for ii = 1:length(AADIS_smoking)
-    keep = [];
-    row = AADIS_smoking(ii,:);
-    if eliminate_rows(ii) == 1
-        keep = row;
-    end
-    AADIS_Use = [AADIS_Use; keep];
+AUDIT = [data.Participant, data.audit];
+AUDIT_Total = [];
+
+
+for ii = 1:length(subjects)
+    subj = subjects(ii);
+    subj_row = find(AUDIT==subj);
+    save = AUDIT(subj_row,:);
+    AUDIT_Total = [AUDIT_Total;save];
 end
 
-AADIS_smoking = AADIS_Use;
+DUDIT = [data.Participant, data.dudit];
+DUDIT_Total = [];
 
-% First, make substance use and AADIS have same subjects
+for ii = 1:length(subjects)
+    subj = subjects(ii);
+    subj_row = find(DUDIT==subj);
+    save = AUDIT(subj_row,:);
+    DUDIT_Total = [DUDIT_Total;save];
+end
 
-%DUDIT_substance_use = [substance_use(:,1), substance_use(:,3)]; raw scores
-DUDIT_substance_use = [DUDIT_Freq(:,1), DUDIT_Freq(:,2)]; % frequency only
-DUDIT_test = [];
- 
-
-% Save the rows from AADIS that mirror DUDIT subjects.
-
-for ii = 1:length(AADIS_smoking)
+for ii = 1:length(data_raw(:,1))
     save = [];
-    subj_row = [];
-    subj = DUDIT_substance_use(ii,1);
-    subj_row = find(DUDIT_substance_use==subj);
-    save = DUDIT_substance_use(subj_row,:);
-    DUDIT_test = [DUDIT_test;save];
-end
-
-% test without outlier
-% subj_row = find(DUDIT_test==3143);
-% DUDIT_test(subj_row,:) = []; 
-% AADIS_smoking(subj_row,:) = [];
-
-[R,P] = corrcoef(AADIS_smoking(:,2), DUDIT_test(:,2));
-figure
-scatter(AADIS_smoking(:,2), DUDIT_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
-ax = gca;
-ax.FontSize = 12;
-xlabel ('AADIS Smoking/Pot Scores', 'FontSize', 16);
-ylabel  ('DUDIT', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DUDIT.png')
-
-%% Correlation between problematic substance use and frequency
-
-
-AUDIT_Problematic_test = [];
-AUDIT_Freq_test = [];
-
-% Save the rows from AADIS that mirror DUDIT subjects.
-
-for ii = 1:length(AUDIT_Freq)
-    save = [];
-    subj_row = [];
-    subj = AUDIT_Freq(ii,1);
-    subj_row = find(AUDIT_Problematic==subj);
-    save = AUDIT_Problematic(subj_row,:);
-    AUDIT_Problematic_test = [AUDIT_Problematic_test;save];
-end
-
-for ii = 1:length(AUDIT_Problematic_test)
-    save = [];
-    subj_row = [];
-    subj = AUDIT_Problematic_test(ii,1);
-    subj_row = find(AUDIT_Freq==subj);
-    save = AUDIT_Freq(subj_row,:);
-    AUDIT_Freq_test = [AUDIT_Freq_test;save];
-end
-
-[R,P] = corrcoef(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2));
-
-[RHO,PVAL] = corr(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'Type','Spearman');
-[R,P] = corr(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'Type','Pearson');
-
-figure
-scatter(AUDIT_Freq_test(:,2), AUDIT_Problematic_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
-ax = gca;
-ax.FontSize = 12;
-xlabel ('AUDIT Frequency', 'FontSize', 16);
-ylabel  ('AUDIT Problematic Use', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'AUDIT Frequency vs. Problem.png')
-
-DUDIT_Problematic_test = [];
-DUDIT_Freq_test = [];
-
-% Save the rows from DUDIT Freq that mirror DUDIT subjects.
-
-for ii = 1:length(DUDIT_Freq)
-    save = [];
-    subj_row = [];
-    subj = DUDIT_Freq(ii,1);
-    subj_row = find(DUDIT_Problematic==subj);
-    save = DUDIT_Problematic(subj_row,:);
-    DUDIT_Problematic_test = [DUDIT_Problematic_test;save];
-end
-
-for ii = 1:length(DUDIT_Problematic_test)
-    save = [];
-    subj_row = [];
-    subj = DUDIT_Problematic_test(ii,1);
-    subj_row = find(DUDIT_Freq==subj);
-    save = DUDIT_Freq(subj_row,:);
-    DUDIT_Freq_test = [DUDIT_Freq_test;save];
-end
-
-[R,P] = corrcoef(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2));
-
-[RHO,PVAL] = corr(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'Type','Spearman');
-[R,PVAL] = corr(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'Type','Pearson');
-
-figure
-scatter(DUDIT_Freq_test(:,2), DUDIT_Problematic_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
-ax = gca;
-ax.FontSize = 12;
-xlabel ('DUDIT Frequency', 'FontSize', 16);
-ylabel  ('DUDIT Problematic Use', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DUDIT Frequency vs. Problem.png')
-
-%% Alcohol AADIS vs Audit
-
-AADIS_alcohol= [(AADIS_Good(:,1)),(AADIS_Good(:,3))];
-
-% First, make substance use and AADIS have same subjects
-
-% AUDIT_substance_use = [substance_use(:,1), substance_use(:,2)]; % raw
-AUDIT_substance_use = [AUDIT_Freq(:,1), AUDIT_Freq(:,2)]; % frequency only
-AUDIT_test = [];
- 
-
-% Save the rows from AADIS that mirror DUDIT subjects.
-
-for ii = 1:length(AADIS_alcohol)
-    save = [];
-    subj_row = [];
-    subj = AUDIT_substance_use(ii,1);
-    subj_row = find(AUDIT_substance_use==subj);
-    save = AUDIT_substance_use(subj_row,:);
-    AUDIT_test = [AUDIT_test;save];
+    savesubj = data_raw(ii,1);
+    saveaudit = data_raw(ii,10);
+    savedudit = data_raw(ii,11);
+    save = [savesubj,saveaudit,savedudit];
+    substance_use = [substance_use;save];
 end
 
 
+% adjust for desired subjects for the final output. Substance_use is used
+% for preliminary analysis, substance_use_data is used in fmri analysis.
 
+substance_use_data = [];
 
-[R,P] = corrcoef(AADIS_alcohol(:,2), AUDIT_test(:,2));
-figure
-scatter(AADIS_alcohol(:,2), AUDIT_test(:,2),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
-ax = gca;
-ax.FontSize = 12;
-xlabel ('AADIS Alcohol', 'FontSize', 16);
-ylabel  ('AUDIT', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
+for ii = 1:length(subjects)
+    subj = subjects(ii);
+    subj_row = find(substance_use==subj);
+    save = substance_use(subj_row,:);
+    substance_use_data = [substance_use_data;save];
+end
 
-saveas(gcf,'DUDIT.png')
+substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
+name = ['Substanceuse.xls'];
+writetable(substance_use_output, name); % Save as csv file
 
+audit_dudit_output = array2table([AUDIT_Total, DUDIT_Total(:,2)],'VariableNames', {'Subject', 'audit','dudit'});
+name = ['AUDIT_DUDIT.xls'];
+writetable(audit_dudit_output, name); % Save as csv file
+
+% demean audit and dudit
+
+demeaned_AUDIT_DUDIT = array2table([audit_dudit_output.Subject, audit_dudit_output.audit - mean(audit_dudit_output.audit), audit_dudit_output.dudit - mean(audit_dudit_output.dudit)],'VariableNames', {'Subject', 'demeaned_audit','demeaned_dudit'});
 
     
 %% Combine outputs into single ID assessment
@@ -858,12 +810,23 @@ writetable(ones_output, name); % Save as csv file
 
 final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
-[L] = isfile('final_IDs_full.xls');
+% final output for substance use
+
+final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), demeaned_AUDIT_DUDIT(:,'demeaned_audit'), demeaned_AUDIT_DUDIT(:,'demeaned_dudit'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+
+% [L] = isfile('final_IDs_full.xls');
+% if L == 1
+%     delete('final_IDs_full.xls')
+% end
+% 
+% name = ['final_IDs_full.xls'];
+% writetable(final_output, name); % Save as csv file
+
+
+[L] = isfile('final_IDs_substance.xls');
 if L == 1
-    delete('final_IDs_full.xls')
+    delete('final_IDs_substance.xls')
 end
 
-name = ['final_IDs_full.xls'];
-writetable(final_output, name); % Save as csv file
-    
-
+name = ['final_IDs_substance.xls'];
+writetable(final_output_substance, name); % Save as csv file
