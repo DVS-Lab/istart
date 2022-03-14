@@ -28,23 +28,6 @@ clc
 
 subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
 
-
-% Subjects for AUDIT/DUDIT
-
-% AUDIT_missing =
-% 
-%         1003
-%         1007
-%         1009
-%         1013
-%         3140
-%         3170
-%         1251
-
-subjects = [1006, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220]; 
-
-
-
 % %% EQ Scale
 % 
 % % Find the columns you will need.
@@ -379,11 +362,10 @@ for ii = 1:length(subjects)
     subj_row = find(AUDIT_temp==subj);
     if subj_row > 0
         save = AUDIT_temp(subj_row,:);
-        AUDIT_final = [AUDIT_final;save];
     else
         AUDIT_missing = [AUDIT_missing; subjects(ii)];
     end
-   
+    AUDIT_final = [AUDIT_final;save];
 end
 
 DUDIT_missing = [];
@@ -393,15 +375,16 @@ for ii = 1:length(subjects)
     subj_row = find(DUDIT_temp==subj);
     if subj_row > 0
         save = DUDIT_temp(subj_row,:);
-        DUDIT_final = [DUDIT_final;save];
     else
         DUDIT_missing = [AUDIT_missing; subjects(ii)];
     end
-   
+    DUDIT_final = [DUDIT_final;save];
 end
+
+substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
+name = ['Substanceuse.xls'];
+writetable(substance_use_output, name); % Save as csv file
     
-AUDIT_final = array2table(AUDIT_final(1:end,:),'VariableNames', {'Sub', 'audit'});
-DUDIT_final = array2table(DUDIT_final(1:end,:),'VariableNames', {'Sub', 'dudit'});
 %% Combine outputs into single ID assessment
 
 % combine EI, strategic behavior, PNR, and motion.
@@ -416,27 +399,14 @@ ones_output = array2table(A(1:end,:),'VariableNames', {'Ones'});
 name = ['ones.xls'];
 writetable(ones_output, name); % Save as csv file
 
-% final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
-% 
-% [L] = isfile('final_IDs_full.xls');
-% if L == 1
-%     delete('final_IDs_full.xls')
-% end
-% 
-% name = ['final_IDs_full.xls'];
-% writetable(final_output, name); % Save as csv file
+final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
-% Substance use output
-
-final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), deameaned_Strategic_Behavior(:,'Demeaned_strategic_behavior'), AUDIT_final.audit(:,'audit'), DUDIT_final.audit(:,'audit') motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
-
-[L] = isfile('final_output_substance.xls');
+[L] = isfile('final_IDs_full.xls');
 if L == 1
-    delete('final_output_substance.xls')
+    delete('final_IDs_full.xls')
 end
 
-name = ['final_output_substance.xls'];
+name = ['final_IDs_full.xls'];
 writetable(final_output, name); % Save as csv file
-
     
 
