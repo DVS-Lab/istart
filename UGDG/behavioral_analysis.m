@@ -6,17 +6,25 @@ clc
 
 % 03/29/2020
 % Daniel Sazhin
+% Temple University
+% ISTART Project
 
-% This script takes a participant's responses and collapses them into a
-% dollar amount for analysis.
+% This script takes a participant's responses from log files in ISTART and collapses them into a
+% dollar amount for analysis. 
 
-% Update the subjects list with up-to-date subjects
+% Use ID_Scores.m to generate covariates for L3
+% analysis in FSL.
+
+% Use Behavioral_Analysis as your working directory. 
 
 maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
 subjects = [1002, 1003, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3206, 3210, 3218, 3220, 3223];
 %subjects = 3223
+
+% Use behavioral_analysis_debug.m to fix these.
+
 subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.
 
 %% Extract data
@@ -266,9 +274,6 @@ end
 %% UG_R Earnings
 
 % UG_R_Earnings is easy... simply add the accept behavior.
-
-
-
 
 for ii = 1
     
