@@ -13,7 +13,7 @@ clc
 % Calculate covariates of interest for the ISTART project to use in L3
 % analysis in FSL. 
 
-% Outputs csv files: 
+% Outputs csv files into covariates folder: 
 
 % final_output_full.xls
 % final_output_reward.xls
@@ -22,6 +22,8 @@ clc
 
 input = 'ISTART_CombinedDataSpreadsheet_031122.csv'; % input file 
 motion_input = 'motion_data_input.xls';
+
+output_path = 'C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\covariates\';
 
 % Strategic Behavior requires using "behavioral_analysis.m script" and "behavioral_analysis_debug" to
 % generate input files for Dictator and Ultimatum game decisions. 
@@ -398,7 +400,8 @@ if L == 1
 end
 
 name = ['final_output_full.xls'];
-writetable(final_output, name); % Save as csv file
+fileoutput = [output_path, name];
+writetable(final_output, fileoutput); % Save as csv file
 
 end
 
@@ -414,7 +417,8 @@ if L == 1
 end
 
 name = ['final_output_attitudes.xls'];
-writetable(final_output_attitudes, name); % Save as csv file
+fileoutput = [output_path, name];
+writetable(final_output_attitudes, fileoutput); % Save as csv file
 
 end
 
@@ -430,7 +434,8 @@ if L == 1
 end
 
 name = ['final_output_substance.xls'];
-writetable(final_output_substance, name); % Save as csv file
+fileoutput = [output_path, name];
+writetable(final_output_substance, fileoutput); % Save as csv file
 
 end
 
@@ -446,7 +451,8 @@ if L == 1
 end
 
 name = ('final_output_reward.xls');
-writetable(final_output_reward, name); % Save as csv file
+fileoutput = [output_path, name];
+writetable(final_output_reward, fileoutput); % Save as csv file
 
 end
 
