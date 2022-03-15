@@ -29,9 +29,9 @@ output_path = 'C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\c
 % generate input files for Dictator and Ultimatum game decisions. 
 
 make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
-make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
+make_reward = 1; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 %% Subs for SANS
 
@@ -50,10 +50,15 @@ if make_full == 1
     subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 end
 
-% Reward uses same pool.
+%% Subs for reward
+
+
+% Reward_missing =
+% 
+%         1242          40        -999
 
 if make_reward == 1
-    subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+    subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 end
 %% Subjects for AUDIT/DUDIT
 
@@ -362,16 +367,20 @@ Reward_use = Reward_raw(:,2:end);
 bis_bas_subs = [];
 
 for ii = 1:length(subjects)
-    save3 = [];
+    save = [];
+    save2 = [];
     subj = subjects(ii);
     subj_row = find(data.('RealID')==subj);
-    if subj_row > 0
-            save = Reward_use(subj_row(1),:);
-            save2 = [subj,save];
-            Reward_final = [Reward_final;save2];
-        %bis_bas_subs = [bis_bas_subs;subj]
-    end
     
+    if Reward_use(subj_row,2) > -1 % eliminate the -999s.
+        save = Reward_use(subj_row,:);
+        save2 = [subj,save];
+        Reward_final = [Reward_final;save2];
+    else
+        save = Reward_use(subj_row,:);
+        save2 = [subj,save];
+        Reward_missing = [Reward_missing; save2];
+    end
 end
 
 % Demean reward
