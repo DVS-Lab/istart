@@ -392,12 +392,12 @@ if make_full == 1
 
 final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
-[L] = isfile('final_IDs_full.xls');
+[L] = isfile('final_output_full.xls');
 if L == 1
-    delete('final_IDs_full.xls')
+    delete('final_output_full.xls')
 end
 
-name = ['final_IDs_full.xls'];
+name = ['final_output_full.xls'];
 writetable(final_output, name); % Save as csv file
 
 end
