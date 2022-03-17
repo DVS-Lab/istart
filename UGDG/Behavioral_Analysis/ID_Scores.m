@@ -20,17 +20,16 @@ clc
 % final_output_substance.xls
 % final_output_attitudes.xls
 
-input = 'ISTART_CombinedDataSpreadsheet_031122.csv'; % input file 
+input = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file 
 motion_input = 'motion_data_input.xls';
-
 output_path = 'C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\covariates\';
 
 % Strategic Behavior requires using "behavioral_analysis.m script" and "behavioral_analysis_debug" to
 % generate input files for Dictator and Ultimatum game decisions. 
 
 make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
-make_reward = 1; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
-make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
+make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
+make_substance = 1; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
 make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 %% Subs for SANS
@@ -60,7 +59,7 @@ end
 if make_reward == 1
     subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 end
-%% Subjects for AUDIT/DUDIT
+%% Subjects for AUDIT/DUDIT (substance use)
 
 % Missing subjects: 
 
@@ -80,6 +79,8 @@ end
 % 
 %         3140
 %         3170
+
+% 3143 is an outlier (for no_outlier file only).
 
 if make_substance == 1
     
@@ -274,7 +275,7 @@ demeaned_Strategic_Behavior = Strategic_Behavior - mean(Strategic_Behavior);
 
 demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:end,:),'VariableNames', {'Strategic Behavior'});
 
-%% Read in AUDIT and DUDIT scores
+%% Read in AUDIT and DUDIT scores (substance use)
 
 data = readtable(input);
 
