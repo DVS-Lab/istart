@@ -439,20 +439,19 @@ end
 
 %% Substance use output
 
-% Eliminating DUDIT for now (03/19/22)
+
 
 if make_substance == 1
 
-    % DUDIT_final(:,'dudit')
-final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), AUDIT_final(:,'audit'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), AUDIT_final(:,'audit'), DUDIT_final(:,'dudit') motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
-dest_path = [output_path, 'final_output_substance_AUDIT.xls'];
+dest_path = [output_path, 'final_output_substance.xls'];
 [L] = isfile(dest_path);
 if L == 1
     delete(dest_path)
 end
 
-name = ['final_output_substance_AUDIT.xls'];
+name = ['final_output_substance.xls'];
 fileoutput = [output_path, name];
 writetable(final_output_substance, fileoutput); % Save as csv file
 
