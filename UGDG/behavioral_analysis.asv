@@ -4,21 +4,27 @@ clc
 
 %% Behavioral Data analysis
 
-% 01/16/2022
+% 03/29/2020
 % Daniel Sazhin
+% Temple University
+% ISTART Project
 
-% This script takes a participant's responses and collapses them into a
-% dollar amount for analysis.
+% This script takes a participant's responses from log files in ISTART and collapses them into a
+% dollar amount for analysis. 
 
-% This script is to deal with two subjects with different input folders.
+% Use ID_Scores.m to generate covariates for L3
+% analysis in FSL.
 
-% Update the subjects list with up-to-date subjects
+% Use Behavioral_Analysis as your working directory. 
 
 maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
 output_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\output\'];
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
-%subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
+subjects = [1002, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200];
+%subjects = 3223
+
+% Use behavioral_analysis_debug.m to fix these.
 
 subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.
 
@@ -26,8 +32,8 @@ subjects_debug = [1240,1248]; % These have different column numbers, probably be
 
 % I need to parse the data into the separate games.
 
-for ii= 1:length(subjects_debug)
-    subj = subjects_debug(ii);
+for ii= 1:length(subjects)
+    subj = subjects(ii);
     
     UG_R_accept_2 = [];
     UG_R_reject_2 = [];
@@ -66,12 +72,12 @@ if r1 > 0
         % "Feedback" is the offer value (out of $20)
         
         Trial = C{1};
-        Block = C{8};
-        Endowment = C{5};
+        Block = C{3};
+        Endowment = C{4};
         response = C{17};
         response = round(response);
-        L_Option = C{4};
-        R_Option = C{6};
+        L_Option = C{7};
+        R_Option = C{8};
         
     end
     
@@ -157,12 +163,12 @@ if r2 > 0
         % "Feedback" is the offer value (out of $20)
         
         Trial = C{1};
-        Block = C{8};
-        Endowment = C{5};
+        Block = C{3};
+        Endowment = C{4};
         response = C{17};
         response = round(response);
-        L_Option = C{4};
-        R_Option = C{6};
+        L_Option = C{7};
+        R_Option = C{8};
         
     end
     
@@ -270,9 +276,6 @@ end
 
 % UG_R_Earnings is easy... simply add the accept behavior.
 
-
-
-
 for ii = 1
     
     try
@@ -329,9 +332,7 @@ end
 try
     UG_R_Behavior_Accepted = array2table(Accepted(1:end,:),'VariableNames', {'Accept',});
     UG_R_Behavior_Rejected = array2table(Rejected(1:end,:),'VariableNames', {'Reject',});
-   
-    output = ['Subject_' num2str(subj) '_accepted.csv'];
-    name = [output_folder,output];
+    name = ['Subject_' num2str(subj) '_accepted.csv'];
     writetable(UG_R_Behavior_Accepted, name); % Save as csv file
     output = ['Subject_' num2str(subj) '_rejected.csv'];
     name = [output_folder,output];
@@ -341,8 +342,7 @@ end
 
 Total = [DG_P_Earnings, UG_R_Earnings];
 DG_P_and_UG_R_earnings = array2table(Total(1:end,:),'VariableNames', {'DG_P_Earnings', 'UG_R_Earnings'});
-output = ['Subject_' num2str(subj) '_Earnings.csv'];
-name = [output_folder,output];
+name = ['Subject_' num2str(subj) '_Earnings.csv'];
 writetable(DG_P_and_UG_R_earnings , name); % Save as csv file
 
 
@@ -361,14 +361,30 @@ name = [output_folder,output];
 writetable(UG_P_Behavior_r2, name); % Save as csv file
 end
 
+%% Save recipient with all info
+
+UG_R_accept_save = [UG_R_accept;UG_R_accept_2];
+UG_R_reject_save = [UG_R_reject;UG_R_reject_2];
+
+
+try 
+UG_R_accept_save_table = array2table(UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+writetable(UG_R_accept_save_table, name); % Save as csv file
+end
+
+try 
+UG_R_reject_save_table = array2table(UG_R_reject_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
+name = ['Subject_' num2str(subj) '_reject_analysis.csv'];
+writetable(UG_R_reject_save_table, name); % Save as csv file
+end
 
 %% Save Proposer
 
 raw = [DG_P;DG_P_2];
 try 
 DG_P_Raw = array2table(raw(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-output = ['Subject_' num2str(subj) '_DGP.csv'];
-name = [output_folder,output];
+name = ['Subject_' num2str(subj) '_DGP.csv'];
 writetable(DG_P_Raw, name); % Save as csv file
 end
 

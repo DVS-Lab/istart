@@ -43,7 +43,7 @@ make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, on
 
 % This is the full pool of subjects. 
 
-% 1002 and 1243 excluded for now. 
+% 1002 and 1243 excluded for now (failed preprocessing) 
 
 if make_full == 1
     subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
@@ -62,7 +62,7 @@ end
 %% Subjects for AUDIT/DUDIT (substance use)
 
 %03/19/22: Eliminate DUDIT for analysis. 1251 and 3143 put back in for
-%AUDIT.
+% AUDIT.
 
 % Missing subjects: 
 

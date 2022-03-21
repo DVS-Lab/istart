@@ -333,7 +333,9 @@ try
     output = ['Subject_' num2str(subj) '_accepted.csv'];
     name = [output_folder,output];
     writetable(UG_R_Behavior_Accepted, name); % Save as csv file
+    
     output = ['Subject_' num2str(subj) '_rejected.csv'];
+    output = ['Subject_' num2str(subj) '_accepted.csv'];
     name = [output_folder,output];
     writetable(UG_R_Behavior_Rejected, name); % Save as csv file
     

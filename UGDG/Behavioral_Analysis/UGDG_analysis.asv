@@ -15,9 +15,9 @@ input_behavioral = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file
 motion_input = 'motion_data_input.xls';
 
 make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
-make_reward = 1; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
+make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 
 %% Subs for SANS
@@ -493,7 +493,7 @@ saveas(gcf,'UG_R.png')
 
 %Total_Earnings = UG_P_Raw + UG_R_Raw + DG_P_Raw;
 
-Total_Earnings = UG_P_Total + DG_P_Raw + UG_R_Earnings; % Similar to strategic behavior
+Total_Earnings = UG_P_Raw + DG_P_Raw; % Similar to strategic behavior
 
 figure
 histogram(Total_Earnings, 14)
@@ -660,8 +660,6 @@ set(gcf,'color','w');
 
 saveas(gcf,'PNR_Scores.png')
 
-end
-
 %% Figure 2
 
 figure
@@ -691,6 +689,75 @@ set(gca,'box','off');
 set(gcf,'color','w');
 
 saveas(gcf,'DGP.png')
+
+%% Figure 4
+
+[R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
+figure
+scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Total Earnings', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'TotalEarnings.png')
+
+%% Figure 7
+
+%[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
+[R,P] = corrcoef(DG_P, PNR_final(:,2));
+figure
+scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+%scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
+%% Figure 7
+
+%[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
+[R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
+figure
+%scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
+%% Figure 8
+
+[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
+figure
+scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
 
 %% 
 
@@ -959,17 +1026,6 @@ xlabel 'Offers'
 ylabel 'Rate Offered'
 axis([-.0 .5 0 .6])
 
-%% UG rejection rate
-
-UG_Reject_Rate = [];
-
-for ii = 1:length(values)
-        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        [N,M] = size(T);
-        UG_Reject_Rate = [UG_Reject_Rate;(N/24)]; % Proportion of rejections relative to total UG-R trials
-end
 
 %% Figure out if there is a ceiling effect
 
@@ -1221,6 +1277,16 @@ end
 
 if make_attitudes == 1
 
+UG_Reject_Rate = [];
+
+for ii = 1:length(values)
+        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
+        input = [input_folder,name];
+        T = readtable(input);
+        [N,M] = size(T);
+        UG_Reject_Rate = [UG_Reject_Rate;(N/24)]; % Proportion of rejections relative to total UG-R trials
+end
+
 % Is there a correlation between rejection rates and emotional
 % intelligence?
 
@@ -1237,6 +1303,8 @@ i.Color = [0 0 0];
 set(gcf,'color','w');
 
 saveas(gcf,'DGPEQ.png')
+
+end
 
 
 %% Correlation with EQ and Strategic Behavior
@@ -1290,6 +1358,75 @@ set(gcf,'color','w');
 
 saveas(gcf,'PNR_Scores.png')
 
+
+%% Figure 4
+
+[R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
+figure
+scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Total Earnings', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'TotalEarnings.png')
+
+%% Figure 7
+
+%[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
+[R,P] = corrcoef(DG_P, PNR_final(:,2));
+figure
+scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+%scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
+%% Figure 7
+
+%[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
+[R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
+figure
+%scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
+%% Figure 8
+
+[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
+figure
+scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('EI Score', 'FontSize', 16);
+ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
+
 end
 
 %% ATTITUDE analysis
@@ -1303,18 +1440,16 @@ if make_attitudes == 1
 [R,P] = corrcoef(UG_P_Total,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_R_Earnings,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_Reject_Rate,TEIQUE_final(:,2))
-[R,P] = corrcoef(Total_Earnings,TEIQUE_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,TEIQUE_final(:,2))
 
 % SPSRQ
 
-[R,P] = corrcoef(DG_P,PNR_final(:,2))
-[R,P] = corrcoef(UG_P_Raw,PNR_final(:,2))
-[R,P] = corrcoef(UG_P_Total,PNR_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings,PNR_final(:,2))
-[R,P] = corrcoef(UG_Reject_Rate,PNR_final(:,2))
-[R,P] = corrcoef(Total_Earnings,PNR_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior,PNR_final(:,2))
+[R,P] = corrcoef(DG_P,PNR_final(:,3))
+[R,P] = corrcoef(UG_P_Raw,PNR_final(:,3))
+[R,P] = corrcoef(UG_P_Total,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,3))
+[R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,3))
 
 end
 
@@ -1329,7 +1464,6 @@ if make_reward == 1
 [R,P] = corrcoef(UG_P_Total,Reward_final(:,2))
 [R,P] = corrcoef(UG_R_Earnings,Reward_final(:,2))
 [R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,2))
-[R,P] = corrcoef(Total_Earnings,Reward_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,Reward_final(:,2))
 
 % SPSRQ
@@ -1339,7 +1473,6 @@ if make_reward == 1
 [R,P] = corrcoef(UG_P_Total,Reward_final(:,3))
 [R,P] = corrcoef(UG_R_Earnings,Reward_final(:,3))
 [R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,3))
-[R,P] = corrcoef(Total_Earnings,Reward_final(:,3))
 [R,P] = corrcoef(Strategic_Behavior,Reward_final(:,3))
 
 end
@@ -1348,7 +1481,7 @@ end
 
 if make_substance == 1
        
-% AUDIT
+% BAS
 
 [R,P] = corrcoef(DG_P,AUDIT_final(:,2))
 [R,P] = corrcoef(UG_P_Raw,AUDIT_final(:,2))
@@ -1357,85 +1490,13 @@ if make_substance == 1
 [R,P] = corrcoef(UG_Reject_Rate,AUDIT_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,AUDIT_final(:,2))
 
-% DUDIT
+% SPSRQ
 
-% [R,P] = corrcoef(DG_P,DUDIT_final(:,2))
-% [R,P] = corrcoef(UG_P_Raw,DUDIT_final(:,2))
-% [R,P] = corrcoef(UG_P_Total,DUDIT_final(:,2))
-% [R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,2))
-% [R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,2))
-% [R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,2))
+[R,P] = corrcoef(DG_P,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_P_Raw,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_P_Total,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,3))
+[R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,3))
+[R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,3))
 
 end
-
-
-
-%% DUMP
-
-%% Figure 4
-% 
-% [R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
-% figure
-% scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Total Earnings', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'TotalEarnings.png')
-% 
-% %% Figure 7
-% 
-% %[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
-% [R,P] = corrcoef(DG_P, PNR_final(:,2));
-% figure
-% scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% %scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')
-% 
-% %% Figure 7
-% 
-% %[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
-% [R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
-% figure
-% %scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')
-% 
-% %% Figure 8
-% 
-% [R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
-% figure
-% scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')

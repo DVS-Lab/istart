@@ -18,9 +18,10 @@ clc
 % Use Behavioral_Analysis as your working directory. 
 
 maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
+output_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\output\'];
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
-subjects = [1002, 1003, 1004, 1006, 1007, 1009, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1243, 1245, 1247, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3164, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3206, 3210, 3218, 3220, 3223];
+subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 %subjects = 3223
 
 % Use behavioral_analysis_debug.m to fix these.
@@ -331,30 +332,34 @@ end
 try
     UG_R_Behavior_Accepted = array2table(Accepted(1:end,:),'VariableNames', {'Accept',});
     UG_R_Behavior_Rejected = array2table(Rejected(1:end,:),'VariableNames', {'Reject',});
-    name = ['Subject_' num2str(subj) '_accepted.csv'];
+    output = ['Subject_' num2str(subj) '_accepted.csv'];
+    name = [output_folder,output];
     writetable(UG_R_Behavior_Accepted, name); % Save as csv file
-    
-    name = ['Subject_' num2str(subj) '_rejected.csv'];
+    output = ['Subject_' num2str(subj) '_rejected.csv'];
+    name = [output_folder,output];
     writetable(UG_R_Behavior_Rejected, name); % Save as csv file
     
 end
 
 Total = [DG_P_Earnings, UG_R_Earnings];
 DG_P_and_UG_R_earnings = array2table(Total(1:end,:),'VariableNames', {'DG_P_Earnings', 'UG_R_Earnings'});
-name = ['Subject_' num2str(subj) '_Earnings.csv'];
+output = ['Subject_' num2str(subj) '_Earnings.csv'];
+name = [output_folder,output];
 writetable(DG_P_and_UG_R_earnings , name); % Save as csv file
 
 
 try 
     
 UG_P_Behavior_r1 = array2table(UG_P(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-name = ['Subject_' num2str(subj) '_UGP.csv'];
+output = ['Subject_' num2str(subj) '_UGP.csv'];
+name = [output_folder,output];
 writetable(UG_P_Behavior_r1, name); % Save as csv file
 end
 
 try 
 UG_P_Behavior_r2 = array2table(UG_P_2(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-name = ['Subject_' num2str(subj) '_UGP2.csv'];
+output = ['Subject_' num2str(subj) '_UGP2.csv'];
+name = [output_folder,output];
 writetable(UG_P_Behavior_r2, name); % Save as csv file
 end
 
@@ -366,13 +371,15 @@ UG_R_reject_save = [UG_R_reject;UG_R_reject_2];
 
 try 
 UG_R_accept_save_table = array2table(UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-name = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+output = ['Subject_' num2str(subj) '_accept_analysis.csv'];
+name = [output_folder,output];
 writetable(UG_R_accept_save_table, name); % Save as csv file
 end
 
 try 
 UG_R_reject_save_table = array2table(UG_R_reject_save(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-name = ['Subject_' num2str(subj) '_reject_analysis.csv'];
+output = ['Subject_' num2str(subj) '_reject_analysis.csv'];
+name = [output_folder,output];
 writetable(UG_R_reject_save_table, name); % Save as csv file
 end
 
@@ -381,7 +388,8 @@ end
 raw = [DG_P;DG_P_2];
 try 
 DG_P_Raw = array2table(raw(1:end,:),'VariableNames', {'Trial','Endowment','Choice',});
-name = ['Subject_' num2str(subj) '_DGP.csv'];
+output = ['Subject_' num2str(subj) '_DGP.csv'];
+name = [output_folder,output];
 writetable(DG_P_Raw, name); % Save as csv file
 end
 
