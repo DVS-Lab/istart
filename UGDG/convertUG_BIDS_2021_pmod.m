@@ -15,7 +15,7 @@ try
 
 for r = 0:1
     
-    
+   
     % sub-101_task-ultimatum_run-0_raw.csv sub-102_task-ultimatum_run-1_raw.csv
     fname = fullfile(maindir,'logs',num2str(subj),sprintf('sub-%04d_task-ultimatum_run-%d_raw.csv',subj,r)); % Psychopy taken out from Logs to make work for now.
     if exist(fname,'file')
@@ -26,8 +26,7 @@ for r = 0:1
     end
     C = textscan(fid,repmat('%f',1,23),'Delimiter',',','HeaderLines',1,'EmptyValue', NaN);
     fclose(fid);
-    
-    subj
+ 
     
     % "Feedback" is the offer value (out of $20)
     

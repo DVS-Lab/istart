@@ -20,17 +20,20 @@ clc
 % final_output_substance.xls
 % final_output_attitudes.xls
 
+currentdir = pwd;
+
 input = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file 
 motion_input = 'motion_data_input.xls';
-output_path = 'C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\covariates\';
+output_path = [currentdir '/covariates/'];
+strat_input = [currentdir '/output/'];
 
 % Strategic Behavior requires using "behavioral_analysis.m script" and "behavioral_analysis_debug" to
 % generate input files for Dictator and Ultimatum game decisions. 
 
 make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
-make_substance = 1; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
+make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 %% Subs for SANS
 
@@ -215,7 +218,7 @@ DG_P_Raw = [];
 
 for ii = 1:length(subjects)
         save_value = [];
-        name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
+        name = [strat_input 'Subject_' num2str(subjects(ii)) '_DGP.csv'];
         O = readtable(name);
         O = table2array(O);
         save_value = mean(O(:,3));
@@ -240,7 +243,7 @@ Final_Subjects =[];
 for jj = 1:length(subjects)
     save_value = [];
     
-    name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
+    name = [strat_input 'Subject_' num2str(subjects(jj)) '_UGP.csv'];
     
     T = readtable(name);
     UG_P = table2array(T);
@@ -258,7 +261,7 @@ UG_P_2_Raw = [];
 for jj = 1:length(subjects)
     save_value = [];
     
-    name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
+    name = [strat_input 'Subject_' num2str(subjects(jj)) '_UGP2.csv'];
     
     T = readtable(name);
     UG_P_2 = table2array(T);
@@ -276,7 +279,7 @@ Strategic_Behavior = UG_P_Raw_use - DG_P_Raw;
 
 demeaned_Strategic_Behavior = Strategic_Behavior - mean(Strategic_Behavior);
 
-demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:end,:),'VariableNames', {'Strategic Behavior'});
+demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:end,:),'VariableNames', {'Strategic_Behavior'});
 
 %% Read in AUDIT and DUDIT scores (substance use)
 
@@ -405,7 +408,7 @@ writetable(ones_output, name); % Save as csv file
 
 if make_full == 1
 
-final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_full.xls'];
 [L] = isfile(dest_path);
@@ -423,7 +426,7 @@ end
 
 if make_attitudes == 1
 
-final_output_attitudes = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), TEIQUE_final_output(:,'TEIQUE'), PNR_final_output(:,'PNR'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_attitudes = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), TEIQUE_final_output(:,'TEIQUE'), PNR_final_output(:,'PNR'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_attitudes.xls'];
 [L] = isfile(dest_path);
@@ -444,7 +447,7 @@ end
 if make_substance == 1
 
     % DUDIT_final(:,'dudit')
-final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), AUDIT_final(:,'audit'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_substance = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), AUDIT_final(:,'audit'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_substance_AUDIT.xls'];
 [L] = isfile(dest_path);
@@ -462,7 +465,7 @@ end
 
 if make_reward == 1
 
-final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic Behavior'), Reward_Output(:,'SPSRQ'), Reward_Output(:,'BAS'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), Reward_Output(:,'SPSRQ'), Reward_Output(:,'BAS'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_reward.xls'];
 [L] = isfile(dest_path);

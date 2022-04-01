@@ -10,79 +10,116 @@ clc
 % Neuroeconomics Lab
 % 03/14/2022
 
+input = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file
+subjects = [1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+    
+
 %% Read in AUDIT and DUDIT scores
 
-% Find the columns you will need.
-data = readtable('AUDIT_DUDIT.xlsx');
-data_raw = table2array(data);
-
-substance_use = [];
-audit_data = [];
-
-% audit is tenth column. motion is eleventh column
-
-AUDIT = [data.Participant, data.audit];
-AUDIT_Total = [];
+data = readtable(input);
 
 
+AUDIT_raw = [data.('participant_id'), data.('audit_1') + data.('audit_2') + data.('audit_3') + data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
+DUDIT_raw = [data.('participant_id'), data.('dudit_1')+ data.('dudit_2')+ data.('dudit_3')+ data.('dudit_4') + data.('dudit_5') + data.('dudit_6')+ data.('dudit_7')+ data.('dudit_8')+ data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
+
+eliminate_rows = any(isnan(AUDIT_raw),2);
+AUDIT_temp = [];
+AUDIT_missing = [];
+DUDIT_missing = [];
+
+for ii = 1:length(AUDIT_raw)
+    keep = [];
+    row = AUDIT_raw(ii,:);
+    if eliminate_rows(ii) == 0
+        keep = row;
+        AUDIT_temp = [AUDIT_temp; keep];
+    else
+        AUDIT_missing = [AUDIT_missing; row(1)];
+    end
+end
+
+eliminate_rows = any(isnan(DUDIT_raw),2);
+DUDIT_temp = [];
+
+for ii = 1:length(DUDIT_raw)
+    keep = [];
+    row = DUDIT_raw(ii,:);
+      if eliminate_rows(ii) == 0
+        keep = row;
+        DUDIT_temp = [DUDIT_temp; keep];
+    else
+        DUDIT_missing = [DUDIT_missing; row(1)];
+    end
+    
+end
+ 
+AUDIT_final = [];
 for ii = 1:length(subjects)
     subj = subjects(ii);
-    subj_row = find(AUDIT==subj);
-    save = AUDIT(subj_row,:);
-    AUDIT_Total = [AUDIT_Total;save];
+    subj_row = find(AUDIT_temp==subj);
+    if subj_row > 0
+        test = AUDIT_temp(subj_row,:);
+        if test(2) < 100
+            AUDIT_final = [AUDIT_final;test];
+        else
+            AUDIT_missing = [AUDIT_missing; subjects(ii)];
+        end
+    end
+    
 end
 
-DUDIT = [data.Participant, data.dudit];
-DUDIT_Total = [];
-
+DUDIT_final = [];
 for ii = 1:length(subjects)
     subj = subjects(ii);
-    subj_row = find(DUDIT==subj);
-    save = AUDIT(subj_row,:);
-    DUDIT_Total = [DUDIT_Total;save];
+    subj_row = find(DUDIT_temp==subj);
+    if subj_row > 0
+        test = DUDIT_temp(subj_row,:);
+        if test(2) < 100
+            DUDIT_final = [DUDIT_final;test];
+        else
+            DUDIT_missing = [DUDIT_missing; subjects(ii)];
+        end
+    end
+    
 end
 
-for ii = 1:length(data_raw(:,1))
-    save = [];
-    savesubj = data_raw(ii,1);
-    saveaudit = data_raw(ii,10);
-    savedudit = data_raw(ii,11);
-    save = [savesubj,saveaudit,savedudit];
-    substance_use = [substance_use;save];
-end
-
-
-% adjust for desired subjects for the final output. Substance_use is used
-% for preliminary analysis, substance_use_data is used in fmri analysis.
-
-substance_use_data = [];
-
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(substance_use==subj);
-    save = substance_use(subj_row,:);
-    substance_use_data = [substance_use_data;save];
-end
-
-substance_use_output = array2table(substance_use_data(1:end,:),'VariableNames', {'Subject', 'audit','dudit'});
-name = ['Substanceuse.xls'];
-writetable(substance_use_output, name); % Save as csv file
-
-% Is there a correlation between AUDIT and DUDIT?
-
-[R,P] = corrcoef(substance_use(:,2), substance_use(:,3));
 figure
-scatter(substance_use(:,2), substance_use(:,3),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+h = histogram(AUDIT_final(:,2));
+counts = h.Values;
+h.NumBins = 6;
 ax = gca;
 ax.FontSize = 12;
-xlabel ('AUDIT Scores', 'FontSize', 16);
-ylabel  ('DUDIT Scores', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
+xlabel ('Distribution of AUDIT Scores','FontSize', 16);
+ylabel ('Frequency','FontSize', 16);
+set(gca,'box','off')
 set(gcf,'color','w');
 
-saveas(gcf,'AUDIT_DUDIT.png')
+figure
+h = histogram(DUDIT_final(:,2));
+counts = h.Values;
+h.NumBins = 6;
+ax = gca;
+ax.FontSize = 12;
+xlabel ('Distribution of DUDIT Scores','FontSize', 16);
+ylabel ('Frequency','FontSize', 16);
+set(gca,'box','off')
+set(gcf,'color','w');
+
+% % Is there a correlation between AUDIT and DUDIT?
+% 
+% [R,P] = corrcoef(DUDIT_final), substance_use(:,3));
+% figure
+% scatter(substance_use(:,2), substance_use(:,3),'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5)
+% ax = gca;
+% ax.FontSize = 12;
+% xlabel ('AUDIT Scores', 'FontSize', 16);
+% ylabel  ('DUDIT Scores', 'FontSize', 16);
+% i = lsline;
+% i.LineWidth = 5;
+% i.Color = [0 0 0];
+% set(gcf,'color','w');
+% 
+% saveas(gcf,'AUDIT_DUDIT.png')
 
 %% Histograms of drug use
 
