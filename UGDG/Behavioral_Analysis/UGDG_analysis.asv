@@ -14,10 +14,10 @@ input_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis
 input_behavioral = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file  
 motion_input = 'motion_data_input.xls';
 
-make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
+make_full = 1; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 
 %% Subs for SANS
@@ -493,7 +493,7 @@ saveas(gcf,'UG_R.png')
 
 %Total_Earnings = UG_P_Raw + UG_R_Raw + DG_P_Raw;
 
-Total_Earnings = UG_P_Raw + DG_P_Raw; % Similar to strategic behavior
+Total_Earnings = UG_P_Total + DG_P_Raw + UG_R_Earnings; % Similar to strategic behavior
 
 figure
 histogram(Total_Earnings, 14)
@@ -660,6 +660,8 @@ set(gcf,'color','w');
 
 saveas(gcf,'PNR_Scores.png')
 
+end
+
 %% Figure 2
 
 figure
@@ -689,75 +691,6 @@ set(gca,'box','off');
 set(gcf,'color','w');
 
 saveas(gcf,'DGP.png')
-
-%% Figure 4
-
-[R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
-figure
-scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Total Earnings', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'TotalEarnings.png')
-
-%% Figure 7
-
-%[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
-[R,P] = corrcoef(DG_P, PNR_final(:,2));
-figure
-scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-%scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
-%% Figure 7
-
-%[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
-[R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
-figure
-%scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
-%% Figure 8
-
-[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
-figure
-scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
 
 %% 
 
@@ -1026,6 +959,17 @@ xlabel 'Offers'
 ylabel 'Rate Offered'
 axis([-.0 .5 0 .6])
 
+%% UG rejection rate
+
+UG_Reject_Rate = [];
+
+for ii = 1:length(values)
+        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
+        input = [input_folder,name];
+        T = readtable(input);
+        [N,M] = size(T);
+        UG_Reject_Rate = [UG_Reject_Rate;(N/24)]; % Proportion of rejections relative to total UG-R trials
+end
 
 %% Figure out if there is a ceiling effect
 
@@ -1277,16 +1221,6 @@ end
 
 if make_attitudes == 1
 
-UG_Reject_Rate = [];
-
-for ii = 1:length(values)
-        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        [N,M] = size(T);
-        UG_Reject_Rate = [UG_Reject_Rate;(N/24)]; % Proportion of rejections relative to total UG-R trials
-end
-
 % Is there a correlation between rejection rates and emotional
 % intelligence?
 
@@ -1303,8 +1237,6 @@ i.Color = [0 0 0];
 set(gcf,'color','w');
 
 saveas(gcf,'DGPEQ.png')
-
-end
 
 
 %% Correlation with EQ and Strategic Behavior
@@ -1358,98 +1290,46 @@ set(gcf,'color','w');
 
 saveas(gcf,'PNR_Scores.png')
 
-
-%% Figure 4
-
-[R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
-figure
-scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Total Earnings', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'TotalEarnings.png')
-
-%% Figure 7
-
-%[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
-[R,P] = corrcoef(DG_P, PNR_final(:,2));
-figure
-scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-%scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
-%% Figure 7
-
-%[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
-[R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
-figure
-%scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
-%% Figure 8
-
-[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
-figure
-scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('EI Score', 'FontSize', 16);
-ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
 end
 
 %% ATTITUDE analysis
 
 if make_attitudes == 1
        
-% BAS
+% TEQUIE
 
 [R,P] = corrcoef(DG_P,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_P_Raw,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_P_Total,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_R_Earnings,TEIQUE_final(:,2))
 [R,P] = corrcoef(UG_Reject_Rate,TEIQUE_final(:,2))
+[R,P] = corrcoef(Total_Earnings,TEIQUE_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,TEIQUE_final(:,2))
 
-% SPSRQ
+[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
 
-[R,P] = corrcoef(DG_P,PNR_final(:,3))
-[R,P] = corrcoef(UG_P_Raw,PNR_final(:,3))
-[R,P] = corrcoef(UG_P_Total,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,3))
-[R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,3))
+% PNR
+[R,P] = corrcoef(DG_P,PNR_final(:,2))
+[R,P] = corrcoef(UG_P_Raw,PNR_final(:,2))
+[R,P] = corrcoef(UG_P_Total,PNR_final(:,2))
+[R,P] = corrcoef(UG_R_Earnings,PNR_final(:,2))
+[R,P] = corrcoef(UG_Reject_Rate,PNR_final(:,2))
+[R,P] = corrcoef(Total_Earnings,PNR_final(:,2))
+[R,P] = corrcoef(Strategic_Behavior,PNR_final(:,2))
+
+figure
+
+scatter(UG_R_Earnings,UG_Reject_Rate, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('UGR Reject Rate', 'FontSize', 16);
+ylabel  ('PNR Score', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'DGPEQ.png')
 
 end
 
@@ -1464,6 +1344,7 @@ if make_reward == 1
 [R,P] = corrcoef(UG_P_Total,Reward_final(:,2))
 [R,P] = corrcoef(UG_R_Earnings,Reward_final(:,2))
 [R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,2))
+[R,P] = corrcoef(Total_Earnings,Reward_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,Reward_final(:,2))
 
 % SPSRQ
@@ -1473,6 +1354,7 @@ if make_reward == 1
 [R,P] = corrcoef(UG_P_Total,Reward_final(:,3))
 [R,P] = corrcoef(UG_R_Earnings,Reward_final(:,3))
 [R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,3))
+[R,P] = corrcoef(Total_Earnings,Reward_final(:,3))
 [R,P] = corrcoef(Strategic_Behavior,Reward_final(:,3))
 
 end
@@ -1481,7 +1363,7 @@ end
 
 if make_substance == 1
        
-% BAS
+% AUDIT
 
 [R,P] = corrcoef(DG_P,AUDIT_final(:,2))
 [R,P] = corrcoef(UG_P_Raw,AUDIT_final(:,2))
@@ -1490,13 +1372,796 @@ if make_substance == 1
 [R,P] = corrcoef(UG_Reject_Rate,AUDIT_final(:,2))
 [R,P] = corrcoef(Strategic_Behavior,AUDIT_final(:,2))
 
-% SPSRQ
+% DUDIT
 
-[R,P] = corrcoef(DG_P,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_P_Raw,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_P_Total,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,3))
-[R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,3))
-[R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,3))
+% [R,P] = corrcoef(DG_P,DUDIT_final(:,2))
+% [R,P] = corrcoef(UG_P_Raw,DUDIT_final(:,2))
+% [R,P] = corrcoef(UG_P_Total,DUDIT_final(:,2))
+% [R,P] = corrcoef(UG_R_Earnings,DUDIT_final(:,2))
+% [R,P] = corrcoef(UG_Reject_Rate,DUDIT_final(:,2))
+% [R,P] = corrcoef(Strategic_Behavior,DUDIT_final(:,2))
 
 end
+
+figure
+
+h = histogram(UG_Reject_Rate(:));
+counts = h.Values;
+h.NumBins = 5;
+ax = gca;
+ax.FontSize = 9;
+xlabel ('Rate of Rejections as a Recipient','FontSize', 16);
+ylabel ('Frequency','FontSize', 16);
+set(gca,'box','off');
+set(gcf,'color','w');
+
+
+%% Do subjects reject unfair offers?
+
+% Collect all the UG-R offers
+% Define level of endowment
+% Define proportion of endowment offered
+% Define decision (1 = accept, 0 = reject)
+
+subject_combined_rejections = [];
+missing_reject = [];
+subject_combined_acceptances = [];
+missing_accept = [];
+missing_subject = [];
+badsubject = [];
+Betas = [];
+Pvals = [];
+save_X = [];
+save_Y = [];
+sub_prop = [];
+for ii = 1:length(values)
+    S = [];
+    T = [];
+    try
+        name = ['Subject_' num2str(values(ii)) '_reject_analysis.csv'];
+        input = [input_folder,name];
+        T = readtable(input);
+        subject_combined_rejections = [subject_combined_rejections;  T.Endowment, T.Prop_Endowment];
+    catch
+        missing_reject = [missing_reject, values(ii)];
+    end
+    try
+        name = ['Subject_' num2str(values(ii)) '_accept_analysis.csv'];
+        input = [input_folder,name];
+        S = readtable(input);
+        subject_combined_acceptances = [subject_combined_acceptances; S.Endowment, S.Prop_Endowment];
+    catch
+        missing_accept = [missing_accept, values(ii)];
+    end
+    try
+        subject_UGR = [S;T];
+        sub_p = [values(ii), mean(T.Prop_Endowment)];
+        sub_prop = [sub_prop; sub_p]; % sub 3125 rejects high P of offers. sub 1294 rejections low P offers
+        
+        
+    catch
+        missing_subject = [missing_subject, values(ii)];
+    end
+    try
+        %Y = categorical(subject_UGR.Choice);
+        Y = subject_UGR.Choice;
+        
+    end
+    
+    X = [subject_UGR.Endowment, subject_UGR.Prop_Endowment];
+    X = zscore(X);
+    save_X = [save_X; X];
+    save_Y = [save_Y; Y];
+    try
+    %[B,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+%     b = glmfit(X,Y,'binomial','link','logit');
+%     Betas = [Betas, b];
+%     Pvals = [Pvals, stats.p];
+    catch
+        badsubject = [badsubject,values(ii)];
+    end
+end
+
+
+save = [];
+dump = [];
+%save_Y=categorical(save_Y);
+[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit') %mnrfit(save_X,save_Y)
+se=STATS.se;
+
+data = [mean(B(1,:));  mean(B(2,:));  mean(B(3,:))];
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Proportion'})
+title('Does Endowment Predict UG-R Accept/Reject Choices?')
+
+hold on
+
+% Standard Error
+
+B1Er = se(1)
+B2Er = se(2)
+B3Er = se(3)
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_UGR.png')
+
+%% UGR High/low analysis.
+
+subject_combined_rejections = [];
+missing_reject = [];
+subject_combined_acceptances = [];
+missing_accept = [];
+missing_subject = [];
+badsubject = [];
+Betas = [];
+Pvals = [];
+save_X = [];
+save_Y = [];
+sub_prop = [];
+
+subs = [3125] % Subject 1294 ACCEPTS almost all offers.  Subject 3125 REJECTS almost all offers. 
+for ii = 1:length(subs)
+    S = [];
+    T = [];
+    try
+        name = ['Subject_' num2str(subs(ii)) '_reject_analysis.csv']
+        input = [input_folder,name];
+        T = readtable(input);
+        subject_combined_rejections = [subject_combined_rejections;  ([T.Endowment, T.Prop_Endowment])];
+    catch
+        missing_reject = [missing_reject, subs(ii)];
+    end
+    try
+        name = ['Subject_' num2str(subs(ii)) '_accept_analysis.csv'];
+        input = [input_folder,name];
+        S = readtable(input);
+        subject_combined_acceptances = [subject_combined_acceptances; S.Endowment, S.Prop_Endowment];
+    catch
+        missing_accept = [missing_accept, subs(ii)];
+    end
+    try
+        subject_UGR = [S;T];
+        sub_p = [subs(ii), mean(T.Prop_Endowment)];
+        sub_prop = [sub_prop; sub_p]; % sub 3125 rejects high P of offers. sub 1294 rejections low P offers
+        
+        
+    catch
+        missing_subject = [missing_subject, subs(ii)];
+    end
+    try
+        Y = categorical(subject_UGR.Choice);
+    end
+    
+     
+    X = [subject_UGR.Endowment, subject_UGR.Prop_Endowment];
+    X = zscore(X);
+    save_X = [save_X; X];
+    save_Y = [save_Y; Y];
+    try
+    %[B,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+%     b = glmfit(X,Y,'binomial','link','logit');
+%     Betas = [Betas, b];
+%     Pvals = [Pvals, stats.p];
+    catch
+        badsubject = [badsubject,values(ii)];
+    
+end
+    
+   save = [];
+   dump = [];
+   save_Y=categorical(save_Y);
+   %[B,DEV,STATS] = glmfit(X,Y,'binomial','link','logit');
+   se=STATS.se;
+   
+   data = [mean(B(1,:));  mean(B(2,:));  mean(B(3,:))];
+   x = linspace(1,3,3);
+   figure
+   bar(x,data)
+   ax = gca;
+   ax.FontSize = 12;
+   box off
+   xlabel ('Regressors', 'FontSize', 16);
+   ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+   set(gcf,'color','w');
+   set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Proportion'})
+   title('Does Endowment Predict UG-R Accept/Reject Choices?')
+   
+   hold on
+   
+   % Standard Error
+   
+   B1Er = se(1)
+   B2Er = se(2)
+   B3Er = se(3)
+   
+   err = [B1Er,B2Er,B3Er] * 2;
+   
+   er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+   er.Color = [0 0 0];
+   er.LineStyle = 'none';
+   er.LineWidth = 1;
+   hold off
+   
+   saveas(gcf,'Bar_UGR.png')
+    
+    [R,P] = corrcoef(subject_UGR.Endowment, subject_UGR.Choice);
+    figure
+    scatter(subject_UGR.Endowment, subject_UGR.Choice,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+    ax = gca;
+    ax.FontSize = 12;
+    title (['Subject ' num2str(subs(ii))])
+    xlabel ('Endowment', 'FontSize', 16);
+    ylabel  ('Choice', 'FontSize', 16);
+    i = lsline;
+    i.LineWidth = 5;
+    i.Color = [0 0 0];
+    set(gcf,'color','w');
+    
+    [R,P] = corrcoef(subject_UGR.Prop_Endowment, subject_UGR.Choice);
+    figure
+    scatter(subject_UGR.Prop_Endowment, subject_UGR.Choice,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+    ax = gca;
+    ax.FontSize = 12;
+    title (['Subject ' num2str(subs(ii))])
+    xlabel ('Proportion', 'FontSize', 16);
+    ylabel  ('Choice', 'FontSize', 16);
+    i = lsline;
+    i.LineWidth = 5;
+    i.Color = [0 0 0];
+    set(gcf,'color','w');
+    
+    
+end
+    
+%% DG-P logistic regression
+
+subject_combined_rejections = [];
+missing_reject = [];
+subject_combined_acceptances = [];
+missing_accept = [];
+missing_data=[];
+badsubject = [];
+Betas = [];
+Pvals = [];
+save_X = [];
+save_Y = [];
+sub_prop = [];
+Cor_Endow_DeltaP=[];
+Cor_Endow_Intercept=[];
+Cor_DeltaP_Intercept= [];
+
+for ii = 1:length(values)
+    S = [];
+    T = [];
+    try
+        name = ['Subject_' num2str(values(ii)) '_DGP.csv'];
+        input = [input_folder,name];
+        T = readtable(input);
+    catch
+        missing_data = [missing_data, values(ii)];
+    end
+    try
+        subject_DGP = [T];
+        Y = subject_DGP.Decision;
+        
+    end
+    
+    X = [subject_DGP.Endowment,(subject_DGP.More_Prop-subject_DGP.Less_Prop)];
+    X = zscore(X);
+    save_X = [save_X; X];
+    save_Y = [save_Y; Y];
+    
+    [B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+    coeff=STATS.coeffcorr;
+    Cor_Endow_DeltaP=[Cor_Endow_DeltaP; coeff(2,3)];
+    Cor_Endow_Intercept=[Cor_Endow_Intercept; coeff(1,2)];
+    Cor_DeltaP_Intercept= [Cor_DeltaP_Intercept; coeff(1,3)];
+    
+    try
+    %[B,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+%     b = glmfit(X,Y,'binomial','link','logit');
+%     Betas = [Betas, b];
+%     Pvals = [Pvals, stats.p];
+    catch
+        badsubject = [badsubject,values(ii)];
+    end
+end
+
+
+save = [];
+dump = [];
+% [B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+%save_Y=categorical(save_Y);
+[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+se=STATS.se;
+
+data = [B(1), B(2), B(3)]; %, B(4), B(5)];
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Delta P'})
+title('Does Endowment and Offers Predict DG-P More/Less Choices?')
+
+hold on
+
+% Standard Error
+
+B1Er = se(1);
+B2Er = se(2);
+B3Er = se(3);
+%B4Er = se(4);
+%B5Er = se(5);
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_DGP.png')
+
+%% Correlation DGP bar plot.
+
+data = [mean(Cor_Endow_DeltaP), mean(Cor_Endow_Intercept), mean(Cor_DeltaP_Intercept)];
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('R Values', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Endowment & DeltaP', 'Endowment & Intercept', 'Delta P & Intercept'})
+title('Correlation Between DGP Regressors')
+
+hold on
+
+% Standard Error
+
+B1Er = std(Cor_Endow_DeltaP(:,1)) / sqrt(length((Cor_Endow_DeltaP(:,1))));
+B2Er = std(Cor_Endow_Intercept(:,1)) / sqrt(length((Cor_Endow_Intercept(:,1))));
+B3Er = std(Cor_DeltaP_Intercept(:,1)) / sqrt(length((Cor_DeltaP_Intercept(:,1))));
+%B4Er = se(4);
+%B5Er = se(5);
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_DGP.png')
+
+%% DGP High/low analysis
+
+subject_combined_rejections = [];
+missing_reject = [];
+subject_combined_acceptances = [];
+missing_accept = [];
+missing_subject = [];
+badsubject = [];
+Betas = [];
+Pvals = [];
+save_X = [];
+save_Y = [];
+sub_prop = [];
+
+subs = [1300]; %Subject 1300 chooses More a lot. Subject 3200 chooses less ALL the time. 
+for ii = 1:length(subs)
+    S = [];
+    T = [];
+   try
+        name = ['Subject_' num2str(subs(ii)) '_DGP.csv'];
+        input = [input_folder,name];
+        T = readtable(input);
+    catch
+        missing_data = [missing_data, subs(ii)];
+    end
+    try
+        subject_DGP = [T];
+        sub_p = [subs(ii), mean(T.Less_Prop)];
+        sub_prop = [sub_prop; sub_p]; % sub 3200 chooses more for greatest average of low offers. sub 1300 chooses more for the lowest average of low offers.
+        
+        
+    catch
+        missing_subject = [missing_subject, subs(ii)];
+    end
+    try
+        Y = categorical(subject_DGP.Decision);
+    end
+    
+     
+    X = [subject_DGP.Endowment, subject_DGP.More_Prop, subject_DGP.Less_Prop];
+    X = zscore(X);
+    save_X = [save_X; X];
+    save_Y = [save_Y; Y];
+%     try
+    
+    %[B,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+    %Betas = [Betas, B];
+    %Pvals = [Pvals, stats.p];
+%     catch
+%         badsubject = [badsubject,values(ii)];
+%     
+%     end
+
+%[B,dev,stats] = mnrfit(save_X, save_Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+   %b = glmfit(X,Y,'binomial','link','logit'); 
+   save = [];
+   dump = [];
+   [B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+   se=STATS.se;
+   
+   data = [B(1),B(2),B(3),B(4)];
+   x = linspace(1,4,4);
+   figure
+   bar(x,data)
+   ax = gca;
+   ax.FontSize = 12;
+   box off
+   xlabel ('Regressors', 'FontSize', 16);
+   ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+   set(gcf,'color','w');
+   set(gca, 'XTick', 1:4, 'XTickLabels', {'Intercept', 'Endowment', 'More Proportion', 'Less Proportion'})
+   title('Does Endowment/Prop Predict DGP Accept/Reject Choices?')
+   
+   hold on
+   
+   % Standard Error
+   
+   B1Er = se(1);
+   B2Er = se(2);
+   B3Er = se(3);
+   B4er = se(4);
+   
+   err = [B1Er,B2Er,B3Er,B4er] * 2;
+   
+   er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+   er.Color = [0 0 0];
+   er.LineStyle = 'none';
+   er.LineWidth = 1;
+   hold off
+   
+   saveas(gcf,'Bar_DGP.png')
+    
+    
+   [R,P] = corrcoef(subject_DGP.Endowment, subject_DGP.Decision);
+figure
+scatter(subject_DGP.Endowment, subject_DGP.Decision,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+title (['Subject ' num2str(subs(ii))])
+xlabel ('Endowment', 'FontSize', 16);
+ylabel  ('Choice', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+[R,P] = corrcoef(subject_DGP.Endowment, subject_DGP.Less_Prop);
+figure
+scatter(subject_DGP.Endowment, subject_DGP.Decision,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+title (['Subject ' num2str(subs(ii))])
+xlabel ('Less Proportion', 'FontSize', 16);
+ylabel  ('Choice', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+end
+
+
+    
+
+    
+
+% %% UG-P logistic regression
+% 
+% subject_combined_rejections = [];
+% missing_reject = [];
+% subject_combined_acceptances = [];
+% missing_accept = [];
+% missing_data=[];
+% badsubject = [];
+% Betas = [];
+% Pvals = [];
+% save_X = [];
+% save_Y = [];
+% sub_prop = [];
+% 
+% for ii = 1:length(values)
+%     S = [];
+%     T = [];
+%     try
+%         name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
+%         input = [input_folder,name];
+%         T = readtable(input);
+%         
+%         name = ['Subject_' num2str(values(ii)) '_UGP_2.csv'];
+%         input = [input_folder,name];
+%         S = readtable(input);
+%         
+%     catch
+%         missing_data = [missing_data, values(ii)];
+%     end
+%     try
+%         subject_UGP = [S;T];
+%         Y = subject_UGP.Decision;
+%         
+%     end
+%     
+%     X = [subject_UGP.Endowment, subject_UGP.More_Prop-subject_UGP.Less_Prop];
+%     X = zscore(X);
+%     save_X = [save_X; X];
+%     save_Y = [save_Y; Y];
+%     try
+%     %[b,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
+%     %b = glmfit(X,Y,'binomial','link','logit');
+%     Betas = [Betas, b];
+%     Pvals = [Pvals, stats.p];
+%     catch
+%         badsubject = [badsubject,values(ii)];
+%     end
+% end
+% 
+% 
+% save = [];
+% dump = [];
+% [B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+% se=STATS.se;
+% 
+% data = [B(1), B(2), B(3)];
+% x = linspace(1,3,3);
+% figure
+% bar(x,data)
+% ax = gca;
+% ax.FontSize = 12;
+% box off
+% xlabel ('Regressors', 'FontSize', 16);
+% ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+% set(gcf,'color','w');
+% set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Delta P'})
+% title('Does Endowment and Offers Predict UG-P More/Less Choices?')
+% 
+% hold on
+% 
+% % Standard Error
+% 
+% B1Er = se(1);
+% B2Er = se(2);
+% B3Er = se(3);
+% %B4Er = se(4);
+% 
+% err = [B1Er,B2Er,B3Er] * 2;
+% 
+% er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+% er.Color = [0 0 0];
+% er.LineStyle = 'none';
+% er.LineWidth = 1;
+% hold off
+% 
+% saveas(gcf,'Bar_UGP.png')
+
+%% UG-P logistic regression
+
+subject_combined_rejections = [];
+missing_reject = [];
+subject_combined_acceptances = [];
+missing_accept = [];
+missing_data=[];
+badsubject = [];
+Betas = [];
+Pvals = [];
+save_X = [];
+save_Y = [];
+sub_prop = [];
+Cor_Endow_DeltaP=[];
+Cor_Endow_Intercept=[];
+Cor_DeltaP_Intercept= [];
+
+for ii = 1:length(values)
+    S = [];
+    T = [];
+    for ii = 1:length(values)
+        try
+            
+            name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
+            input = [input_folder,name];
+            T = readtable(input);
+            
+            name = ['Subject_' num2str(values(ii)) '_UGP_2.csv'];
+            input = [input_folder,name];
+            S = readtable(input);
+        catch
+            missing_data = [missing_data, values(ii)];
+        end
+        try
+            subject_UGP = [S;T];
+            Y = subject_UGP.Decision;
+            
+        end
+        
+    X = [subject_UGP.Endowment,(subject_UGP.More_Prop-subject_UGP.Less_Prop)];
+    X = zscore(X);
+    save_X = [save_X; X];
+    save_Y = [save_Y; Y];
+    
+    [B,DEV,STATS] = glmfit(X,Y,'binomial','link','logit');
+    coeff=STATS.coeffcorr;
+    Cor_Endow_DeltaP=[Cor_Endow_DeltaP; coeff(2,3)];
+    Cor_Endow_Intercept=[Cor_Endow_Intercept; coeff(1,2)];
+    Cor_DeltaP_Intercept= [Cor_DeltaP_Intercept; coeff(1,3)];
+    end
+end
+
+
+save = [];
+dump = [];
+[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+se=STATS.se;
+
+data = [B(1), B(2), B(3)]; %, B(4), B(5)];
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Delta P'})
+title('Does Endowment and Offers Predict UG-P More/Less Choices?')
+
+hold on
+
+% Standard Error
+
+B1Er = se(1);
+B2Er = se(2);
+B3Er = se(3);
+%B4Er = se(4);
+%B5Er = se(5);
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_UGP.png')
+
+%% Correlation UGP bar plot.
+
+data = [mean(Cor_Endow_DeltaP), mean(Cor_Endow_Intercept), mean(Cor_DeltaP_Intercept)];
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('R Values', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Endowment & DeltaP', 'Endowment & Intercept', 'Delta P & Intercept'})
+title('Correlation Between UGP Regressors')
+
+hold on
+
+% Standard Error
+
+B1Er = std(Cor_Endow_DeltaP(:,1)) / sqrt(length((Cor_Endow_DeltaP(:,1))));
+B2Er = std(Cor_Endow_Intercept(:,1)) / sqrt(length((Cor_Endow_Intercept(:,1))));
+B3Er = std(Cor_DeltaP_Intercept(:,1)) / sqrt(length((Cor_DeltaP_Intercept(:,1))));
+%B4Er = se(4);
+%B5Er = se(5);
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_UGP.png')
+    
+
+%% Figure 4
+% 
+% [R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
+% figure
+% scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% ax = gca;
+% ax.FontSize = 12;
+% xlabel ('EI Score', 'FontSize', 16);
+% ylabel  ('Total Earnings', 'FontSize', 16);
+% i = lsline;
+% i.LineWidth = 5;
+% i.Color = [0 0 0];
+% set(gcf,'color','w');
+% 
+% saveas(gcf,'TotalEarnings.png')
+% 
+% %% Figure 7
+% 
+% %[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
+% [R,P] = corrcoef(DG_P, PNR_final(:,2));
+% figure
+% scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% %scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% ax = gca;
+% ax.FontSize = 12;
+% xlabel ('EI Score', 'FontSize', 16);
+% ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
+% i = lsline;
+% i.LineWidth = 5;
+% i.Color = [0 0 0];
+% set(gcf,'color','w');
+% 
+% saveas(gcf,'DGPEQ.png')
+% 
+% %% Figure 7
+% 
+% %[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
+% [R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
+% figure
+% %scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% ax = gca;
+% ax.FontSize = 12;
+% xlabel ('EI Score', 'FontSize', 16);
+% ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
+% i = lsline;
+% i.LineWidth = 5;
+% i.Color = [0 0 0];
+% set(gcf,'color','w');
+% 
+% saveas(gcf,'DGPEQ.png')
+% 
+% %% Figure 8
+% 
+% [R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
+% figure
+% scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+% ax = gca;
+% ax.FontSize = 12;
+% xlabel ('EI Score', 'FontSize', 16);
+% ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
+% i = lsline;
+% i.LineWidth = 5;
+% i.Color = [0 0 0];
+% set(gcf,'color','w');
+% 
+% saveas(gcf,'DGPEQ.png')
