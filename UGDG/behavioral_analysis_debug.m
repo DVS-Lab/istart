@@ -394,7 +394,7 @@ writetable(DG_P_and_UG_R_earnings , name); % Save as csv file
 
 try 
     
-UG_P_Behavior_r1 = array2table(UG_P_2(1:end,:),'VariableNames', {'Trial','Endowment','Choice','Decision','More_Prop','Less_Prop'});
+UG_P_Behavior_r1 = array2table(UG_P(1:end,:),'VariableNames', {'Trial','Endowment','Choice','Decision','More_Prop','Less_Prop'});
 output = ['Subject_' num2str(subj) '_UGP.csv'];
 name = [output_folder,output];
 writetable(UG_P_Behavior_r1, name); % Save as csv file
@@ -423,7 +423,7 @@ end
 UG_R_accept_save = [UG_R_accept;UG_R_accept_2];
 UG_R_reject_save = [UG_R_reject;UG_R_reject_2];
 
-UG_R_accept_save_table = array2table(UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Earned', 'Choice','Prop_Endowment'});
+UG_R_accept_save_table = array2table(UG_R_accept_save(1:end,:),'VariableNames', {'Trial','Endowment','Earned', 'Choice','Offer','Prop_Endowment'});
 output = ['Subject_' num2str(subj) '_accept_analysis.csv'];
 name = [output_folder,output];
 writetable(UG_R_accept_save_table, name); % Save as csv file

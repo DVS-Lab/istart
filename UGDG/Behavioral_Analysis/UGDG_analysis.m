@@ -14,10 +14,10 @@ input_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis
 input_behavioral = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file  
 motion_input = 'motion_data_input.xls';
 
-make_full = 1; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
+make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 
 
 %% Subs for SANS
@@ -95,304 +95,30 @@ if make_attitudes == 1
     values = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 end
 
-%%
+%% Raw DG
 
-% This is the full pool of subjects. 
+subjects = values;
+DG_P_Earnings = [];
+DG_P_Offers=[];
+DG_P_Prop = [];
 
-% 1002 and 1243 excluded for now (failed preprocessing) 
-
-UG_Reject = [];
-
-for ii = 1:length(values)
+for ii = 1:length(subjects);
     
-    try
-        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        UG_Reject = vertcat(UG_Reject,T);
-        
-    end
-end
-
-%% rejection rate
-
-rejection = table2array(UG_Reject);
-
-histogram(rejection)
-title 'Rejection rates'
-xlabel 'Proportion'
-ylabel 'Frequency'
-
-% Bin the rejections
-
-Bin1 = [];
-Bin2 = [];
-Bin3 = [];
-Bin4 = [];
-Bin5 = [];
-
-
-for ii = 1:length(rejection)
-    proportion = rejection(ii);
-    if proportion>=0 && proportion<.1
-        saveme = 0.05;
-        Bin1 = [Bin1; saveme];
-    elseif proportion>=.1 && proportion<.2
-        saveme = 0.15;
-        Bin2 = [Bin2; saveme];
-    elseif proportion>=.2 && proportion<.3
-        saveme = 0.25;
-        Bin3 = [Bin3; saveme];
-    elseif proportion>=.3 && proportion<.4
-        saveme = 0.35;
-        Bin4 = [Bin4; saveme];
-    elseif proportion>=.4 && proportion<.5
-        saveme = 0.45;
-        Bin5 = [Bin5; saveme];
-    end
-    
-end
-
-total = size(Bin1) + size(Bin2) + size(Bin3) + size(Bin4) + size(Bin5);
-Bin1 = size(Bin1);
-Bin2 = size(Bin2);
-Bin3 = size(Bin3);
-Bin4 = size(Bin4);
-Bin5 = size(Bin5);
-
-% Bin1 = Bin1(1) / total(1);
-% Bin2 = Bin2(1) / total(1);
-% Bin3 = Bin3(1) / total(1);
-% Bin4 = Bin4(1) / total(1);
-% Bin5 = Bin5(1) / total(1);
-
-%% Accept analysis
-UG_Accept = [];
-
-for ii = 1:length(values)
-    
-    try
-        name = ['Subject_' num2str(values(ii)) '_accepted.csv'];
-        input = [input_folder,name];
-        UG_Accept = vertcat(UG_Accept,T);
-        
-    end
-end
-
-%% Accepting rate
-
-accepting = table2array(UG_Accept);
-
-histogram(accepting)
-title 'Accepting rates'
-xlabel 'Proportion'
-ylabel 'Frequency'
-
-Bin1a = [];
-Bin2a = [];
-Bin3a = [];
-Bin4a = [];
-Bin5a = [];
-
-
-for ii = 1:length(accepting)
-    proportion = accepting(ii);
-    if proportion>=0 && proportion<.1
-        saveme = 0.05;
-        Bin1a = [Bin1a; saveme];
-    elseif proportion>=.1 && proportion<.2
-        saveme = 0.15;
-        Bin2a = [Bin2a; saveme];
-    elseif proportion>=.2 && proportion<.3
-        saveme = 0.25;
-        Bin3a = [Bin3a; saveme];
-    elseif proportion>=.3 && proportion<.4
-        saveme = 0.35;
-        Bin4a = [Bin4a; saveme];
-    elseif proportion>=.4 && proportion<.5
-        saveme = 0.45;
-        Bin5a = [Bin5a; saveme];
-    end
-    
-end
-
-total = size(Bin1a) + size(Bin2a) + size(Bin3a) + size(Bin4a) + size(Bin5a);
-Bin1a = size(Bin1a);
-Bin2a = size(Bin2a);
-Bin3a = size(Bin3a);
-Bin4a = size(Bin4a);
-Bin5a = size(Bin5a);
-
-Bin1_rejection_rate = Bin1(1) / (Bin1(1) + Bin1a(1));
-Bin2_rejection_rate = Bin2(1) / (Bin2(1) + Bin2a(1));
-Bin3_rejection_rate = Bin3(1) / (Bin3(1) + Bin3a(1));
-Bin4_rejection_rate = Bin4(1) / (Bin4(1) + Bin4a(1));
-Bin5_rejection_rate = Bin5(1) / (Bin5(1) + Bin5a(1));
-
-Binsuse = [Bin1_rejection_rate, Bin2_rejection_rate, Bin3_rejection_rate, Bin4_rejection_rate, Bin5_rejection_rate];
-
-
-x = [.05,.15,.25,.35,.45];
-figure
-
-bar(x,Binsuse)
-title 'Rejection rates';
-xlabel 'Offers';
-ylabel 'Rate of Rejection';
-axis([-.0 .5 0 1]);
-
-% Bin2 = Bin2(1) / total(1);
-% Bin3 = Bin3(1) / total(1);
-% Bin4 = Bin4(1) / total(1);
-% Bin5 = Bin5(1) / total(1);
-
-
-%% DG_P
-
-Earnings = [];
-
-for ii = 1:length(values);
-    
-    try
-        name = ['Subject_' num2str(values(ii)) '_Earnings.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        Earnings = vertcat(Earnings,T);
-        
-    end
-end
-
-%% DG_P earnings
-
-DG_P = table2array(Earnings(:,1));
-
-histogram(DG_P, 10)
-ylim([0 7])
-title 'DG Proposer Earnings'
-xlabel 'Earnings'
-ylabel 'Frequency'
-
-%% UG R1 and R2
-
-% Manipulation (assumed rejection rates)
-
-Final_save_2 = [];
-UG_P_2 = [];
-
-Final_save = [];
-UG_P = [];
-UG_P_Total = [];
-Subjects = [];
-Subjects_2 = [];
-
-Final_Subjects =[];
-
-for jj = 1:length(values)
-    total_save_2= [];
-    
-    
-    try
-        name = ['Subject_' num2str(values(jj)) '_UGP2.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        UG_P_2 = table2array(T);
-        
-        total_save_2= [];
-        saveme_2 = [];
-        
-        for ii = 1:length(UG_P_2)
-            
-            
-            UG_P_Earnings_2 = [];
-            proportion = UG_P_2(ii,3)/UG_P_2(ii,2);
-            if proportion<.1
-                trial_earnings = (UG_P_2(ii,2) - UG_P_2(ii,3)) * (1-Bin1_rejection_rate);
-                UG_P_Earnings_2 = [UG_P_Earnings_2; trial_earnings];
-            elseif proportion>=.1 && proportion<.2
-                trial_earnings = (UG_P_2(ii,2) - UG_P_2(ii,3)) * (1-Bin2_rejection_rate);
-                UG_P_Earnings_2 = [UG_P_Earnings_2; trial_earnings];
-            elseif proportion>=.2 && proportion<.3
-                trial_earnings = (UG_P_2(ii,2) - UG_P_2(ii,3)) * (1-Bin3_rejection_rate);
-                UG_P_Earnings_2 = [UG_P_Earnings_2; trial_earnings];
-            elseif proportion>=.3 && proportion<.4
-                trial_earnings = (UG_P_2(ii,2) - UG_P_2(ii,3)) * (1-Bin4_rejection_rate);
-                UG_P_Earnings_2 = [UG_P_Earnings_2; trial_earnings];
-            elseif proportion>=.4 && proportion<.5
-                trial_earnings = (UG_P_2(ii,2) - UG_P_2(ii,3)) * (1-Bin5_rejection_rate);
-                UG_P_Earnings_2 = [UG_P_Earnings_2; trial_earnings];
-            end
-            
-            saveme_2 = [saveme_2; UG_P_Earnings_2];
-            total_save_2 = sum(saveme_2);
-            Subjects_2 = values(jj);
+    name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
+    input = [input_folder,name];
+    O = readtable(input);
+    DG_Part = [];
+    for kk = 1:length(O.Trial)
+        if O.Decision(kk) == 1
+            save = O.More_Prop(kk);
+        else
+            save = O.Less_Prop(kk);
         end
-        
+        DG_Part = [DG_Part; save];
     end
-    
-    total_save= [];
-    
-    try
-        name = ['Subject_' num2str(values(jj)) '_UGP.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        UG_P = table2array(T);
-        
-        Subjects = [];
-        total_save= [];
-        saveme = [];
-        
-        
-        for ii = 1:length(UG_P)
-            
-            
-            UG_P_Earnings = [];
-            proportion = UG_P(ii,3)/UG_P_2(ii,2);
-            if proportion<.1
-                trial_earnings = (UG_P_2(ii,2) - UG_P(ii,3)) * (1-Bin1_rejection_rate);
-                UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-            elseif proportion>=.1 && proportion<.2
-                trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (1-Bin2_rejection_rate);
-                UG_P_Earnings = [UG_P_Earnings_2; trial_earnings];
-            elseif proportion>=.2 && proportion<.3
-                trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (1-Bin3_rejection_rate);
-                UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-            elseif proportion>=.3 && proportion<.4
-                trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (1-Bin4_rejection_rate);
-                UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-            elseif proportion>=.4 && proportion<.5
-                trial_earnings = (UG_P(ii,2) - UG_P(ii,3)) * (1-Bin5_rejection_rate);
-                UG_P_Earnings = [UG_P_Earnings; trial_earnings];
-            end
-            
-            saveme = [saveme; UG_P_Earnings];
-            total_save = sum(saveme);
-            Subjects = values(jj);
-            
-        end
-        
-    end
-    
-    a = size(total_save_2);
-    b = size(total_save);
-    a = a(1);
-    b = b(1);
-    
-    if a>0 && b==0
-        
-        UG_P_Total = [UG_P_Total; total_save_2];
-    end
-    
-    if b>0 && a==0
-        
-        UG_P_Total = [UG_P_Total; total_save];
-        
-    end
-    
-    if a>0 && b>0 
-        
-        UG_P_Total = [UG_P_Total; (total_save_2 + total_save)/2];
-        
-    end
+    DG_P_Prop = [DG_P_Prop; mean(DG_Part)];
+    DG_P_Offers = [DG_P_Offers; mean(O.Choice)]; % AMOUNT OFFERED!!!
+    DG_P_Earnings = [DG_P_Earnings; sum(O.Endowment)-sum(O.Choice)]; % AMOUNT SAVED for self.
     
 end
 
@@ -406,11 +132,14 @@ UG_P = [];
 %UG_P_Total = [];
 Subjects = [];
 Subjects_2 = [];
-
-UG_P_Raw = [];
+UG_P_Offers = [];
+UG_P_Offers_2 = [];
+UG_P_Earnings  = [];
+UG_P_Earnings_2 = [];
 
 subjects = values;
 Final_Subjects =[];
+UG_P_Prop = [];
 
 for jj = 1:length(subjects)
     save_value = [];
@@ -418,130 +147,268 @@ for jj = 1:length(subjects)
     name = ['Subject_' num2str(subjects(jj)) '_UGP.csv'];
     input = [input_folder,name];
     T = readtable(input);
-    UG_P = table2array(T);
-    total_save_2= [];
-    saveme_2 = [];
-    save_value = sum(UG_P(:,2) - UG_P(:,3));
-    UG_P_Raw = [UG_P_Raw; save_value];
-    UG_P_Raw = abs(UG_P_Raw);
+    UG_P_Offers = [UG_P_Offers; mean(T.Choice)]; % AMOUNT OFFERED!!!
+    UG_P_Offers_Prop = [UG_P_Offers; mean(T.Choice)];
     
+    UG_Part = [];
+    
+    for kk = 1:length(T.Trial)
+        if T.Decision(kk) == 1
+            save = T.More_Prop(kk);
+        else
+            save = T.Less_Prop(kk);
+        end
+        UG_Part = [UG_Part; save];
+        
+    end
+    UG_P_Prop = [UG_P_Prop; mean(UG_Part)];
+    UG_P_Earnings = [UG_P_Earnings; sum(T.Endowment)-sum(T.Choice)]; % AMOUNT SAVED for self, uncorrected for rejections.
+  
 end
 
-UG_P_2_Raw = [];
+UG_P_Prop_2 = [];
 
 for jj = 1:length(subjects)
     save_value = [];
     name = ['Subject_' num2str(subjects(jj)) '_UGP2.csv'];
     input = [input_folder,name];
-    T = readtable(input);
-    UG_P_2 = table2array(T);
-    save_value = sum(UG_P_2(:,2) - UG_P_2(:,3));
-    UG_P_2_Raw = [UG_P_2_Raw; save_value];
-    UG_P_2_Raw = abs(UG_P_2_Raw);
+    S = readtable(input);
+    
+    UG_Part = [];
+    
+    for kk = 1:length(T.Trial)
+        if T.Decision(kk) == 1
+            save = T.More_Prop(kk);
+        else
+            save = T.Less_Prop(kk);
+        end
+        UG_Part = [UG_Part; save];
+        
+    end
+    
+    UG_P_Prop_2 = [UG_P_Prop_2; mean(UG_Part)];
+    UG_P_Offers_2 = [UG_P_Offers_2;mean(S.Choice)]; % AMOUNT OFFERED!!!
+    UG_P_Earnings_2 = [UG_P_Earnings_2; sum(S.Endowment)-sum(S.Choice)]; % AMOUNT SAVED for self, uncorrected for rejections.
     
 end
 
-UG_P_Raw = round(((UG_P_2_Raw + UG_P_Raw)/2));
-
-
-%% Raw DG
-
-DG_P_Raw = [];
-save_value = [];
-
-for ii = 1:length(subjects);
-    
-    name = ['Subject_' num2str(subjects(ii)) '_DGP.csv'];
-    input = [input_folder,name];
-    O = readtable(input);;
-    O = table2array(O);
-    save_value = sum(O(:,3));
-    DG_P_Raw = [DG_P_Raw; save_value];
-    
-end
-
-
-%% UG_P earnings
-
-figure
-histogram(UG_P_Raw, 10)
-ylim([0 7])
-title 'UG Proposer Earnings'
-xlabel 'Earnings'
-ylabel 'Frequency'
+UG_P_Raw_Props = ((UG_P_Prop+UG_P_Prop_2)/2);
+UG_P_Raw_Offers = (UG_P_Offers+UG_P_Offers_2/2); % Sum offers
+UG_P_Raw_Earnings = UG_P_Earnings + UG_P_Earnings_2; % Uncorrected
 
 %% UG_R earnings
 
-UG_R_Earnings = table2array(Earnings(:,2));
+UG_R_Earnings = [];
+UG_R_reject = [];
+UG_R_accept = [];
+missing_subject  = [];
+UG_R_reject_rate = [];
 
-
-figure
-histogram(UG_R_Earnings, 5)
-ylim([0, 7]);
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Ultimatum Game EI as Recipient','FontSize', 16)
-ylabel ('Frequency','FontSize', 16)
-set(gca,'box','off')
-set(gcf,'color','w');
-
-
-saveas(gcf,'UG_R.png')
-
-%%
-
-
-%Total_Earnings = UG_P_Raw + UG_R_Raw + DG_P_Raw;
-
-Total_Earnings = UG_P_Total + DG_P_Raw + UG_R_Earnings; % Similar to strategic behavior
-
-figure
-histogram(Total_Earnings, 14)
-ylim('auto');
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Total Earnings','FontSize', 16)
-ylabel ('Frequency','FontSize', 16)
-set(gca,'box','off')
-set(gcf,'color','w');
-
-
-saveas(gcf,'Total_Earnings.png')
-
-
-
-%% Save 
-
-UGDG_Data = [Final_Subjects,UG_P_Total, DG_P, UG_R_Earnings];
-
-try 
-UGDG_Data = array2table(UGDG_Data(1:end,:),'VariableNames', {'Subjects','UG_P','DG_P','UG_R',});
-name = ['UGDG_Data.csv'];
-writetable(UGDG_Data, name); % Save as csv file
+for jj = 1:length(subjects)
+    
+    try
+    save_value = [];
+    UG_R_reject_rate_part = [];
+    name = ['Subject_' num2str(subjects(jj)) '_accept_analysis.csv'];
+    input = [input_folder,name];
+    U = readtable(input);
+    UG_R_Earnings = [UG_R_Earnings; sum(U.Earned)]; % Sum acceptances.
+    UG_R_accept = [UG_R_accept; mean(U.Offer./U.Endowment)]; % Average accepted
+    
+    catch 
+        missing_subject = [missing_subject, subjects(jj)];
+    end
+        
+    try
+    name = ['Subject_' num2str(subjects(jj)) '_reject_analysis.csv'];
+    input = [input_folder,name];
+    V = readtable(input);
+    
+    UG_R_reject = [UG_R_reject; mean(V.Offer./V.Endowment)]; % Average rejected
+    UG_R_reject_rate_part = sum(U.Choice)/24; % reject rate
+    
+    catch
+        UG_R_reject_rate_part = 1; % reject rate
+        missing_subject = [missing_subject, subjects(jj)];
+    end
+    
+    UG_R_reject_rate = [UG_R_reject_rate;UG_R_reject_rate_part];
 end
 
-%% Save 2
-
-Bins_save = Binsuse;
-
-try
-Bins_save = array2table(Bins_save(1:end,:),'VariableNames', {'0','.1','.2','.3','.4'});
-name = ('Rejection_Behavior.csv');
-writetable(Bins_save, name); % Save as csv file
-end
-
-%% Strategic Behavior 
-
-%Strategic_Behavior = DG_P + UG_P_Total;
-
-% For purposes of abstract
-
-Strategic_Behavior = UG_P_Raw - DG_P_Raw;
-
-Strategic_Behavior_Percent = (Strategic_Behavior./abs(UG_P_Raw))*100; % percent change
 
 
-%% Read in EI and PNR from other file
+%% Plot earnings
+
+data = [mean(DG_P_Earnings), mean(UG_P_Raw_Earnings), mean(UG_R_Earnings)]; 
+x = linspace(1,3,3);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Tasks', 'FontSize', 16);
+ylabel  ('Earnings', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:3, 'XTickLabels', {'DG-P', 'UG-P', 'UG-R'})
+
+hold on
+
+% Standard Error
+
+B1Er = std(DG_P_Earnings) / sqrt(length(DG_P_Earnings));
+B2Er = std(UG_P_Raw_Earnings) / sqrt(length(UG_P_Raw_Earnings));
+B3Er = std(UG_R_Earnings) / sqrt(length(UG_R_Earnings));
+
+
+err = [B1Er,B2Er,B3Er] * 2;
+
+er = errorbar(x,data,err); 
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_Earnings')
+
+%% Plot offers
+
+data = [mean(DG_P_Offers), mean(UG_P_Raw_Offers)]; 
+x = linspace(1,2,2);
+fig = figure
+x1 = bar(x(1),data(1));
+x1.LineWidth= 2.5
+hold on
+x2 = bar(x(2),data(2));
+x2.LineWidth= 2.5
+colormap('jet')
+
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Tasks', 'FontSize', 16);
+ylabel  ('Average Offers Made Across Subjects', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:2, 'XTickLabels', {'DG-P', 'UG-P'})
+
+hold on
+
+% Standard Error
+
+B1Er = std(DG_P_Offers) / sqrt(length(DG_P_Offers));
+B2Er = std(UG_P_Raw_Offers) / sqrt(length(UG_P_Raw_Offers));
+
+
+err = [B1Er,B2Er] * 2;
+
+er = errorbar(x,data,err); 
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 2.5;
+hold off
+
+saveas(gcf,'Bar_Offers.tif')
+
+%% Plot proportions chosen
+
+data = [mean(DG_P_Prop), mean(UG_P_Raw_Props)]; 
+x = linspace(1,2,2);
+fig = figure
+x1 = bar(x(1),data(1));
+x1.LineWidth= 2.5
+hold on
+x2 = bar(x(2),data(2));
+x2.LineWidth= 2.5
+colormap('jet')
+
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Tasks', 'FontSize', 16);
+ylabel  ('Offers', 'FontSize', 16);
+title ('Mean Endowment Offered By Participants')
+set(gcf,'color','w');
+set(gca, 'XTick', 1:2, 'XTickLabels', {'DG-P', 'UG-P'})
+
+hold on
+
+% Standard Error
+
+B1Er = std(DG_P_Prop) / sqrt(length(DG_P_Prop));
+B2Er = std(UG_P_Raw_Props) / sqrt(length(UG_P_Raw_Props));
+
+
+err = [B1Er,B2Er] * 2;
+
+er = errorbar(x,data,err); 
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 2.5;
+hold off
+
+saveas(gcf,'Bar_Props.tif')
+
+%% UGR Offers accepted/rejected
+
+data = [mean(UG_R_accept), mean(UG_R_reject)]; 
+x = linspace(1,2,2);
+fig = figure
+x1 = bar(x(1),data(1));
+x1.LineWidth= 2.5
+hold on
+x2 = bar(x(2),data(2));
+x2.LineWidth= 2.5
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Decisions', 'FontSize', 16);
+ylabel  ('Offered Proportion', 'FontSize', 16);
+title ('Mean Endowment Accepted/Rejected in UG-R')
+set(gcf,'color','w');
+set(gca, 'XTick', 1:2, 'XTickLabels', {'Accepted', 'Rejected'})
+
+hold on
+
+% Standard Error
+
+B1Er = std(UG_R_accept) / sqrt(length(UG_R_accept));
+B2Er = std(UG_R_reject) / sqrt(length(UG_R_reject));
+
+
+err = [B1Er,B2Er] * 2;
+
+er = errorbar(x,data,err); 
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 2.5;
+hold off
+
+saveas(gcf,'Bar_Props.tif')
+
+%% Strategic Behavior
+
+% We will define this as the difference in offers between UG and DG.
+
+Strategic_Behavior = UG_P_Raw_Props- DG_P_Prop;
+
+Total_Earnings = DG_P_Earnings + UG_P_Raw_Earnings + UG_R_Earnings;
+% 
+% Total_Earnings = DG_P_Earnings + UG_P_Raw_Earnings + UG_R_Earnings; % Similar to strategic behavior
+% 
+% figure
+% histogram(Total_Earnings, 14)
+% ylim('auto');
+% ax = gca;
+% ax.FontSize = 9;
+% xlabel ('Total Earnings','FontSize', 16)
+% ylabel ('Frequency','FontSize', 16)
+% set(gca,'box','off')
+% set(gcf,'color','w');
+% 
+% 
+% saveas(gcf,'Total_Earnings.png')
+% 
+%% Read in EI and PNR 
 
 if make_attitudes == 1
     
@@ -609,26 +476,7 @@ for ii = 1:length(subjects)
     
 end
 
-%% Correlation with EQ and Strategic Behavior
 
-[R,P] = corrcoef(Strategic_Behavior,TEIQUE_final(:,2));
-
-figure
-%subplot(2,4,2)
-scatter(TEIQUE_final(:,2), Strategic_Behavior)
-title 'Strategic Behavior and EQ';
-ylabel 'Strategic Behavior';
-xlabel 'EQ';
-
-
-% Hypothesis 
-
-figure
-[R,P] = corrcoef(Strategic_Behavior,PNR_final(:,2));
-
-%subplot(2,4,3)
-scatter(Strategic_Behavior, PNR_final(:,2));
-title 'Proportion and PNR';
 
 %% Histogram of EQ scores
 
@@ -661,367 +509,6 @@ set(gcf,'color','w');
 saveas(gcf,'PNR_Scores.png')
 
 end
-
-%% Figure 2
-
-figure
-h = histogram(UG_P_Total(:));
-counts = h.Values;
-h.NumBins = 11;
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Ultimatum Game Offers as Proposer','FontSize', 16);
-ylabel ('Frequency','FontSize', 16);
-set(gca,'box','off');
-set(gcf,'color','w');
-
-saveas(gcf,'UG_P.png')
-
-%% Figure 3
-
-figure
-h = histogram(DG_P(:));
-counts = h.Values;
-h.NumBins = 11;
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Earnings as DG Proposer','FontSize', 16);
-ylabel ('Frequency','FontSize', 16);
-set(gca,'box','off');
-set(gcf,'color','w');
-
-saveas(gcf,'DGP.png')
-
-%% 
-
-%Cope7 = [2.228924845, -69.20036055, -6.422717132, -7.836157196, -6.854206813, 45.61579082, 26.75282526, 75.98362988, -16.59662775, -2.63439245 , -0.5985225, 22.40339789, 37.572792, -1.068525052]; 
-
-% [R,P] = corrcoef(Cope7, TEIQUE_final(:,2));
-% figure
-% scatter(TotalEQScore, Cope7, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 14);
-% ylabel  ('UG and DG Contrast during Decision Phase', 'FontSize', 14);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'UG and dg.png')
-% 
-% figure
-% 
-% 
-% B2Er = std(Cope7') / sqrt(length(Cope7'));
-% B3Er = std(Cope8') / sqrt(length(Cope8'));
-% 
-% err = [B2Er,B3Er] * 2;
-% 
-% data = [mean(Cope7);  mean(Cope8)];
-% x = linspace(1,2,2);
-% bar(x,data)
-% ax = gca;
-% ax.FontSize = 12;
-% box off
-% xlabel ('Phases', 'FontSize', 16);
-% ylabel  ('Activation', 'FontSize', 16);
-% set(gcf,'color','w');
-% set(gca, 'XTick', 1:2, 'XTickLabels', {'Endowment','Decision',})
-% title('Mean UG and DG Contrast during Decision and Endowment Phases')
-% 
-% hold on
-% 
-% % Standard Error
-% 
-% er = errorbar(x,data,err); %errorbar(x,data,errlow,errhigh);
-% er.Color = [0 0 0];
-% er.LineStyle = 'none';
-% er.LineWidth = 1;
-% hold off
-% 
-
-%% Cope 8
-
-%Cope8 = [-1.238865074, -28.61567736,  -15.02178652,  -15.54505961,  -9.324916225,  42.9214861,  44.3428182,  -36.82699058,  -10.59545914, -18.05904204,  53.6336315,  -26.17917893,  83.02145275, 22.16178178];  
-%  
-% [R,P] = corrcoef(Cope8, TEIQUE_final(:,2));
-% figure
-% scatter(TotalEQScore, Cope8, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 14);
-% ylabel  ('UG and DG Contrast during Endowment Phase', 'FontSize', 14);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'UG and dg.png')
-
-%% DG/UG proportions
-
-
-values = subjects;
-DG_P_Proportions = [];
-
-for ii = 1:length(values)
-    
-    try
-        name = ['Subject_' num2str(values(ii)) '_DGP.csv'];
-        input = [input_folder,name];
-        O = readtable(input);
-        DG_P_Proportions = vertcat(DG_P_Proportions,O);
-        
-    end
-end
-
-DG_P_Proportions = table2array(DG_P_Proportions);
-
-Proportion_DG = DG_P_Proportions(:,3) ./ DG_P_Proportions(:,2);
-
-figure
-h = histogram(Proportion_DG(:));
-counts = h.Values;
-h.NumBins = 5;
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Dictator Game Offers as Proposer','FontSize', 16);
-ylabel ('Frequency','FontSize', 16);
-set(gca,'box','off');
-set(gcf,'color','w');
-
-saveas(gcf,'DGProportions.png')
-
-bin1 = [];
-bin2 = [];
-bin3 = [];
-bin4 = [];
-bin5 = [];
-
-for jj = 1:length(Proportion_DG)
-    
-    ii = Proportion_DG(jj);
-    
-    if ii > 0 && ii <= .1
-        saveme = .05;
-        bin1 = [bin1,saveme];
-    end
-    
-    if ii > .1 && ii <= .2
-        saveme = .15;
-        bin2 = [bin2,saveme];
-    end
-    if ii > .2 && ii <= .3
-        saveme = .25;
-        bin3 = [bin3,saveme];
-    end
-    if ii > .3 && ii <= .4
-        saveme = .35;
-        bin4 = [bin4,saveme];
-    end
-    if ii > .4 && ii <= .5
-        saveme = .45;
-        bin5 = [bin5,saveme];
-    end
-
-end
-figure
-
-x = [.05,.15,.25,.35,.45];
-
-bin511 = size(bin5);
-bin511 = bin511(2);
-bin411 = size(bin4);
-bin411 = bin411(2);
-bin311 = size(bin3);
-bin311 = bin311(2);
-bin211 = size(bin2);
-bin211 = bin211(2);
-bin111 = size(bin1);
-bin111 = bin111(2);
-
-total = bin511 + bin411+ bin311 + bin211 + bin111;
-Binsuse = [(bin111/total), (bin211/total), (bin311/total), (bin411/total), (bin511/total)];
-
-figure
-bar(x,Binsuse);
-title 'Offers as Proposer in Dictator Game';
-xlabel 'Offers';
-ylabel 'Rate Offered';
-axis([-.0 .5 0 .6]);
-
-%% DG/UG proportions
-
-
-values = subjects;
-UG_P_Proportions_1 = [];
-UG_P_Proportions_2 = [];
-for ii = 1:length(values)
-    
-    try
-        name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
-        input = [input_folder,name];
-        N = readtable(input);
-        UG_P_Proportions_1 = vertcat(UG_P_Proportions_1,N);
-        
-    end
-end
-
-for ii = 1:length(values);
-    
-    try
-        name = ['Subject_' num2str(values(ii)) '_UGP2.csv'];
-        input = [input_folder,name];
-        M = readtable(input);
-        UG_P_Proportions_2 = vertcat(UG_P_Proportions_2,M);
-        
-    end
-end
-
-
-UG_P_Proportions_1 = table2array(UG_P_Proportions_1);
-UG_P_Proportions_2 = table2array(UG_P_Proportions_2);
-
-Proportion_UG1 = UG_P_Proportions_1(:,3) ./ UG_P_Proportions_1(:,2);
-Proportion_UG2 = UG_P_Proportions_2(:,3) ./ UG_P_Proportions_2(:,2);
-
-Proportion_UG = [Proportion_UG1; Proportion_UG2];
-
-figure
-h = histogram(Proportion_UG(:));
-counts = h.Values;
-h.NumBins = 5;
-ax = gca;
-ax.FontSize = 9;
-xlabel ('Ultimatum Game Offers as Proposer','FontSize', 16)
-ylabel ('Frequency','FontSize', 16)
-set(gca,'box','off')
-set(gcf,'color','w');
-
-saveas(gcf,'UGProportions.png')
-
-bin1 = [];
-bin2 = [];
-bin3 = [];
-bin4 = [];
-bin5 = [];
-
-for ii = 1:length(Proportion_UG)
-    
-    jj = Proportion_UG(ii);
-    
-    if jj > 0 && jj <= .1
-        saveme = .05;
-        bin1 = [bin1,saveme];
-    end
-    
-    if jj > .1 && jj <= .2
-        saveme = .15;
-        bin2 = [bin2,saveme];
-    end
-    if jj > .2 && jj <= .3
-        saveme = .25;
-        bin3 = [bin3,saveme];
-    end
-    if jj > .3 && jj <= .4
-        saveme = .35;
-        bin4 = [bin4,saveme];
-    end
-    if jj > .4 && jj <= .5
-        saveme = .45;
-        bin5 = [bin5,saveme];
-    end
-
-end
-figure
-
-x = [.05,.15,.25,.35,.45];
-
-bin51 = size(bin5);
-bin51 = bin51(2);
-bin41 = size(bin4);
-bin41 = bin41(2);
-bin31 = size(bin3);
-bin31 = bin31(2);
-bin21 = size(bin2);
-bin21 = bin21(2);
-bin11 = size(bin1);
-bin11 = bin11(2);
-
-total2 = bin51 + bin41+ bin31 + bin21 + bin11;
-Binsuse2 = [(bin11/total2), (bin21/total2), (bin31/total2), (bin41/total2), (bin51/total2)];
-
-
-bar(x,Binsuse2)
-title 'Offers as Proposer in Ultimatum Game'
-xlabel 'Offers'
-ylabel 'Rate Offered'
-axis([-.0 .5 0 .6])
-
-%% UG rejection rate
-
-UG_Reject_Rate = [];
-
-for ii = 1:length(values)
-        name = ['Subject_' num2str(values(ii)) '_rejected.csv'];
-        input = [input_folder,name];
-        T = readtable(input);
-        [N,M] = size(T);
-        UG_Reject_Rate = [UG_Reject_Rate;(N/24)]; % Proportion of rejections relative to total UG-R trials
-end
-
-%% Figure out if there is a ceiling effect
-
-% Defined as always choosing max in DG and min in UG.
-% First, we will regenerate the participant pool
-
-trials = 36;
-A = combnk(0.06:0.13:0.48,2); % 6 possible combinations we will use for proposers
-B = fliplr(A); % To counterbalance.
-Proposer_Options = [A;B;A;B;A;B;]; % Now the options are counterbalanced
-% We now have a pool of 36 combinations to choose from.
-
-% ((((DVS: No, should be 36 or 24 rows? No choosing and nothing left to
-% chance. )))
-% (((DS: Fixed)))
-
-% We need to randomly select 48 of these rows.
-
-rows =[1:(trials)]; % Number of desired rows
-shuffled_rows = rows(randperm(length(rows))); % Randomly select a number from 1 through 48.
-
-%shuffled_rows = shuffled_rows(1:2)'; % We need two items
-
-% Take those elements from Proposer_Options and add in six randomly chosen
-% combinations.
-
-Proposer_Pool = [];
-
-for ii = 1:length(rows)
-    % Index from shuffled_row
-    Take = Proposer_Options(shuffled_rows(ii),:); % Take a random number from 1 through 48 and use that as the row
-    Proposer_Pool = [Proposer_Pool; Take];
-end
-
-% The proposer pool randomly generates the proportions which are presented
-% to the participant. So, if we find the max values between the two
-% options, we can determine what are the most fair offers a participant can
-% make. Opposite for min.
-
-max_rows = [];
-min_rows = [];
-for ii = 1:length(Proposer_Pool)
-    max_row = max(Proposer_Pool(ii,:));
-    min_row = min(Proposer_Pool(ii,:)); 
-    max_rows = [max_rows; max_row];
-    min_rows = [min_rows; min_row];
-end
-
-% If a participant always chooses high, they would consistently split .3633
-% of the endowment. If they always choose low, they would split .1467 of
-% the endowment. 
-
 
 %% Read in the tsr and means 
 
@@ -1150,94 +637,10 @@ end
 
 if make_attitudes == 1
     
-data = readtable(input_behavioral);
-
-TEIQUE_raw = [data.('participant_id'), data.('score_tei_globaltrait')];
-PNR_raw = [data.('participant_id'), data.('score_pnr_total')];
-
-% Eliminate Nans
-
-eliminate_rows = any(isnan(TEIQUE_raw),2);
-TEIQUE_temp = [];
-
-for ii = 1:length(TEIQUE_raw)
-    keep = [];
-    row = TEIQUE_raw(ii,:);
-    if eliminate_rows(ii) == 0
-        keep = row;
-    end
-    TEIQUE_temp = [TEIQUE_temp; keep];
-end
-
-eliminate_rows = any(isnan(PNR_raw),2);
-PNR_temp = [];
-
-for ii = 1:length(PNR_raw)
-    keep = [];
-    row = PNR_raw(ii,:);
-    if eliminate_rows(ii) == 0
-        keep = row;
-    end
-    PNR_temp = [PNR_temp; keep];
-end
- 
-TEIQUE_missing = [];
-TEIQUE_final = [];
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(TEIQUE_temp==subj);
-    if subj_row > 0
-        test = TEIQUE_temp(subj_row,:);
-        if test(2) < 100
-            TEIQUE_final = [TEIQUE_final;test];
-        else
-            TEIQUE_missing = [TEIQUE_missing; subjects(ii)];
-        end
-    end
-    
-end
-
-PNR_missing = [];
-PNR_final = [];
-
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(PNR_temp==subj);
-    if subj_row > 0
-        test = PNR_temp(subj_row,:);
-        if test(2) < 100
-            PNR_final = [PNR_final;test];
-        else
-            PNR_missing = [PNR_missing; subjects(ii)];
-        end
-    end
-    
-end
-end
 %% Do people with higher EI reject less often?
 
 % For this analysis, we will take the number of rejections per subject and
 % compare if that mean is different across EI.
-
-if make_attitudes == 1
-
-% Is there a correlation between rejection rates and emotional
-% intelligence?
-
-[R,P] = corrcoef(UG_Reject_Rate, TEIQUE_final(:,2));
-figure
-scatter(PNR_final(:,2), UG_Reject_Rate, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-ax = gca;
-ax.FontSize = 12;
-xlabel ('PNR Score', 'FontSize', 16);
-ylabel  ('Rejection Rate in UG-R', 'FontSize', 16);
-i = lsline;
-i.LineWidth = 5;
-i.Color = [0 0 0];
-set(gcf,'color','w');
-
-saveas(gcf,'DGPEQ.png')
-
 
 %% Correlation with EQ and Strategic Behavior
 
@@ -1298,28 +701,28 @@ if make_attitudes == 1
        
 % TEQUIE
 
-[R,P] = corrcoef(DG_P,TEIQUE_final(:,2))
-[R,P] = corrcoef(UG_P_Raw,TEIQUE_final(:,2))
-[R,P] = corrcoef(UG_P_Total,TEIQUE_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings,TEIQUE_final(:,2))
-[R,P] = corrcoef(UG_Reject_Rate,TEIQUE_final(:,2))
+[R,P] = corrcoef(DG_P_Prop,TEIQUE_final(:,2))
+[R,P] = corrcoef(UG_P_Raw_Props,TEIQUE_final(:,2)) % Significant
+[R,P] = corrcoef(UG_R_reject_rate, TEIQUE_final(:,2))
+[R,P] = corrcoef(Strategic_Behavior, TEIQUE_final(:,2))
 [R,P] = corrcoef(Total_Earnings,TEIQUE_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior,TEIQUE_final(:,2))
-
-[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
+[R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2))
+[R,P] = corrcoef(UG_P_Earnings, TEIQUE_final(:,2))
+[R,P] = corrcoef(DG_P_Earnings, TEIQUE_final(:,2))
 
 % PNR
-[R,P] = corrcoef(DG_P,PNR_final(:,2))
-[R,P] = corrcoef(UG_P_Raw,PNR_final(:,2))
-[R,P] = corrcoef(UG_P_Total,PNR_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings,PNR_final(:,2))
-[R,P] = corrcoef(UG_Reject_Rate,PNR_final(:,2))
-[R,P] = corrcoef(Total_Earnings,PNR_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior,PNR_final(:,2))
+[R,P] = corrcoef(DG_P_Prop,PNR_final(:,2))
+[R,P] = corrcoef(UG_P_Raw_Props, PNR_final(:,2)) 
+[R,P] = corrcoef(UG_R_reject_rate, PNR_final(:,2))
+[R,P] = corrcoef(Strategic_Behavior, PNR_final(:,2))
+[R,P] = corrcoef(Total_Earnings, PNR_final(:,2))
+[R,P] = corrcoef(UG_R_Earnings, PNR_final(:,2))
+[R,P] = corrcoef(UG_P_Earnings, PNR_final(:,2))
+[R,P] = corrcoef(DG_P_Earnings, PNR_final(:,2))
 
 figure
 
-scatter(UG_R_Earnings,UG_Reject_Rate, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+scatter(UG_R_Earnings,UG_R_reject_rate, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
 ax = gca;
 ax.FontSize = 12;
 xlabel ('UGR Reject Rate', 'FontSize', 16);
@@ -1331,6 +734,20 @@ set(gcf,'color','w');
 
 saveas(gcf,'DGPEQ.png')
 
+figure
+
+scatter(UG_P_Raw_Props,TEIQUE_final(:,2), 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
+ax = gca;
+ax.FontSize = 12;
+xlabel ('UG-P Proportion of Offers', 'FontSize', 16);
+ylabel  ('TEIQUE', 'FontSize', 16);
+i = lsline;
+i.LineWidth = 5;
+i.Color = [0 0 0];
+set(gcf,'color','w');
+
+saveas(gcf,'UG Propositions.png')
+
 end
 
 %% Reward analysis
@@ -1338,24 +755,25 @@ end
 if make_reward == 1
        
 % BAS
-
-[R,P] = corrcoef(DG_P,Reward_final(:,2))
-[R,P] = corrcoef(UG_P_Raw,Reward_final(:,2))
-[R,P] = corrcoef(UG_P_Total,Reward_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings,Reward_final(:,2))
-[R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,2))
+[R,P] = corrcoef(DG_P_Prop,Reward_final(:,2))
+[R,P] = corrcoef(UG_P_Raw_Props,Reward_final(:,2)) 
+[R,P] = corrcoef(UG_R_reject_rate, Reward_final(:,2))
+[R,P] = corrcoef(Strategic_Behavior, Reward_final(:,2))
 [R,P] = corrcoef(Total_Earnings,Reward_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior,Reward_final(:,2))
+[R,P] = corrcoef(UG_R_Earnings, Reward_final(:,2))
+[R,P] = corrcoef(UG_P_Earnings, Reward_final(:,2))
+[R,P] = corrcoef(DG_P_Earnings, Reward_final(:,2))
 
 % SPSRQ
 
-[R,P] = corrcoef(DG_P,Reward_final(:,3))
-[R,P] = corrcoef(UG_P_Raw,Reward_final(:,3))
-[R,P] = corrcoef(UG_P_Total,Reward_final(:,3))
-[R,P] = corrcoef(UG_R_Earnings,Reward_final(:,3))
-[R,P] = corrcoef(UG_Reject_Rate,Reward_final(:,3))
+[R,P] = corrcoef(DG_P_Prop,Reward_final(:,3))
+[R,P] = corrcoef(UG_P_Raw_Props,Reward_final(:,3)) 
+[R,P] = corrcoef(UG_R_reject_rate, Reward_final(:,3))
+[R,P] = corrcoef(Strategic_Behavior, Reward_final(:,3))
 [R,P] = corrcoef(Total_Earnings,Reward_final(:,3))
-[R,P] = corrcoef(Strategic_Behavior,Reward_final(:,3))
+[R,P] = corrcoef(UG_R_Earnings, Reward_final(:,3))
+[R,P] = corrcoef(UG_P_Earnings, Reward_final(:,3))
+[R,P] = corrcoef(DG_P_Earnings, Reward_final(:,3))
 
 end
 
@@ -1365,12 +783,15 @@ if make_substance == 1
        
 % AUDIT
 
-[R,P] = corrcoef(DG_P,AUDIT_final(:,2))
-[R,P] = corrcoef(UG_P_Raw,AUDIT_final(:,2))
-[R,P] = corrcoef(UG_P_Total,AUDIT_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings,AUDIT_final(:,2))
-[R,P] = corrcoef(UG_Reject_Rate,AUDIT_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior,AUDIT_final(:,2))
+[R,P] = corrcoef(DG_P_Prop,AUDIT_final(:,2))
+[R,P] = corrcoef(UG_P_Raw_Props,AUDIT_final(:,2)) 
+[R,P] = corrcoef(UG_R_reject_rate, AUDIT_final(:,2))
+[R,P] = corrcoef(Strategic_Behavior, AUDIT_final(:,2))
+[R,P] = corrcoef(Total_Earnings,AUDIT_final(:,2))
+[R,P] = corrcoef(UG_R_Earnings, AUDIT_final(:,2))
+[R,P] = corrcoef(UG_P_Earnings, AUDIT_final(:,2))
+[R,P] = corrcoef(DG_P_Earnings, AUDIT_final(:,2))
+
 
 % DUDIT
 
@@ -1383,9 +804,11 @@ if make_substance == 1
 
 end
 
+%% How often do participants reject offers?
+
 figure
 
-h = histogram(UG_Reject_Rate(:));
+h = histogram(UG_R_reject_rate(:));
 counts = h.Values;
 h.NumBins = 5;
 ax = gca;
@@ -1466,7 +889,7 @@ end
 save = [];
 dump = [];
 %save_Y=categorical(save_Y);
-[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit') %mnrfit(save_X,save_Y)
+[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit'); %mnrfit(save_X,save_Y)
 se=STATS.se;
 
 data = [mean(B(1,:));  mean(B(2,:));  mean(B(3,:))];
@@ -1479,16 +902,16 @@ box off
 xlabel ('Regressors', 'FontSize', 16);
 ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
 set(gcf,'color','w');
-set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Proportion'})
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Proportion'});
 title('Does Endowment Predict UG-R Accept/Reject Choices?')
 
 hold on
 
 % Standard Error
 
-B1Er = se(1)
-B2Er = se(2)
-B3Er = se(3)
+B1Er = se(1);
+B2Er = se(2);
+B3Er = se(3);
 
 err = [B1Er,B2Er,B3Er] * 2;
 
@@ -1661,8 +1084,11 @@ for ii = 1:length(values)
         
     end
     
-    X = [subject_DGP.Endowment,(subject_DGP.More_Prop-subject_DGP.Less_Prop)];
+    %X = [subject_DGP.Endowment,subject_DGP.More_Prop-subject_DGP.Less_Prop,((subject_DGP.More_Prop+subject_DGP.Less_Prop)/2)];
+    X = [subject_DGP.Endowment,((subject_DGP.More_Prop+subject_DGP.Less_Prop)/2)];
     X = zscore(X);
+    %endowprop = X(:,1).*X(:,2);
+    %X = [X, endowprop];
     save_X = [save_X; X];
     save_Y = [save_Y; Y];
     
@@ -1672,14 +1098,10 @@ for ii = 1:length(values)
     Cor_Endow_Intercept=[Cor_Endow_Intercept; coeff(1,2)];
     Cor_DeltaP_Intercept= [Cor_DeltaP_Intercept; coeff(1,3)];
     
-    try
-    %[B,dev,stats] = mnrfit(X, Y); % Given the Endowment, proportion of endowment, can we predict accept/reject?
-%     b = glmfit(X,Y,'binomial','link','logit');
-%     Betas = [Betas, b];
-%     Pvals = [Pvals, stats.p];
-    catch
-        badsubject = [badsubject,values(ii)];
-    end
+
+    Betas = [Betas, B];
+    
+  
 end
 
 
@@ -1700,7 +1122,7 @@ box off
 xlabel ('Regressors', 'FontSize', 16);
 ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
 set(gcf,'color','w');
-set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Delta P'})
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Average between offers'})
 title('Does Endowment and Offers Predict DG-P More/Less Choices?')
 
 hold on
@@ -1994,18 +1416,20 @@ for ii = 1:length(values)
         try
             name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
             input = [input_folder,name];
-            T = readtable(input);
+            S = readtable(input);
             name = ['Subject_' num2str(values(ii)) '_UGP2.csv'];
             input = [input_folder,name];
-            S = readtable(input);
+            T = readtable(input);
             subject_UGP = [S;T];
-            Y = subject_UGP.Decision;
+         
         catch
             missing_data = [missing_data, values(ii)];
         end
-      
-        X = [subject_UGP.Endowment,(subject_UGP.More_Prop-subject_UGP.Less_Prop)];
+
+        X = [subject_UGP.Endowment,((subject_UGP.More_Prop+subject_UGP.Less_Prop)/2)];
         X = zscore(X);
+        
+        Y = subject_UGP.Decision;
         save_X = [save_X; X];
         save_Y = [save_Y; Y];
         
@@ -2033,7 +1457,7 @@ box off
 xlabel ('Regressors', 'FontSize', 16);
 ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
 set(gcf,'color','w');
-set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Delta P'})
+set(gca, 'XTick', 1:3, 'XTickLabels', {'Intercept', 'Endowment', 'Average Offers'})
 title('Does Endowment and Offers Predict UG-P More/Less Choices?')
 
 hold on
@@ -2091,71 +1515,183 @@ hold off
 
 saveas(gcf,'Bar_UGP_corrs.png')
     
+%% Combine tasks in model.
 
-%% Figure 4
-% 
-% [R,P] = corrcoef(Total_Earnings, TEIQUE_final(:,2));
-% figure
-% scatter(TEIQUE_final(:,2), Total_Earnings,'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Total Earnings', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'TotalEarnings.png')
-% 
-% %% Figure 7
-% 
-% %[R,P] = corrcoef(DG_P, TEIQUE_final(:,2)); %
-% [R,P] = corrcoef(DG_P, PNR_final(:,2));
-% figure
-% scatter(PNR_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% %scatter(TEIQUE_final(:,2), DG_P, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in DG Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')
-% 
-% %% Figure 7
-% 
-% %[R,P] = corrcoef(UG_P_Total, TEIQUE_final(:,2));
-% [R,P] = corrcoef(UG_P_Total, PNR_final(:,2));
-% figure
-% %scatter(TEIQUE_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% scatter(PNR_final(:,2), UG_P_Total, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in UGP Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')
-% 
-% %% Figure 8
-% 
-% [R,P] = corrcoef(UG_R_Earnings, TEIQUE_final(:,2));
-% figure
-% scatter(TEIQUE_final(:,2), UG_R_Earnings, 'MarkerEdgeColor',[0 .5 .5],'MarkerFaceColor',[0 .7 .7],'LineWidth',1.5);
-% ax = gca;
-% ax.FontSize = 12;
-% xlabel ('EI Score', 'FontSize', 16);
-% ylabel  ('Earnings as Proposer in UGR Task', 'FontSize', 16);
-% i = lsline;
-% i.LineWidth = 5;
-% i.Color = [0 0 0];
-% set(gcf,'color','w');
-% 
-% saveas(gcf,'DGPEQ.png')
+% Import results.
+% Combine into single matrix
+% Add +1 for DG and -1 for UG
+% Generate interaction effects. 
+
+% Import data:
+
+missing_data=[];
+save_X = [];
+save_Y = [];
+Cor_Endow_DeltaP=[];
+Cor_Endow_Intercept=[];
+Cor_DeltaP_Intercept= [];
+Main_Effects = [];
+subject_regressor = [];
+
+for ii = 1:length(values)
+    S = [];
+    T = [];
+
+        try
+            name = ['Subject_' num2str(values(ii)) '_UGP.csv'];
+            input = [input_folder,name];
+            S = readtable(input);
+            name = ['Subject_' num2str(values(ii)) '_UGP2.csv'];
+            input = [input_folder,name];
+            T = readtable(input);
+            subject_UGP=[S;T];
+            
+            name = ['Subject_' num2str(values(ii)) '_DGP.csv'];
+            input = [input_folder,name];
+            U = readtable(input);
+            subject_DGP = [U];
+            
+        catch
+            missing_data = [missing_data, values(ii)];
+        end
+        
+        % Generate regressors
+        
+        UG_X = [subject_UGP.Endowment,(subject_UGP.More_Prop-subject_UGP.Less_Prop)]; % Generate endowment and delta P.
+        DG_X = [subject_DGP.Endowment,(subject_DGP.More_Prop-subject_DGP.Less_Prop)];
+        X = zscore([UG_X;DG_X]); % z scores demeans
+        
+        % Add Task regressor and Interaction of Task/Endowment, Task/Delta
+        % P. DG is 1 and UG is -1.
+        
+        [N,M]= size(UG_X);
+        UG_mat = 0*(ones(N,1)); % UG is coded as 0
+        
+        [N,M]= size(DG_X);
+        DG_mat = ones(N,1); % DG is coded as 0
+        
+        task_regressor = [UG_mat; DG_mat];
+        
+        [N,M]= size(task_regressor);
+        
+        regessor_mat = ones(N,1);
+        regessor_mat = regessor_mat*values(ii);
+
+        subject_regressor = [subject_regressor; regessor_mat];
+        
+        % Generate interaction of task regressor and endowment and delta p.
+        
+        endow_int = task_regressor.*X(:,1);
+        deltaP_int = task_regressor.*X(:,2);
+        %mean_int = task_regressor.*X(:,3);
+        
+        % Concatenate into regressor matrix.
+        Main_Effects_part = [task_regressor, X];
+        X = [task_regressor, X, endow_int, deltaP_int]; 
+        Y = [subject_UGP.Decision;subject_DGP.Decision];
+        
+        % Loop over all of the participants.
+        save_X = [save_X; X];
+        save_Y = [save_Y; Y];
+        Main_Effects = [Main_Effects; Main_Effects_part];
+        
+%         % Save correlations of regressors across participants.
+
+%         [B,DEV,STATS] = glmfit(X,Y,'binomial','link','logit');
+%         coeff=STATS.coeffcorr;
+%         Cor_Endow_DeltaP=[Cor_Endow_DeltaP; coeff(2,3)];
+%         Cor_Endow_Intercept=[Cor_Endow_Intercept; coeff(1,2)];
+%         Cor_DeltaP_Intercept= [Cor_DeltaP_Intercept; coeff(1,3)];
+end
+
+
+% Run logistic regression.
+
+[B,DEV,STATS] = glmfit(save_X,save_Y,'binomial','link','logit');
+%Y=categorical(save_Y)
+%[B,dev,stats] = mnrfit(save_X,Y);
+se=STATS.se; 
+data = [B(1), B(2), B(3), B(4), B(5), B(6)]; % Intercept, Task, Endowment, Delta P, Endow Interaction, Delta P interaction.
+x = linspace(1,6,6);
+figure
+bar(x,data)
+ax = gca;
+ax.FontSize = 12;
+box off
+xlabel ('Regressors', 'FontSize', 16);
+ylabel  ('Z-standardized Beta Weight', 'FontSize', 16);
+set(gcf,'color','w');
+set(gca, 'XTick', 1:6, 'XTickLabels', {'Intercept', 'Task', 'Endowment', 'Delta P', 'Task*Endow', 'Task*DeltaP'})
+title('Does Endowment and Offers Predict Proposer More/Less Choices?')
+
+hold on
+
+% Standard Error
+
+B1Er = se(1);
+B2Er = se(2);
+B3Er = se(3);
+B4Er = se(4);
+B5Er = se(5);
+B6Er = se(6);
+%B7Er = se(7);
+%B8Er = se(8);
+
+
+err = [B1Er,B2Er,B3Er,B4Er,B5Er,B6Er] * 2;
+
+er = errorbar(x,data,err); 
+er.Color = [0 0 0];
+er.LineStyle = 'none';
+er.LineWidth = 1;
+hold off
+
+saveas(gcf,'Bar_proposer.png')
+
+%% Mixed effects model
+
+
+tb1 = array2table(Main_Effects(1:end,:),'VariableNames', {'x1','x2','x3'}); %x1 is Task, x2 is Endowment, and x3 is Delta P. 
+tb2 = array2table(save_Y,'VariableNames', {'y'});
+tb3 = array2table(subject_regressor,'VariableNames', {'subject'});
+mixed_effects = [tb2, tb3, tb1];
+
+% xs are fixed effects
+% () are random effects 
+
+% Subjects are a random effect. Need a different intercept for each subject
+% due to different tastes. 
+
+% Add a subj number column to mixed effects and use as a random effect.
+% Use a random intercept first. Then random slope. 
+
+% Use * for interactions. Check syntax. 
+
+% y ~ x1 + x2 + x3 + intA + intB + (1 | subject) % Random intercept. Shift
+% in preferences from less to more? Controls individual differences across.
+
+% Null model.
+
+% y ~ 1 + (1 | subject) vs. model. Is there a difference? 
+
+% Run an ANOVA between the outputs. 
+
+% Maybe add counterbalance order as a random effect
+
+% Slope is how quick change in attitude.
+
+% y ~ x1 + x2 + x3 + intA + intB + (x1 | subject) + (x2 | subject) + (x3 | subject)
+
+
+% Where y is "predictor", x1 is Task, x2 is Endowment, and x3 is Delta P. 
+
+
+random_intercept_model = fitlme(mixed_effects,'y ~ x1 + x2 + x3 + x1:x2 + x1:x3 + (1 | subject)');
+null_intercept = fitlme(mixed_effects,'y ~ 1 + (1 | subject)');
+
+[TABLE,SIMINFO] = compare(null_intercept, random_intercept_model)
+
+random_slope_model = fitlme(mixed_effects,'y ~ x1 + x2 + x3 + x1:x2 + x1:x3 + (x1 | subject) + (x2 | subject) + (x3 | subject)');
+null_slope = fitlme(mixed_effects,'y ~ 1 + (x1 | subject) + (x2 | subject) + (x3 | subject)');
+
+[TABLE,SIMINFO] = compare(null_slope, random_slope_model)
