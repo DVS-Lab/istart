@@ -118,33 +118,68 @@ Gender_raw = [data.('participant_id'), data.('gender_1')];
  
 % Eliminate Nans
 
-eliminate_rows = any(isnan(Gender_raw),2);
-Gender_temp = [];
+eliminate_rows = any(isnan(TEIQUE_raw),2);
+TEIQUE_temp = [];
 
-for ii = 1:length(Gender_raw)
+for ii = 1:length(TEIQUE_raw)
     keep = [];
-    row = Gender_raw(ii,:);
+    row = TEIQUE_raw(ii,:);
     if eliminate_rows(ii) == 0
         keep = row;
     end
-    Gender_temp = [Gender_temp; keep];
+    TEIQUE_temp = [TEIQUE_temp; keep];
 end
 
-Gender_missing = [];
-Gender_final = [];
+eliminate_rows = any(isnan(PNR_raw),2);
+PNR_temp = [];
+
+for ii = 1:length(PNR_raw)
+    keep = [];
+    row = PNR_raw(ii,:);
+    if eliminate_rows(ii) == 0
+        keep = row;
+    end
+    PNR_temp = [PNR_temp; keep];
+end
+ 
+TEIQUE_missing = [];
+TEIQUE_final = [];
 for ii = 1:length(subjects)
     subj = subjects(ii);
-    subj_row = find(Gender_temp==subj);
+    subj_row = find(TEIQUE_temp==subj);
     if subj_row > 0
-        test = Gender_temp(subj_row,:);
+        test = TEIQUE_temp(subj_row,:);
         if test(2) < 100
-            Gender_final = [Gender_final;test];
+            TEIQUE_final = [TEIQUE_final;test];
         else
-            Gender_missing = [Gender_missing; subjects(ii)];
+            TEIQUE_missing = [TEIQUE_missing; subjects(ii)];
         end
     end
     
 end
+
+PNR_missing = [];
+PNR_final = [];
+
+for ii = 1:length(subjects)
+    subj = subjects(ii);
+    subj_row = find(PNR_temp==subj);
+    if subj_row > 0
+        test = PNR_temp(subj_row,:);
+        if test(2) < 100
+            PNR_final = [PNR_final;test];
+        else
+            PNR_missing = [PNR_missing; subjects(ii)];
+        end
+    end
+    
+end
+    
+
+% Demean TEIQUE and PNR
+
+demeaned_TEIQUE_Output = TEIQUE_final(:,2) - mean(TEIQUE_final(:,2));
+TEIQUE_final = [TEIQUE_final(:,1), demeaned_Gender_Output]; 
 
 Gender_final_output = array2table(Gender_final(1:end,:),'VariableNames', {'Subject', 'Gender'});
 
