@@ -33,7 +33,7 @@ strat_input = [currentdir '/output/'];
 % Strategic Behavior requires using "behavioral_analysis.m script" and "behavioral_analysis_debug" to
 % generate input files for Dictator and Ultimatum game decisions. 
 
-make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
+make_full = 0; % Reads in all subjects (also autism). Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with PCA composite BIS/SR scores. Outputs subs, ones, strategic behavior, Composite_Reward, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
 make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
