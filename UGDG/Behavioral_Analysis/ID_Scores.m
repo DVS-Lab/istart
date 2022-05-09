@@ -19,10 +19,11 @@ clc
 % final_output_reward.xls
 % final_output_substance.xls
 % final_output_attitudes.xls
+% final_output_audit.xls
 
 currentdir = pwd;
 
-input = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file 
+input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  Use PCA_and_z-score.csv for reward
 motion_input = 'motion_data_input.xls';
 output_path = [currentdir '/covariates/'];
 strat_input = [currentdir '/output/'];
@@ -30,11 +31,10 @@ strat_input = [currentdir '/output/'];
 % Strategic Behavior requires using "behavioral_analysis.m script" and "behavioral_analysis_debug" to
 % generate input files for Dictator and Ultimatum game decisions. 
 
-make_full = 1; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
-make_reward = 0; % Reads in subjects with BAS and SPSRQ scores. Outputs subs, ones, strategic behavior, BAS, SPRSRQ, tsnr, fd means.
+make_full = 0; % Reads in all subjects. Outputs subs, ones, strategic behavior, tsnr, fd means.
+make_reward = 0; % Reads in subjects with PCA composite BIS/SR scores. Outputs subs, ones, strategic behavior, Composite_Reward, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
 make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
-
 %% Subs for SANS
 
 % This was a limited pool of subjects used for analysis for the SANS poster
@@ -114,7 +114,7 @@ end
 
 data = readtable(input);
 
-Gender_raw = [data.('participant_id'), data.('gender_1')];
+Gender_raw = [data.('ID'), data.('gender_f')];
  
 % Eliminate Nans
 
@@ -150,10 +150,13 @@ Gender_final_output = array2table(Gender_final(1:end,:),'VariableNames', {'Subje
 
 %% Read in EI and PNR from other file
 
+if make_attitudes == 1
+
 data = readtable(input);
 
-TEIQUE_raw = [data.('participant_id'), data.('score_tei_globaltrait')];
-PNR_raw = [data.('participant_id'), data.('score_pnr_total')];
+TEIQUE_raw = [data.('ID'), data.('score_tei_globaltrait')];
+PNR_raw = [data.('ID'), data.('pnr_q1') + data.('pnr_q2') + data.('pnr_q3') + data.('pnr_q4') + data.('pnr_q5') + data.('pnr_q6') + data.('pnr_q7') + data.('pnr_q8') + data.('pnr_q9')];
+AQ_raw = [data.('ID'), data.('score_aq_total')];
 
 % Eliminate Nans
 
@@ -183,6 +186,7 @@ end
  
 TEIQUE_missing = [];
 TEIQUE_final = [];
+
 for ii = 1:length(subjects)
     subj = subjects(ii);
     subj_row = find(TEIQUE_temp==subj);
@@ -214,6 +218,8 @@ for ii = 1:length(subjects)
     
 end
     
+    
+    
 
 % Demean TEIQUE and PNR
 
@@ -223,9 +229,50 @@ TEIQUE_final = [TEIQUE_final(:,1), demeaned_TEIQUE_Output];
 demeaned_PNR_Output = PNR_final(:,2) - mean(PNR_final(:,2));
 PNR_final = [PNR_final(:,1), demeaned_PNR_Output]; 
 
-Gender_final_output = array2table(TEIQUE_final(1:end,:),'VariableNames', {'Subject', 'TEIQUE'});
+TEIQUE_final_output = array2table(TEIQUE_final(1:end,:),'VariableNames', {'Subject', 'TEIQUE'});
 PNR_final_output = array2table(PNR_final(1:end,:),'VariableNames', {'Subject', 'PNR'});
 
+end
+
+%% Autism data
+
+if make_full == 1
+
+    
+    data = readtable(input);
+    
+    AQ_raw = [data.('ID'), data.('score_aq_total')];
+    eliminate_rows = any(isnan(AQ_raw),2);
+    AQ_temp = [];
+    
+    for ii = 1:length(AQ_raw)
+        keep = [];
+        row = AQ_raw(ii,:);
+        if eliminate_rows(ii) == 0
+            keep = row;
+        end
+        AQ_temp = [AQ_temp; keep];
+    end
+    
+    AQ_missing = [];
+    AQ_final = [];
+    
+    for ii = 1:length(subjects)
+        subj = subjects(ii);
+        subj_row = find(AQ_temp==subj);
+        if subj_row > 0
+            test = AQ_temp(subj_row,:);
+            if test(2) < 100
+                AQ_final = [AQ_final;test];
+            else
+                AQ_missing = [AQ_missing; subjects(ii)];
+            end
+        end
+    end
+        demeaned_AQ_Output = AQ_final(:,2) - mean(AQ_final(:,2));
+        AQ_final = [AQ_final(:,1), demeaned_AQ_Output];
+        AQ_final_output = array2table(AQ_final(1:end,:),'VariableNames', {'Subject', 'AQ'});
+end
 %% Read in the tsr and means 
 
 % Find the columns you will need.
@@ -322,10 +369,12 @@ demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:e
 
 %% Read in AUDIT and DUDIT scores (substance use)
 
+if make_substance == 1
+    
 data = readtable(input);
 
-AUDIT_raw = [data.('participant_id'), data.('audit_1') + data.('audit_2') + data.('audit_3') + data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
-DUDIT_raw = [data.('participant_id'), data.('dudit_1')+ data.('dudit_2')+ data.('dudit_3')+ data.('dudit_4') + data.('dudit_5') + data.('dudit_6')+ data.('dudit_7')+ data.('dudit_8')+ data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
+AUDIT_raw = [data.('ID'), data.('audit_1') + data.('audit_2') + data.('audit_3') + data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
+DUDIT_raw = [data.('ID'), data.('dudit_1')+ data.('dudit_2')+ data.('dudit_3')+ data.('dudit_4') + data.('dudit_5') + data.('dudit_6')+ data.('dudit_7')+ data.('dudit_8')+ data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
 
 eliminate_rows = any(isnan(AUDIT_raw),2);
 AUDIT_temp = [];
@@ -399,11 +448,14 @@ DUDIT_final = [DUDIT_final(:,1), demeaned_DUDIT_Output];
 AUDIT_final = array2table(AUDIT_final(1:end,:),'VariableNames', {'Sub', 'audit'});
 DUDIT_final = array2table(DUDIT_final(1:end,:),'VariableNames', {'Sub', 'dudit'});
 
-%% Read in BIS/BAS and SR Scores
+end 
+%% Read in Reward Scores
 
+if make_reward ==1
+    
 data = readtable(input);
 
-Reward_raw = [data.('RealID'), data.('BISBAS_BAS'), data.('SPSRWD')];
+Reward_raw = [data.('ID'), data.('PCA')];
 
 % Eliminate duplicates
  
@@ -416,24 +468,16 @@ for ii = 1:length(subjects)
     save = [];
     save2 = [];
     subj = subjects(ii);
-    subj_row = find(data.('RealID')==subj);
+    subj_row = find(data.('ID')==subj);
     
-    if Reward_use(subj_row,2) > -1 % eliminate the -999s.
-        save = Reward_use(subj_row,:);
-        save2 = [subj,save];
-        Reward_final = [Reward_final;save2];
-    else
-        save = Reward_use(subj_row,:);
-        save2 = [subj,save];
-        Reward_missing = [Reward_missing; save2];
-    end
+    save = Reward_use(subj_row,:);
+    Reward_final = [Reward_final; save];
 end
 
-% Demean reward
+Reward_final = Reward_final(:) - mean(Reward_final);
+Reward_Output = array2table(Reward_final(1:end,:),'VariableNames', {'Composite_Reward'});
 
-demeaned_Reward_Output = Reward_final(:,2:end) - mean(Reward_final(:,2:end));
-Reward_Output = [Reward_final(:,1), demeaned_Reward_Output];
-Reward_Output = array2table(Reward_Output(1:end,:),'VariableNames', {'Subs','SPSRQ', 'BAS'});
+end
 
 %% Combine outputs into single ID assessment
 
@@ -461,11 +505,27 @@ writetable(final_output, fileoutput); % Save as csv file
 
 end
 
+if make_full == 1
+
+final_output = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), AQ_final_output(:,'AQ'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+
+dest_path = [output_path, 'final_output_autism.xls'];
+[L] = isfile(dest_path);
+if L == 1
+    delete(dest_path)
+end
+
+name = ['final_output_autism.xls'];
+fileoutput = [output_path, name];
+writetable(final_output, fileoutput); % Save as csv file
+
+end
+
 %% EI/PNR output
 
 if make_attitudes == 1
 
-final_output_attitudes = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), Gender_final_output(:,'TEIQUE'), PNR_final_output(:,'PNR'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_attitudes = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), TEIQUE_final_output(:,'TEIQUE'), PNR_final_output(:,'PNR'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_attitudes.xls'];
 [L] = isfile(dest_path);
@@ -504,7 +564,7 @@ end
 
 if make_reward == 1
 
-final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), Reward_Output(:,'SPSRQ'), Reward_Output(:,'BAS'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), Reward_Output(:,'Composite_Reward'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_reward.xls'];
 [L] = isfile(dest_path);
