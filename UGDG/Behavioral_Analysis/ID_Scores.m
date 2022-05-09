@@ -21,6 +21,8 @@ clc
 % final_output_attitudes.xls
 % final_output_audit.xls
 
+% Updated for autism 
+
 currentdir = pwd;
 
 input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  Use PCA_and_z-score.csv for reward
