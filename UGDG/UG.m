@@ -14,8 +14,6 @@ clc
 % presented.
 % 12/06/2019: blocks reverted because Python code has them.
 % 12/06/2019: This version now has trial_types instead of blocks
-
-
 % ________________________
 
 % The goal is to make a random order of endowments and trial orders for
