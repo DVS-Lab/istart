@@ -1,7 +1,10 @@
 function convertUG_BIDS_use(subj)
 maindir = pwd;
+%usedir = '/data/projects/istart-data/';
 
 %try
+
+% 11-18-21 | This is the code I am using  for the bids converter.
 
 
 for r = 0:1
@@ -33,7 +36,7 @@ for r = 0:1
     L_Option = C{7};
     R_Option = C{8};
     
-    fname = sprintf('sub-%03d_task-ultimatum_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
+    fname = sprintf('sub-%03d_task-ugdg_run-%02d_events.tsv',subj,r+1); % making compatible with bids output
     output = fullfile(maindir,'bids',['sub-' num2str(subj)],'func');
     if ~exist(output,'dir')
         mkdir(output)
@@ -42,7 +45,38 @@ for r = 0:1
     fid = fopen(myfile,'w');
     fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tEndowment\n');
     
+    % We need to split up the endowments per the blocks. Then take the
+        % mean of those blocks. We do this to generate the parametric
+        % regressors, which require the demeaned endowment.
+
+        
+        Block1Mean = [];
+        Block2Mean = [];
+        Block3Mean = [];
+        
+        for ii = 1:length(Block)
+            
+        if (Block(ii) == 1)
+            Block1Mean = [Block1Mean;Endowment(ii)];
+           
+        elseif (Block(ii) == 2)
+            Block2Mean = [Block2Mean;Endowment(ii)];
+            
+        elseif (Block(ii) == 3)
+            Block3Mean = [Block3Mean;Endowment(ii)];
+            
+        end   
+            
+        end
+        
+        Block1Mean = mean(Block1Mean);
+        Block2Mean = mean(Block2Mean);
+        Block3Mean = mean(Block3Mean);
+        
+        %% Populate the regressors.
+    
     for t = 1:length(onset);
+        
         
         
         %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
@@ -84,8 +118,7 @@ for r = 0:1
                 end
             end
         end
-        
-        
+               
         if Block(t) == 2
             if response(t) == 2
                 if L_Option(t) > R_Option(t);
@@ -193,19 +226,41 @@ for r = 0:1
         %cue_ug-resp
         %cue_ug-prop
         
-        %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
-        if (Block(t) == 1)
+        
+        
+%         %fprintf(fid,'onset\tduration\ttrial_type\tresponse_time\tPartnerKeeps\tOffer\tResponse\n');
+%         if (Block(t) == 1)
+%             trial_type = 'cue_dict_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+%         elseif (Block(t) == 2)
+%             trial_type = 'cue_ug-resp_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+%         elseif (Block(t) == 3)
+%             trial_type = 'cue_ug-prop_parametric';
+%             fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+%         else
+%             keyboard
+%         end
+
+Endowment_Mean = mean(Endowment);
+       
+       if (Block(t) == 1)
             trial_type = 'cue_dict_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block1Mean));
         elseif (Block(t) == 2)
             trial_type = 'cue_ug-resp_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block2Mean));
         elseif (Block(t) == 3)
             trial_type = 'cue_ug-prop_parametric';
-            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',Endowment(t));
+            fprintf(fid,'%f\t%d\t%s\t%s\t%d\n',onset(t),2,[trial_type],'n/a',round(Endowment(t)-Block3Mean));
         else
             keyboard
-        end
+       end
+
+       
+       % I took this code from the choice only parametric. This
+       % demeaning process only demeans the endowment parametric
+       % regressor.
 
         
         end 
