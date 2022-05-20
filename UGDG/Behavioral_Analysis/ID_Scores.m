@@ -25,6 +25,9 @@ clc
 
 currentdir = pwd;
 
+input_substance = 'Composite_Substance.xls';
+input_reward = 'Composite_Reward.xls';
+
 input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  Use PCA_and_z-score.csv for reward
 motion_input = 'motion_data_input.xls';
 output_path = [currentdir '/covariates/'];
@@ -36,7 +39,9 @@ strat_input = [currentdir '/output/'];
 make_full = 0; % Reads in all subjects (also autism). Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with PCA composite BIS/SR scores. Outputs subs, ones, strategic behavior, Composite_Reward, tsnr, fd means.
 make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
-make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
+
+run_cov = 0; % To make a covariance matrix of all IDs, use "make_attitudes", use the second set of subjects in make attitudes, and uncomment "make_attitudes" for reward and substance inputs.
 %% Subs for SANS
 
 % This was a limited pool of subjects used for analysis for the SANS poster
@@ -73,11 +78,9 @@ end
 
 % AUDIT_missing =
 % 
-%         1003
+%        
 %         1007
 %         1013
-
-% Nans: 
 
 % DUDIT_missing =
 % 
@@ -92,7 +95,7 @@ end
 
 if make_substance == 1
     
-    subjects = [1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+    subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
     
 end
 %% Subjects for TEIQUE/PNR
@@ -110,7 +113,16 @@ end
 
 if make_attitudes == 1
     subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+  % subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1245, 1247, 1248, 1249, 1251, 1276, 1282, 1294, 1300, 1301, 1302, 1303, 3116, 3122, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+
 end
+
+% for cov assessment:
+
+%         1007
+%         1013
+%         3140
+%         3170
 
 %% Read in Gender
 
@@ -218,10 +230,7 @@ for ii = 1:length(subjects)
         end
     end
     
-end
-    
-    
-    
+end 
 
 % Demean TEIQUE and PNR
 
@@ -239,6 +248,7 @@ end
 %% Autism data
 
 if make_full == 1
+%if make_attitudes == 1 % only if assessing covariance
 
     
     data = readtable(input);
@@ -372,6 +382,7 @@ demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:e
 %% Read in AUDIT and DUDIT scores (substance use)
 
 if make_substance == 1
+   
     
 data = readtable(input);
 
@@ -455,29 +466,31 @@ end
 
 if make_reward ==1
     
-data = readtable(input);
-
-Reward_raw = [data.('ID'), data.('PCA')];
-
-% Eliminate duplicates
- 
-Reward_missing = [];
-Reward_final = [];
-Reward_use = Reward_raw(:,2:end);
-bis_bas_subs = [];
-
-for ii = 1:length(subjects)
-    save = [];
-    save2 = [];
-    subj = subjects(ii);
-    subj_row = find(data.('ID')==subj);
+% if make_attitudes== 1 % only for covariance assessment
     
-    save = Reward_use(subj_row,:);
-    Reward_final = [Reward_final; save];
-end
+data = readtable(input_reward);
 
-Reward_final = Reward_final(:) - mean(Reward_final);
-Reward_Output = array2table(Reward_final(1:end,:),'VariableNames', {'Composite_Reward'});
+Reward_raw = [data.('ID'), data.('Composite_Reward', data.('Composite_Reward_Squared')];
+
+% % Eliminate duplicates
+%  
+% Reward_missing = [];
+% Reward_final = [];
+% Reward_use = Reward_raw(:,2:end);
+% bis_bas_subs = [];
+% 
+% for ii = 1:length(subjects)
+%     save = [];
+%     save2 = [];
+%     subj = subjects(ii);
+%     subj_row = find(data.('ID')==subj);
+%     
+%     save = Reward_use(subj_row,:);
+%     Reward_final = [Reward_final; save];
+% end
+% 
+% Reward_final = Reward_final(:) - mean(Reward_final);
+Reward_Output = array2table(Reward_final(1:end,:),'VariableNames', {'Composite_Reward', 'Composite_Reward_Squared'});
 
 end
 
@@ -581,4 +594,28 @@ writetable(final_output_reward, fileoutput); % Save as csv file
 end
 
     
+%% Covariate assessment
 
+% Use limited subject base (ATTITUDES)
+
+% Run all subjects.
+
+% Run covariance across all ID measures. 
+
+if run_cov == 1
+    
+all_IDs = [demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), AUDIT_final(:,'audit'), TEIQUE_final_output(:,'TEIQUE'), PNR_final_output(:,'PNR'), AQ_final_output(:,'AQ'), Reward_Output(:,'Composite_Reward'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+cormat = table2array(all_IDs);
+[R,P] = corrcoef(cormat)
+
+figure
+
+imagesc(R); % Display correlation matrix as an image
+set(gca, 'XTick', 1:8); % center x-axis ticks on bins
+set(gca, 'YTick', 1:8); % center y-axis ticks on bins
+set(gca, 'XTickLabel', {'Strat', 'Audit', 'EI', 'PNR', 'AQ', 'Reward', 'Tsnr', 'Fd'}); % set x-axis labels
+set(gca, 'YTickLabel', {'Strat', 'Audit', 'EI', 'PNR', 'AQ', 'Reward', 'Tsnr', 'Fd'}); % set y-axis labels
+title('Correlation Matrix of IDs in UGDG', 'FontSize', 10); % set title
+colormap('GRAY'); % Choose jet or any other color scheme
+
+end
