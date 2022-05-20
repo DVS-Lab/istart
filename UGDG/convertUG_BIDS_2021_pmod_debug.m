@@ -287,6 +287,23 @@ UGR_mean = mean(UGR(:,2));
         % effect associated with "perfectly rational" behavior, if subjects always
         % choose a given option.
         
+          if Block(t) == 3
+            if response(t) == 2
+                if round(L_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_option_presented'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean); % accepted offer
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_option_presented'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean); % rejected offer
+                end
+            end
+            
+            if response(t) == 3
+                if round(R_Option(t)) > 0;
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_option_presented'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean); % accepted offer
+                else
+                    fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_option_presented'],RT(t),Endowment(t),'n/a',0, L_Option(t)/Endowment(t)- UGR_mean); % rejected offer
+                end
+            end
+        end
         
         if Block(t) == 3
             if response(t) == 2

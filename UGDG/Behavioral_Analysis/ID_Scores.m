@@ -35,7 +35,7 @@ strat_input = [currentdir '/output/'];
 
 make_full = 0; % Reads in all subjects (also autism). Outputs subs, ones, strategic behavior, tsnr, fd means.
 make_reward = 0; % Reads in subjects with PCA composite BIS/SR scores. Outputs subs, ones, strategic behavior, Composite_Reward, tsnr, fd means.
-make_substance = 0; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
+make_substance = 1; % Reads in subjects with AUDIT/DUDIT scores. Outputs subs, ones, strategic behavior, audit, dudit, tsnr, fd means. 
 make_attitudes = 0; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, ones, strategic behavior, TEIQUE, PNR, tsnr, fd means. 
 %% Subs for SANS
 
@@ -73,27 +73,22 @@ end
 
 % AUDIT_missing =
 % 
-%         1003
 %         1007
 %         1013
-
-% Nans: 
+%         3140
+%         3170 
 
 % DUDIT_missing =
 % 
 %         1251
 % 
-% AUDIT_missing =
-% 
-%         3140
-%         3170
 
 % 3143 is a DUDIT outlier (for no_outlier file only).
 
 if make_substance == 1
     
-    subjects = [1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-    
+    subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+
 end
 %% Subjects for TEIQUE/PNR
 
@@ -440,10 +435,11 @@ for ii = 1:length(subjects)
 end
     
 % Demean AUDIT/DUDIT
-
+AUDIT_test = AUDIT_final; 
 demeaned_AUDIT_Output = AUDIT_final(:,2) - mean(AUDIT_final(:,2));
 AUDIT_final = [AUDIT_final(:,1), demeaned_AUDIT_Output]; 
 
+DUDIT_test = DUDIT_final; 
 demeaned_DUDIT_Output = DUDIT_final(:,2) - mean(DUDIT_final(:,2));
 DUDIT_final = [DUDIT_final(:,1), demeaned_DUDIT_Output]; 
 
@@ -580,5 +576,20 @@ writetable(final_output_reward, fileoutput); % Save as csv file
 
 end
 
-    
 
+    
+%% Proportions of Substance Uses
+
+AUDIT_greater_DUDIT = [];
+DUDIT_greater_AUDIT = [];
+
+for ii = 1:length(AUDIT_test)
+    test_row_AUDIT = round(AUDIT_test(ii,2));
+    test_row_DUDIT = round(DUDIT_test(ii,2));
+    if test_row_AUDIT == 0 && test_row_DUDIT > 0
+        AUDIT_greater_DUDIT = [AUDIT_greater_DUDIT; 1];
+    end
+    if test_row_DUDIT == 0 && test_row_AUDIT > 0
+        DUDIT_greater_AUDIT = [DUDIT_greater_AUDIT; 1];
+    end
+end
