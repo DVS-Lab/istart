@@ -94,7 +94,7 @@ DGP=[];
 UGP=[];
 
 
- for t = 1:length(Block);
+ for t = 1:length(Block)
         
         % 2 is reject
         % 3 is accept
@@ -106,7 +106,7 @@ UGP=[];
         if Block(t) == 3
             save = [];
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     save = [Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)];
                 else
                     save = [0, L_Option(t)/Endowment(t)];
@@ -116,7 +116,7 @@ UGP=[];
             end
             
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     save = [Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)];
                 else
                     save = [0, R_Option(t)/Endowment(t)];
@@ -128,7 +128,7 @@ UGP=[];
         if Block(t) == 2
             save = [];
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     save = [Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)];
                 else
                     save = [0, L_Option(t)/Endowment(t)];
@@ -138,7 +138,7 @@ UGP=[];
             end
             
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     save = [Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)];
                 else
                     save = [0, R_Option(t)/Endowment(t)];
@@ -150,7 +150,7 @@ UGP=[];
         if Block(t) == 1
             save = [];
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     save = [Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)];
                 else
                     save = [0, L_Option(t)/Endowment(t)];
@@ -160,7 +160,7 @@ UGP=[];
             end
             
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     save = [Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)];
                 else
                     save = [0, R_Option(t)/Endowment(t)];
@@ -206,7 +206,7 @@ UGR_mean = mean(UGR(:,2));
     % Block 2 = UG-P
     % Block 3 = UG-R
     
-    for t = 1:length(onset);
+    for t = 1:length(onset)
         
         
         if (Block(t) == 1)
@@ -233,7 +233,7 @@ UGR_mean = mean(UGR(:,2));
         
         if Block(t) == 3
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean);
                 else
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
@@ -241,7 +241,7 @@ UGR_mean = mean(UGR(:,2));
             end
             
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_accept'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
                 else
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_reject'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
@@ -313,7 +313,7 @@ UGR_mean = mean(UGR(:,2));
         
         if Block(t) == 3
             if response(t) == 2
-                if round(L_Option(t)) > 0;
+                if round(L_Option(t)) > 0
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - L_Option(t), L_Option(t)/Endowment(t)- UGR_mean);
                 else
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0, L_Option(t)/Endowment(t)- UGR_mean);
@@ -321,7 +321,7 @@ UGR_mean = mean(UGR(:,2));
             end
             
             if response(t) == 3
-                if round(R_Option(t)) > 0;
+                if round(R_Option(t)) > 0
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',Endowment(t) - R_Option(t), R_Option(t)/Endowment(t)- UGR_mean);
                 else
                     fprintf(fid,'%f\t%f\t%s\t%f\t%d\t%s\t%d\t%d\n',decision_onset(t),RT(t),[trial_type '_choice'],RT(t),Endowment(t),'n/a',0, R_Option(t)/Endowment(t)- UGR_mean);
