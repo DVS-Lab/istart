@@ -27,6 +27,7 @@ DUDIT_raw = [data.('ID'), data.('dudit_standard_score')];
 
 subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 
+% Missing: 1007 (AUDIT)
 %% Read in the tsr and means 
 
 % Find the columns you will need.
@@ -201,8 +202,8 @@ writetable(Composite_final_output_substance, fileoutput); % Save as csv file
 % 8 substance use * RS squared
 
 Reward_substance = [Composite_final_output_substance.Composite_Substance,  Composite_final_output.Composite_Reward, Composite_final_output.Composite_Reward_Squared, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward_Squared];
-Reward_substance_demeaned = Reward_substance - mean(Reward_substance)
-Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned]
+Reward_substance_demeaned = Reward_substance - mean(Reward_substance);
+Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned];
 
 Reward_substance_output = array2table(Reward_substance_final(1:end,:),'VariableNames', {'Subject', 'Composite Substance', 'Composite Reward', 'Composite Reward Squared', 'Composite Substance * Reward', 'Composite Substance * Reward Squared'});
 
