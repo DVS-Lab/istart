@@ -22,33 +22,12 @@ output_path = [currentdir '/covariates/'];
 input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  
 data = readtable(input);
 Composite_raw = [data.('ID'), data.('BISBAS_BAS'), data.('SPSRWD')];
-AUDIT_raw = [data.('ID'), data.('audit_1') + data.('audit_2') + data.('audit_3') + data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
-DUDIT_raw = [data.('ID'), data.('dudit_1')+ data.('dudit_2')+ data.('dudit_3')+ data.('dudit_4') + data.('dudit_5') + data.('dudit_6')+ data.('dudit_7')+ data.('dudit_8')+ data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
+AUDIT_raw = [data.('ID'), data.('audit_standard_score')];
+DUDIT_raw = [data.('ID'), data.('dudit_standard_score')];
 
+subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 
- subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-
-%end
-
-% AUDIT_missing =
-% 
-%        
-%         1007
-%         1013
-
-% DUDIT_missing =
-% 
-%         1251
-% 
-% AUDIT_missing =
-% 
-%         3140
-%         3170
-
-%if make_substance == 1
-    subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-%end
-
+% Missing: 1007 (AUDIT)
 %% Read in the tsr and means 
 
 % Find the columns you will need.
@@ -146,14 +125,6 @@ writetable(Composite_final_output, fileoutput); % Save as csv file
 
 %% Make substance use
 
-%if make_substance == 1
-
-% This code can help with debugging. Check "composite missing" to see which
-% subjects need to be eliminated.
-
-  
-% Eliminate Nans
-
 
 AUDIT_missing = [];
 AUDIT_final = [];
@@ -231,8 +202,8 @@ writetable(Composite_final_output_substance, fileoutput); % Save as csv file
 % 8 substance use * RS squared
 
 Reward_substance = [Composite_final_output_substance.Composite_Substance,  Composite_final_output.Composite_Reward, Composite_final_output.Composite_Reward_Squared, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward_Squared];
-Reward_substance_demeaned = Reward_substance - mean(Reward_substance)
-Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned]
+Reward_substance_demeaned = Reward_substance - mean(Reward_substance);
+Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned];
 
 Reward_substance_output = array2table(Reward_substance_final(1:end,:),'VariableNames', {'Subject', 'Composite Substance', 'Composite Reward', 'Composite Reward Squared', 'Composite Substance * Reward', 'Composite Substance * Reward Squared'});
 

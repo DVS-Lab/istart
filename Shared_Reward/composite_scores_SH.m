@@ -3,7 +3,7 @@ close all
 clc
 
 % Daniel Sazhin
-% ISTART Project (UGDG)
+% ISTART Project (Shared Reward)
 % DVS Lab
 % 05/13/2022
 % Temple University
@@ -16,7 +16,7 @@ clc
 
 currentdir = pwd;
 output_path = currentdir; % Set output path if you would like.
-motion_input = 'motion_data_input.xls';
+%motion_input = 'motion_data_input.xls';
 output_path = [currentdir '/covariates/'];
 
 input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  
@@ -24,48 +24,29 @@ data = readtable(input);
 Composite_raw = [data.('ID'), data.('BISBAS_BAS'), data.('SPSRWD')];
 AUDIT_raw = [data.('ID'), data.('audit_standard_score')];
 DUDIT_raw = [data.('ID'), data.('dudit_standard_score')];
-subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 
-%end
+subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
 
-% AUDIT_missing =
+% Missing: 1007 (AUDIT)
+% %% Read in the tsr and means 
 % 
-%        
-%         1007
-%         1013
-
-% DUDIT_missing =
+% % Find the columns you will need.
 % 
-%         1251
+% data = readtable(motion_input);
+% data = table2array(data);
 % 
-% AUDIT_missing =
+% motion_data = [];
 % 
-%         3140
-%         3170
-
-%if make_substance == 1
-    subjects = [1003, 1006, 1009, 1010, 1011, 1012, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3143, 3152, 3164, 3166, 3167, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-%end
-
-%% Read in the tsr and means 
-
-% Find the columns you will need.
-
-data = readtable(motion_input);
-data = table2array(data);
-
-motion_data = [];
-
-% tsnr is second column. motion is third column
-
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(data==subj);
-    save = data(subj_row,:);
-    motion_data = [motion_data;save];
-end
-
-motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'tsnr', 'fd_mean'});
+% % tsnr is second column. motion is third column
+% 
+% for ii = 1:length(subjects)
+%     subj = subjects(ii);
+%     subj_row = find(data==subj);
+%     save = data(subj_row,:);
+%     motion_data = [motion_data;save];
+% end
+% 
+% motion_data_output = array2table(motion_data(1:end,:),'VariableNames', {'Subject', 'tsnr', 'fd_mean'});
 
 
 %% Collate data to reflect desired subjects for reward sensitivity
@@ -144,14 +125,6 @@ writetable(Composite_final_output, fileoutput); % Save as csv file
 
 %% Make substance use
 
-%if make_substance == 1
-
-% This code can help with debugging. Check "composite missing" to see which
-% subjects need to be eliminated.
-
-  
-% Eliminate Nans
-
 
 AUDIT_missing = [];
 AUDIT_final = [];
@@ -229,21 +202,21 @@ writetable(Composite_final_output_substance, fileoutput); % Save as csv file
 % 8 substance use * RS squared
 
 Reward_substance = [Composite_final_output_substance.Composite_Substance,  Composite_final_output.Composite_Reward, Composite_final_output.Composite_Reward_Squared, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward, Composite_final_output_substance.Composite_Substance.*Composite_final_output.Composite_Reward_Squared];
-Reward_substance_demeaned = Reward_substance - mean(Reward_substance)
-Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned]
+Reward_substance_demeaned = Reward_substance - mean(Reward_substance);
+Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned];
 
 Reward_substance_output = array2table(Reward_substance_final(1:end,:),'VariableNames', {'Subject', 'Composite Substance', 'Composite Reward', 'Composite Reward Squared', 'Composite Substance * Reward', 'Composite Substance * Reward Squared'});
 
 %% Combine into comprehensive set of IDs
 
-[N,M] = size(motion_data_output);
+[N,M] = size(Reward_substance_output);
 A(1:N,1) = ones; % subject number
 
 ones_output = array2table(A(1:end,:),'VariableNames', {'Ones'});
 name = ('ones.xls');
 writetable(ones_output, name); % Save as csv file
 
-final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), Reward_substance_output(:,'Composite Substance'), Reward_substance_output(:,'Composite Reward'), Reward_substance_output(:,'Composite Reward Squared'), Reward_substance_output(:,'Composite Substance * Reward'), Reward_substance_output(:,'Composite Substance * Reward Squared'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_reward = [Reward_substance_output(:,'Subject'), ones_output(:,'Ones'), Reward_substance_output(:,'Composite Substance'), Reward_substance_output(:,'Composite Reward'), Reward_substance_output(:,'Composite Reward Squared'), Reward_substance_output(:,'Composite Substance * Reward'), Reward_substance_output(:,'Composite Substance * Reward Squared')]; % motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_reward.xls'];
 [L] = isfile(dest_path);
