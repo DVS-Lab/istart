@@ -114,6 +114,7 @@ figure, hist(normedRS.^2,50); title('Normed Composite Squared') % look at your d
 
 %% Output results.
 
+normedRS = normedRS - mean(normedRS); % demeaned
 Combined_reward = [Composite_final(:,1), normedRS, normedRS.^2]; % Pairs subject numbers with RS scores. 
 Composite_final_output = array2table(Combined_reward(1:end,:),'VariableNames', {'Subject', 'Composite_Reward', 'Composite_Reward_Squared'});
 
