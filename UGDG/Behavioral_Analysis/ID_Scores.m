@@ -463,36 +463,36 @@ DUDIT_final = array2table(DUDIT_final(1:end,:),'VariableNames', {'Sub', 'dudit'}
 
 end 
 %% Read in Reward Scores
-
-if make_reward ==1
-    
-% if make_attitudes== 1 % only for covariance assessment
-    
-data = readtable(input_reward);
-
-Reward_raw = [data.('ID'), data.('Composite_Reward', data.('Composite_Reward_Squared')];
-
-% % Eliminate duplicates
-%  
-% Reward_missing = [];
-% Reward_final = [];
-% Reward_use = Reward_raw(:,2:end);
-% bis_bas_subs = [];
-% 
-% for ii = 1:length(subjects)
-%     save = [];
-%     save2 = [];
-%     subj = subjects(ii);
-%     subj_row = find(data.('ID')==subj);
-%     
-%     save = Reward_use(subj_row,:);
-%     Reward_final = [Reward_final; save];
-% end
-% 
-% Reward_final = Reward_final(:) - mean(Reward_final);
-Reward_Output = array2table(Reward_final(1:end,:),'VariableNames', {'Composite_Reward', 'Composite_Reward_Squared'});
-
-end
+% % 
+% % if make_reward ==1
+% %     
+% % if make_attitudes== 1 % only for covariance assessment
+% %     
+% % data = readtable(input_reward);
+% % 
+% % Reward_raw = [data.('ID'), data.('Composite_Reward', data.('Composite_Reward_Squared')];
+% % 
+% % % Eliminate duplicates
+% %  
+% % Reward_missing = [];
+% % Reward_final = [];
+% % Reward_use = Reward_raw(:,2:end);
+% % bis_bas_subs = [];
+% % 
+% % for ii = 1:length(subjects)
+% %     save = [];
+% %     save2 = [];
+% %     subj = subjects(ii);
+% %     subj_row = find(data.('ID')==subj);
+% %     
+% %     save = Reward_use(subj_row,:);
+% %     Reward_final = [Reward_final; save];
+% % end
+% % 
+% % Reward_final = Reward_final(:) - mean(Reward_final);
+% % Reward_Output = array2table(Reward_final(1:end,:),'VariableNames', {'Composite_Reward', 'Composite_Reward_Squared'});
+% % 
+% % end
 
 %% Combine outputs into single ID assessment
 
