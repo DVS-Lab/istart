@@ -18,6 +18,7 @@ currentdir = pwd;
 output_path = currentdir; % Set output path if you would like.
 motion_input = 'motion_data_input.xls';
 output_path = [currentdir '/covariates/'];
+strat_input = [currentdir '/output/'];
 
 input = 'ISTART-ALL-Combined-042122.xlsx'; % input file  %  
 data = readtable(input);
@@ -114,6 +115,7 @@ figure, hist(normedRS.^2,50); title('Normed Composite Squared') % look at your d
 
 %% Output results.
 
+normedRS = normedRS - mean(normedRS); % demeaned
 Combined_reward = [Composite_final(:,1), normedRS, normedRS.^2]; % Pairs subject numbers with RS scores. 
 Composite_final_output = array2table(Combined_reward(1:end,:),'VariableNames', {'Subject', 'Composite_Reward', 'Composite_Reward_Squared'});
 
@@ -163,7 +165,7 @@ end
 comp_SU = zscore(AUDIT_final(:,2)) + zscore(DUDIT_final(:,2)); % combine measures for your final data
 
 figure, hist(comp_SU,50); title('Composite') % look at your data
-figure, hist(comp_SU.^2,50); title('Composite Squared') % look at your data squared
+figure, hist(comp_SU.^2,50); title('Composite_Squared') % look at your data squared
 
 % normed_comp_SU = zeros(length(compRS),1); % create empty array for storing data
 % deciles = prctile(compRS,[10 20 30 40 50 60 70 80 90]); % identify quintiles
@@ -205,7 +207,82 @@ Reward_substance = [Composite_final_output_substance.Composite_Substance,  Compo
 Reward_substance_demeaned = Reward_substance - mean(Reward_substance);
 Reward_substance_final = [Composite_final_output_substance.Subject, Reward_substance_demeaned];
 
-Reward_substance_output = array2table(Reward_substance_final(1:end,:),'VariableNames', {'Subject', 'Composite Substance', 'Composite Reward', 'Composite Reward Squared', 'Composite Substance * Reward', 'Composite Substance * Reward Squared'});
+Reward_substance_output = array2table(Reward_substance_final(1:end,:),'VariableNames', {'Subject', 'Composite_Substance', 'Composite_Reward', 'Composite_Reward_Squared', 'Composite_SubstanceXReward', 'Composite_SubstanceXReward_Squared'});
+
+%% Strategic Behavior 
+
+% First figure out raw values, then combine into strategic behavior
+
+% Raw DG needs to be average to account for missed/irregular number of
+% trials. 
+
+DG_P_Raw = [];
+
+for ii = 1:length(subjects)
+        save_value = [];
+        name = [strat_input 'Subject_' num2str(subjects(ii)) '_DGP.csv'];
+        O = readtable(name);
+        O = table2array(O);
+        save_value = mean(O(:,3));
+        DG_P_Raw = [DG_P_Raw; save_value]; 
+       
+end
+
+%% Raw results UG-P
+
+Final_save_2 = [];
+UG_P_2 = [];
+
+Final_save = [];
+UG_P = [];
+UG_P_Total = [];
+Subjects = [];
+Subjects_2 = [];
+
+UG_P_Raw = [];
+Final_Subjects =[];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = [strat_input 'Subject_' num2str(subjects(jj)) '_UGP.csv'];
+    
+    T = readtable(name);
+    UG_P = table2array(T);
+    
+    total_save_2= [];
+    saveme_2 = [];
+    save_value = mean(UG_P(:,3));
+    UG_P_Raw = [UG_P_Raw; save_value];
+    UG_P_Raw = abs(UG_P_Raw);
+    
+end
+
+UG_P_2_Raw = [];
+
+for jj = 1:length(subjects)
+    save_value = [];
+    
+    name = [strat_input 'Subject_' num2str(subjects(jj)) '_UGP2.csv'];
+    
+    T = readtable(name);
+    UG_P_2 = table2array(T);
+    save_value = mean(UG_P_2(:,3));
+    UG_P_2_Raw = [UG_P_2_Raw; save_value];
+    UG_P_2_Raw = abs(UG_P_2_Raw);
+    
+end
+
+UG_P_Raw_use = ((UG_P_2_Raw + UG_P_Raw)/2);
+
+Strategic_Behavior = UG_P_Raw_use - DG_P_Raw;
+
+% Demean strategic behavior
+
+demeaned_Strategic_Behavior = Strategic_Behavior - mean(Strategic_Behavior);
+
+demeaned_Strategic_Behavior_output = array2table(demeaned_Strategic_Behavior(1:end,:),'VariableNames', {'Strategic_Behavior'});
+
 
 %% Combine into comprehensive set of IDs
 
@@ -216,7 +293,7 @@ ones_output = array2table(A(1:end,:),'VariableNames', {'Ones'});
 name = ('ones.xls');
 writetable(ones_output, name); % Save as csv file
 
-final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), Reward_substance_output(:,'Composite Substance'), Reward_substance_output(:,'Composite Reward'), Reward_substance_output(:,'Composite Reward Squared'), Reward_substance_output(:,'Composite Substance * Reward'), Reward_substance_output(:,'Composite Substance * Reward Squared'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
+final_output_reward = [motion_data_output(:,'Subject'), ones_output(:,'Ones'), demeaned_Strategic_Behavior_output(:,'Strategic_Behavior'), Reward_substance_output(:,'Composite_Substance'), Reward_substance_output(:,'Composite_Reward'), Reward_substance_output(:,'Composite_Reward_Squared'), Reward_substance_output(:,'Composite_SubstanceXReward'), Reward_substance_output(:,'Composite_SubstanceXReward_Squared'), motion_data_output(:,'tsnr'), motion_data_output(:,'fd_mean')];
 
 dest_path = [output_path, 'final_output_reward.xls'];
 [L] = isfile(dest_path);
