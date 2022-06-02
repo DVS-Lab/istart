@@ -188,7 +188,7 @@ ones_output = array2table(A(1:end,:),'VariableNames', {'Ones'});
 name = ('ones.xls');
 writetable(ones_output, name); % Save as csv file
 
-final_output_reward = [ones_output(:,'Ones'), Reward_substance_output(:,'Composite_Substance'), Reward_substance_output(:,'Composite_Reward'), Reward_substance_output(:,'Composite_Reward_Squared'), Reward_substance_output(:,'Composite_SubstanceXReward'), Reward_substance_output(:,'Composite_SubstanceXReward_Squared')];
+final_output_reward = [Reward_substance_output(:, 'Subject'), ones_output(:,'Ones'), Reward_substance_output(:,'Composite_Substance'), Reward_substance_output(:,'Composite_Reward'), Reward_substance_output(:,'Composite_Reward_Squared'), Reward_substance_output(:,'Composite_SubstanceXReward'), Reward_substance_output(:,'Composite_SubstanceXReward_Squared')];
 
 dest_path = [output_path, 'final_output_reward_soc.xls'];
 [L] = isfile(dest_path);
