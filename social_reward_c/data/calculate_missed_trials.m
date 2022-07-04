@@ -41,7 +41,7 @@ for s = 1:length(subs)
             alltrials = T.trial_type == "decision" | T.trial_type == "decision-missed";
             missedtrials = T.trial_type == "decision-missed";
         
-               % Calculate proportion of missed trials
+            % Calculate proportion of missed trials
             prop_missed = sum(missedtrials)/sum(alltrials);
         
             % Assign missed trials value to data_mat
