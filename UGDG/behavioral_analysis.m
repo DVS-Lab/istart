@@ -17,12 +17,64 @@ clc
 
 % Use Behavioral_Analysis as your working directory. 
 
-maindir = 'C:\Users\danie\Documents\Github\istart\UGDG'; % set on computer doing the analysis
-output_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\output\'];
+maindir = 'C:\Users\tul03789\Documents\Github\istart\UGDG'; % set on computer doing the analysis
+output_folder = ['C:\Users\tul03789\Documents\Github\istart\UGDG\Behavioral_Analysis\output\'];
 
 %subjects = [1002, 1004, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1240, 1242, 1243, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3200, 3212];
-subjects = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-%subjects = 1276
+subjects = [1003
+1004
+1006
+1009
+1010
+1011
+1012
+1013
+1015
+1016
+1019
+1021
+1242
+1243
+1244
+1245
+1247
+1248
+1249
+1251
+1253
+1255
+1276
+1282
+1286
+1294
+1300
+1301
+1302
+1303
+3101
+3116
+3122
+3125
+3140
+3143
+3152
+3164
+3166
+3167
+3170
+3173
+3175
+3176
+3189
+3190
+3199
+3200
+3206
+3210
+3212
+3218
+3220
+3223]; %subjects = 1276
 % Use behavioral_analysis_debug.m to fix these.
 
 subjects_debug = [1240,1248]; % These have different column numbers, probably because RAs used psychopy2.

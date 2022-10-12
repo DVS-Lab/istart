@@ -10,7 +10,8 @@ clc
 % DVS Lab
 % Temple University
 
-input_folder = ['C:\Users\danie\Documents\Github\istart\UGDG\Behavioral_Analysis\output\'];
+input_folder = ['C:\Users\tul03789\Documents\GitHub\istart\UGDG\Behavioral_Analysis\output\'];
+input_covariates = 'covariates\final_output_composite.xls';
 input_behavioral = 'ISTART_CombinedDataSpreadsheet_031722.csv'; % input file  
 motion_input = 'motion_data_input.xls';
 
@@ -34,7 +35,60 @@ make_attitudes = 1; % Reads in subjects with TEIQUE/PNR scores. Outputs subs, on
 % 1002 and 1243 excluded for now (failed preprocessing) 
 
 if make_full == 1
-    values = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1242, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
+    values = [1003
+1004
+1006
+1009
+1010
+1011
+1012
+1013
+1015
+1016
+1019
+1021
+1242
+1243
+1244
+1245
+1247
+1248
+1249
+1251
+1253
+1255
+1276
+1282
+1286
+1294
+1300
+1301
+1302
+1303
+3101
+3116
+3122
+3125
+3140
+3143
+3152
+3164
+3166
+3167
+3170
+3173
+3175
+3176
+3189
+3190
+3199
+3200
+3206
+3210
+3212
+3218
+3220
+3223];
 end
 
 %% Subs for reward
@@ -45,8 +99,61 @@ end
 %         1242          40        -999
 
 if make_reward == 1
-    values = [1003, 1006, 1007, 1009, 1010, 1011, 1012, 1013, 1015, 1016, 1019, 1021, 1244, 1245, 1247, 1248, 1249, 1251, 1253, 1255, 1276, 1282, 1286, 1294, 1300, 1301, 1302, 1303, 3101, 3116, 3122, 3125, 3140, 3143, 3152, 3164, 3166, 3167, 3170, 3173, 3175, 3176, 3189, 3190, 3199, 3200, 3206, 3210, 3212, 3220];
-end
+    values = [1003
+1004
+1006
+1009
+1010
+1011
+1012
+1013
+1015
+1016
+1019
+1021
+1242
+1243
+1244
+1245
+1247
+1248
+1249
+1251
+1253
+1255
+1276
+1282
+1286
+1294
+1300
+1301
+1302
+1303
+3101
+3116
+3122
+3125
+3140
+3143
+3152
+3164
+3166
+3167
+3170
+3173
+3175
+3176
+3189
+3190
+3199
+3200
+3206
+3210
+3212
+3218
+3220
+3223
+]; end
 %% Subjects for AUDIT/DUDIT (substance use)
 
 %03/19/22: Eliminate DUDIT for analysis. 1251 and 3143 put back in for
@@ -510,126 +617,17 @@ saveas(gcf,'PNR_Scores.png')
 
 end
 
-%% Read in the tsr and means 
-
-% Find the columns you will need.
-
-data = readtable(motion_input);
-data = table2array(data);
-
-motion_data = [];
-
-% tsnr is second column. motion is third column
-
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(data==subj);
-    save = data(subj_row,:);
-    motion_data = [motion_data;save];
-end
-
-%% Read in AUDIT and DUDIT scores (substance use)
-
-if make_substance == 1
-
-data = readtable(input_behavioral);
-
-AUDIT_raw = [data.('participant_id'), data.('audit_1') + data.('audit_2') + data.('audit_3') + data.('audit_4') + data.('audit_5') + data.('audit_6') + data.('audit_7') + data.('audit_8') + data.('audit_9') + data.('audit_10')];
-DUDIT_raw = [data.('participant_id'), data.('dudit_1')+ data.('dudit_2')+ data.('dudit_3')+ data.('dudit_4') + data.('dudit_5') + data.('dudit_6')+ data.('dudit_7')+ data.('dudit_8')+ data.('dudit_9') + data.('dudit_10') + data.('dudit_11')];
-
-eliminate_rows = any(isnan(AUDIT_raw),2);
-AUDIT_temp = [];
-AUDIT_missing = [];
-DUDIT_missing = [];
-
-for ii = 1:length(AUDIT_raw)
-    keep = [];
-    row = AUDIT_raw(ii,:);
-    if eliminate_rows(ii) == 0
-        keep = row;
-        AUDIT_temp = [AUDIT_temp; keep];
-    else
-        AUDIT_missing = [AUDIT_missing; row(1)];
-    end
-end
-
-eliminate_rows = any(isnan(DUDIT_raw),2);
-DUDIT_temp = [];
-
-for ii = 1:length(DUDIT_raw)
-    keep = [];
-    row = DUDIT_raw(ii,:);
-    if eliminate_rows(ii) == 0
-        keep = row;
-        DUDIT_temp = [DUDIT_temp; keep];
-    else
-        DUDIT_missing = [DUDIT_missing; row(1)];
-    end
-    
-end
- 
-AUDIT_final = [];
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(AUDIT_temp==subj);
-    if subj_row > 0
-        test = AUDIT_temp(subj_row,:);
-        if test(2) < 100
-            AUDIT_final = [AUDIT_final;test];
-        else
-            AUDIT_missing = [AUDIT_missing; subjects(ii)];
-        end
-    end
-    
-end
-
-DUDIT_final = [];
-for ii = 1:length(subjects)
-    subj = subjects(ii);
-    subj_row = find(DUDIT_temp==subj);
-    if subj_row > 0
-        test = DUDIT_temp(subj_row,:);
-        if test(2) < 100
-            DUDIT_final = [DUDIT_final;test];
-        else
-            DUDIT_missing = [DUDIT_missing; subjects(ii)];
-        end
-    end
-    
-end
-    
-end 
-%% Read in BIS/BAS and SR Scores
+%% Read in Reward Scores
 
 if make_reward == 1
 
-data = readtable(input_behavioral);
+data = readtable(input_covariates);
 
-Reward_raw = [data.('RealID'), data.('BISBAS_BAS'), data.('SPSRWD')];
-
-% Eliminate duplicates
- 
-Reward_missing = [];
-Reward_final = [];
-Reward_use = Reward_raw(:,2:end);
-bis_bas_subs = [];
-
-for ii = 1:length(subjects)
-    save = [];
-    save2 = [];
-    subj = subjects(ii);
-    subj_row = find(data.('RealID')==subj);
-    
-    if Reward_use(subj_row,2) > -1 % eliminate the -999s.
-        save = Reward_use(subj_row,:);
-        save2 = [subj,save];
-        Reward_final = [Reward_final;save2];
-    else
-        save = Reward_use(subj_row,:);
-        save2 = [subj,save];
-        Reward_missing = [Reward_missing; save2];
-    end
-end
+Composite_Reward = [data.('Composite_Reward')];
+Composite_Aberrant_Reward = [data.('Composite_Reward_Squared')];
+Composite_Substance = [data.('Composite_Substance')];
+SubstanceXReward = [data.('Composite_SubstanceXReward')];
+SubstanceXAberrant_Reward = [data.('Composite_SubstanceXReward_Squared')];
 
 end
 
@@ -753,27 +751,65 @@ end
 %% Reward analysis
 
 if make_reward == 1
-       
-% BAS
-[R,P] = corrcoef(DG_P_Prop,Reward_final(:,2))
-[R,P] = corrcoef(UG_P_Raw_Props,Reward_final(:,2)) 
-[R,P] = corrcoef(UG_R_reject_rate, Reward_final(:,2))
-[R,P] = corrcoef(Strategic_Behavior, Reward_final(:,2))
-[R,P] = corrcoef(Total_Earnings,Reward_final(:,2))
-[R,P] = corrcoef(UG_R_Earnings, Reward_final(:,2))
-[R,P] = corrcoef(UG_P_Earnings, Reward_final(:,2))
-[R,P] = corrcoef(DG_P_Earnings, Reward_final(:,2))
 
-% SPSRQ
+    
+% Composite_Reward 
+% Composite_Aberrant_Reward 
+% Composite_Substance 
+% SubstanceXReward 
+% SubstanceXAberrant_Reward 
 
-[R,P] = corrcoef(DG_P_Prop,Reward_final(:,3))
-[R,P] = corrcoef(UG_P_Raw_Props,Reward_final(:,3)) 
-[R,P] = corrcoef(UG_R_reject_rate, Reward_final(:,3))
-[R,P] = corrcoef(Strategic_Behavior, Reward_final(:,3))
-[R,P] = corrcoef(Total_Earnings,Reward_final(:,3))
-[R,P] = corrcoef(UG_R_Earnings, Reward_final(:,3))
-[R,P] = corrcoef(UG_P_Earnings, Reward_final(:,3))
-[R,P] = corrcoef(DG_P_Earnings, Reward_final(:,3))
+% Composite_Reward 
+
+testme = Composite_Reward; 
+[R,P] = corrcoef(DG_P_Prop,testme)
+[R,P] = corrcoef(UG_P_Raw_Props,testme) 
+[R,P] = corrcoef(UG_R_reject_rate, testme)
+[R,P] = corrcoef(Strategic_Behavior, testme)
+[R,P] = corrcoef(Total_Earnings,testme)
+[R,P] = corrcoef(UG_R_Earnings, testme)
+[R,P] = corrcoef(UG_P_Earnings, testme)
+[R,P] = corrcoef(DG_P_Earnings, testme)
+
+testme = Composite_Aberrant_Reward; 
+[R,P] = corrcoef(DG_P_Prop,testme)
+[R,P] = corrcoef(UG_P_Raw_Props,testme) 
+[R,P] = corrcoef(UG_R_reject_rate, testme)
+[R,P] = corrcoef(Strategic_Behavior, testme)
+[R,P] = corrcoef(Total_Earnings,testme)
+[R,P] = corrcoef(UG_R_Earnings, testme)
+[R,P] = corrcoef(UG_P_Earnings, testme)
+[R,P] = corrcoef(DG_P_Earnings, testme)
+
+testme = Composite_Substance; 
+[R,P] = corrcoef(DG_P_Prop,testme)
+[R,P] = corrcoef(UG_P_Raw_Props,testme) 
+[R,P] = corrcoef(UG_R_reject_rate, testme)
+[R,P] = corrcoef(Strategic_Behavior, testme)
+[R,P] = corrcoef(Total_Earnings,testme)
+[R,P] = corrcoef(UG_R_Earnings, testme)
+[R,P] = corrcoef(UG_P_Earnings, testme)
+[R,P] = corrcoef(DG_P_Earnings, testme)
+
+testme = SubstanceXReward; 
+[R,P] = corrcoef(DG_P_Prop,testme)
+[R,P] = corrcoef(UG_P_Raw_Props,testme) 
+[R,P] = corrcoef(UG_R_reject_rate, testme)
+[R,P] = corrcoef(Strategic_Behavior, testme)
+[R,P] = corrcoef(Total_Earnings,testme)
+[R,P] = corrcoef(UG_R_Earnings, testme)
+[R,P] = corrcoef(UG_P_Earnings, testme)
+[R,P] = corrcoef(DG_P_Earnings, testme)
+
+testme = SubstanceXAberrant_Reward; 
+[R,P] = corrcoef(DG_P_Prop,testme)
+[R,P] = corrcoef(UG_P_Raw_Props,testme) 
+[R,P] = corrcoef(UG_R_reject_rate, testme)
+[R,P] = corrcoef(Strategic_Behavior, testme)
+[R,P] = corrcoef(Total_Earnings,testme)
+[R,P] = corrcoef(UG_R_Earnings, testme)
+[R,P] = corrcoef(UG_P_Earnings, testme)
+[R,P] = corrcoef(DG_P_Earnings, testme)
 
 end
 
